@@ -32,8 +32,10 @@ setup(name='voteit.schulze',
       tests_require= requires,
       test_suite="voteit.schulze",
       entry_points = """\
+      """,
       message_extractors = { '.': [
               ('**.py',   'chameleon_python', None ),
               ('**.pt',   'chameleon_xml', None ),
               ]},
+      
       )
