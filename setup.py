@@ -8,7 +8,10 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
     'pyramid',
+    'colander',
+    'deform',
     'voteit.core',
+    'python-vote-core',
     ]
 
 setup(name='voteit.schulze',
