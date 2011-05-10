@@ -1,10 +1,10 @@
-from pyramid.traversal import find_interface
-
 import colander
 import deform
+from pyvotecore.schulze_stv import SchulzeSTV
 
 from voteit.core.models.poll_plugin import PollPlugin
-from voteit.core.models.agenda_item import AgendaItem
+from voteit.core.models.vote import Vote
+from pyramid.renderers import render
 
 
 class SchulzePollPlugin(PollPlugin):
@@ -12,24 +12,21 @@ class SchulzePollPlugin(PollPlugin):
 
     name = u'schulze_stv'
     title = u'Schulze STV'
-
-    @staticmethod
-    def get_poll_schema(context):
+    
+    def get_settings_schema(self, poll):
+        """ Get an instance of the schema used to render a form for editing settings.
+        """
+        return SettingsSchema()
+    
+    def get_vote_schema(self, poll):
         """ Get an instance of the schema that this poll uses.
         """
-        #FIXME: Should this generate an exeption if a poll has been deleted?
-        #IE it's uid isn't found
-        proposal_uids = context.proposals
-        agenda_item = find_interface(context, AgendaItem)
-        proposals = set()
-        for item in agenda_item.values():
-            if item.uid in proposal_uids:
-                proposals.add(item)
+        proposals = poll.get_proposal_objects()
 
         #Schulze works with ranking, so we add as many numbers as there are alternatives
         num_proposals = len(proposals)
         #SelectWidget expects a list where each item has a readable title and a value (title, value)
-        schulze_choice = [(str(x),str(x)) for x in range(1, num_proposals+1)]
+        schulze_choice = [(str(x), str(x)) for x in range(1, num_proposals+1)]
         
         schema = colander.Schema()
         for proposal in proposals:
@@ -38,14 +35,36 @@ class SchulzePollPlugin(PollPlugin):
                                            title=proposal.title,
                                            widget=deform.widget.SelectWidget(values=schulze_choice)),)
         return schema
-    
+
+    def get_vote_class(self):
+        return Vote
+
+    def get_result(self, ballots):
+        if ballots:
+            self._transform_preference(ballots)
+            return SchulzeSTV(ballots, ballot_notation = "ranking", required_winners=1).as_dict()
+
+    def _transform_preference(self, ballots):
+        for entries in ballots:
+            for k, v in entries['ballot'].items():
+                entries['ballot'][k] = int(v)
+
     @staticmethod
-    def get_settings_schema(context):
-        """ Get an instance of the schema used to render a form for editing settings.
-        """
-        return SettingsSchema()
+    def _get_proposal_by_uid(proposals, uid):
+        """ Return a proposal by it's uid"""
+        for prop in proposals:
+            if prop.uid == uid:
+                return prop
+        raise KeyError("No proposal found with UID '%s'" % uid)
+        
+    def render_result(self, poll, ballots):
+        response = {}
+        response['result'] = self.get_result(ballots)
+        response['proposals'] = poll.get_proposal_objects()
+        response['get_proposal_by_uid'] = self._get_proposal_by_uid
+        return render('templates/result.pt', response)
 
-
+        
 class SettingsSchema(colander.Schema):
     """ Settings for a Schulze poll
     """
