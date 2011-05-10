@@ -11,7 +11,6 @@ requires = [
     'colander',
     'deform',
     'voteit.core',
-    'python-vote-core',
     ]
 
 setup(name='voteit.schulze',
