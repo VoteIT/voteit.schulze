@@ -4,5 +4,5 @@ from voteit.schulze.models import SchulzePollPlugin
 
 
 def includeme(config):
-    register_poll_plugin(SchulzePollPlugin)
+    register_poll_plugin(SchulzePollPlugin, registry=config.registry)
     
