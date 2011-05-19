@@ -39,10 +39,11 @@ class SchulzePollPlugin(PollPlugin):
     def get_vote_class(self):
         return Vote
 
-    def get_result(self, ballots):
+    def get_result(self, ballots, **settings):
         if ballots:
             self._transform_preference(ballots)
-            return SchulzeSTV(ballots, ballot_notation = "ranking", required_winners=1).as_dict()
+            winners = settings.get('winners', 1)
+            return SchulzeSTV(ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
 
     def _transform_preference(self, ballots):
         for entries in ballots:
@@ -57,11 +58,10 @@ class SchulzePollPlugin(PollPlugin):
                 return prop
         raise KeyError("No proposal found with UID '%s'" % uid)
         
-    def render_result(self, poll, ballots):
+    def render_result(self, poll):
         response = {}
-        response['result'] = self.get_result(ballots)
-        response['proposals'] = poll.get_proposal_objects()
-        response['get_proposal_by_uid'] = self._get_proposal_by_uid
+        response['result'] = poll.get_poll_result()
+        response['get_proposal_by_uid'] = poll.get_proposal_by_uid
         return render('templates/result.pt', response)
 
         

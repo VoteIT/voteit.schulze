@@ -3,7 +3,7 @@
 <tal:winners condition="result['winners']|False">
     <h3>Winners</h3>
 	<tal:iterate repeat="winner result['winners']">
-	<tal:defs define="proposal get_proposal_by_uid(proposals, winner)">
+	<tal:defs define="proposal get_proposal_by_uid(winner)">
 		<div tal:content="proposal.title">Title</div>
 	</tal:defs>
 	</tal:iterate>
