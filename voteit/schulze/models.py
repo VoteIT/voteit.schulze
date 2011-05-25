@@ -68,4 +68,6 @@ class SchulzePollPlugin(PollPlugin):
 class SettingsSchema(colander.Schema):
     """ Settings for a Schulze poll
     """
-    winners = colander.SchemaNode(colander.Int())
+    winners = colander.SchemaNode(colander.Int(),
+                                  default=1,
+                                  missing=1,)
