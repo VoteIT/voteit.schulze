@@ -64,6 +64,13 @@ class SchulzePollPlugin(PollPlugin):
         response['get_proposal_by_uid'] = poll.get_proposal_by_uid
         return render('templates/result.pt', response)
 
+    def close(self, poll):
+        """ This gets called when a poll has finished. It should return the winning proposals uids as a list.
+            (If it's only one winner, just wrap it in a list)
+        """
+        #FIXME: implement
+        return []
+
         
 class SettingsSchema(colander.Schema):
     """ Settings for a Schulze poll
