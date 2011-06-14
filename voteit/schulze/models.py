@@ -12,16 +12,21 @@ class SchulzePollPlugin(PollPlugin):
 
     name = u'schulze_stv'
     title = u'Schulze STV'
-    
-    def get_settings_schema(self, poll):
+
+    def __init__(self, context):
+        self.context = context
+        settings = {'winners':1}
+        context.poll_settings = settings
+
+    def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
         """
         return SettingsSchema()
     
-    def get_vote_schema(self, poll):
+    def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
         """
-        proposals = poll.get_proposal_objects()
+        proposals = self.context.get_proposal_objects()
 
         #Schulze works with ranking, so we add as many numbers as there are alternatives
         num_proposals = len(proposals)
@@ -39,42 +44,45 @@ class SchulzePollPlugin(PollPlugin):
     def get_vote_class(self):
         return Vote
 
-    def get_result(self, ballots, **settings):
-        if ballots:
-            self._transform_preference(ballots)
-            winners = settings.get('winners', 1)
-            return SchulzeSTV(ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
-
-    def _transform_preference(self, ballots):
-        for entries in ballots:
-            for k, v in entries['ballot'].items():
-                entries['ballot'][k] = int(v)
-
-    @staticmethod
-    def _get_proposal_by_uid(proposals, uid):
-        """ Return a proposal by it's uid"""
-        for prop in proposals:
-            if prop.uid == uid:
-                return prop
-        raise KeyError("No proposal found with UID '%s'" % uid)
+    def handle_close(self):
+        ballots = self.context.ballots
+        winners = self.context.poll_settings.get('winners', 1)
         
-    def render_result(self, poll):
+        schulze_ballots = self.schulze_format_ballots(ballots)
+        
+        self.context.poll_result = SchulzeSTV(schulze_ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
+        
+
+#    def get_result(self, ballots, **settings):
+#        if ballots:
+#            self._transform_preference(ballots)
+#            settings = self.context.get_poll_settings()
+#            winners = settings.get('winners', 1)
+#            return SchulzeSTV(ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
+
+    def schulze_format_ballots(self, ballots):
+        formatted = []
+        for (ballot, count) in ballots:
+            formatted.append({'count':count, 'ballot':ballot})
+        return formatted
+
+    def render_result(self):
         response = {}
-        response['result'] = poll.get_poll_result()
-        response['get_proposal_by_uid'] = poll.get_proposal_by_uid
+        response['result'] = self.context.poll_result
+        response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         return render('templates/result.pt', response)
 
-    def close(self, poll):
-        """ This gets called when a poll has finished. It should return the winning proposals uids as a list.
-            (If it's only one winner, just wrap it in a list)
+    def change_states_of(self):
+        """ This gets called when a poll has finished.
+            It returns a dictionary with proposal uid as key and new state as value.
+            Like: {'<uid>':'approved', '<uid>', 'denied'}
         """
-        #FIXME: implement
-        return []
+        #Not implemented yet
+        return {}
 
         
 class SettingsSchema(colander.Schema):
     """ Settings for a Schulze poll
     """
     winners = colander.SchemaNode(colander.Int(),
-                                  default=1,
-                                  missing=1,)
+                                  default=1)
