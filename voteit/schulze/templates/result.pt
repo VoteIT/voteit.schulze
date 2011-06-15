@@ -1,11 +1,53 @@
-<h1>Poll result</h1>
 
-<tal:winners condition="result['winners']|False">
-    <h3>Winners</h3>
+<div tal:content="result"></div>
+
+<tal:no_result condition="not result">
+	
+    <h3>No result yet</h3>
+	
+    <p>Poll hasn't closed</p>
+	
+</tal:no_result>
+
+<tal:result condition="result">
+	
+	<h3>Poll result</h3>
+	
+    <h4>Approved</h4>
 	<tal:iterate repeat="winner result['winners']">
-	<tal:defs define="proposal get_proposal_by_uid(winner)">
-		<div tal:content="proposal.title">Title</div>
-	</tal:defs>
+		<tal:defs define="proposal get_proposal_by_uid(winner)">
+			<div tal:content="proposal.title">Title</div>
+		</tal:defs>
 	</tal:iterate>
-
-</tal:winners>
+	
+	<h4>Denied</h4>
+    <tal:iterate repeat="denied result['candidates'] - result['winners']">
+        <tal:defs define="proposal get_proposal_by_uid(denied)">
+            <div tal:content="proposal.title">Title</div>
+        </tal:defs>
+    </tal:iterate>
+	
+	<h4>About this poll</h4>
+    <table>
+    	<tr>
+            <th>Number of voters:</th>
+            <td tal:content="no_users">3</td>
+    	</tr>
+		<tr>
+            <th>Possible winners:</th>
+			<td tal:content="no_winners">1</td>
+		</tr>
+        <tr tal:condition="result['tie_breaker']">
+            <th>Poll was a tie breaker between:</th>
+            <td>
+            	<ul>
+	            	<tal:iterate repeat="tied result['tie_breaker']">
+	            	<tal:def define="proposal get_proposal_by_uid(tied)">
+	            		<li tal:content="proposal.title">Title</li>
+					</tal:def>
+	            	</tal:iterate>
+            	</ul>
+            </td>
+        </tr>
+    </table>
+</tal:result>

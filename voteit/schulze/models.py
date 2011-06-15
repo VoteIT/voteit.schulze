@@ -51,14 +51,6 @@ class SchulzePollPlugin(PollPlugin):
         schulze_ballots = self.schulze_format_ballots(ballots)
         
         self.context.poll_result = SchulzeSTV(schulze_ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
-        
-
-#    def get_result(self, ballots, **settings):
-#        if ballots:
-#            self._transform_preference(ballots)
-#            settings = self.context.get_poll_settings()
-#            winners = settings.get('winners', 1)
-#            return SchulzeSTV(ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
 
     def schulze_format_ballots(self, ballots):
         formatted = []
@@ -69,6 +61,8 @@ class SchulzePollPlugin(PollPlugin):
     def render_result(self):
         response = {}
         response['result'] = self.context.poll_result
+        response['no_users'] = len(self.context.get_voted_userids())
+        response['no_winners'] = self.context.poll_settings.get('winners', 1)
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         return render('templates/result.pt', response)
 
