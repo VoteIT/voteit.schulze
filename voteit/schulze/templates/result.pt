@@ -1,6 +1,3 @@
-
-<div tal:content="result"></div>
-
 <tal:no_result condition="not result">
 	
     <h3>No result yet</h3>
