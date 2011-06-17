@@ -34,7 +34,7 @@
             <th>Possible winners:</th>
 			<td tal:content="no_winners">1</td>
 		</tr>
-        <tr tal:condition="result['tie_breaker']">
+        <tr tal:condition="result['tie_breaker']|False">
             <th>Poll was a tie breaker between:</th>
             <td>
             	<ul>

@@ -1,10 +1,12 @@
+from copy import deepcopy
+
 import colander
 import deform
 from pyvotecore.schulze_stv import SchulzeSTV
-
+from pyramid.renderers import render
+from pyramid.response import Response
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.models.vote import Vote
-from pyramid.renderers import render
 
 
 class SchulzePollPlugin(PollPlugin):
@@ -45,13 +47,12 @@ class SchulzePollPlugin(PollPlugin):
         return Vote
 
     def handle_close(self):
-        ballots = self.context.ballots
+        #IMPORTANT! Use deepcopy, we don't want the SchulzeSTV to modify our ballots, just calculate a result
+        ballots = deepcopy(self.context.ballots)
         if not ballots:
             raise ValueError("It's not possible to use this version of Schulze STV without any votes. At least one is needed.")
         winners = self.context.poll_settings.get('winners', 1)
-
         schulze_ballots = self.schulze_format_ballots(ballots)
-        
         self.context.poll_result = SchulzeSTV(schulze_ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
 
     def schulze_format_ballots(self, ballots):
@@ -76,6 +77,8 @@ class SchulzePollPlugin(PollPlugin):
         #Not implemented yet
         return {}
 
+    def render_raw_data(self):
+        return Response(unicode(self.context.ballots))
         
 class SettingsSchema(colander.Schema):
     """ Settings for a Schulze poll
