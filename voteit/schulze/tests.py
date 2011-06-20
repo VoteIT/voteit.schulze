@@ -4,7 +4,7 @@ from pyramid import testing
 from zope.interface.verify import verifyObject
 from zope.interface.verify import verifyClass
 
-from voteit.core import register_poll_plugin
+from voteit.core.app import register_poll_plugin
 from voteit.core.models.agenda_item import AgendaItem
 from voteit.core.models.poll import Poll
 from voteit.core.models.proposal import Proposal
