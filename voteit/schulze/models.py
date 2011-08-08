@@ -7,6 +7,7 @@ from pyramid.renderers import render
 from pyramid.response import Response
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.models.vote import Vote
+from voteit.core.widget import StarWidget
 
 
 class SchulzePollPlugin(PollPlugin):
@@ -40,7 +41,7 @@ class SchulzePollPlugin(PollPlugin):
             schema.add(colander.SchemaNode(colander.String(),
                                            name=proposal.uid,
                                            title=proposal.title,
-                                           widget=deform.widget.SelectWidget(values=schulze_choice)),)
+                                           widget=StarWidget(values=schulze_choice)),)
         return schema
 
     def get_vote_class(self):
