@@ -39,11 +39,17 @@ class SchulzePollPlugin(PollPlugin):
             stars = max_stars
         #SelectWidget expects a list where each item has a readable title and a value (title, value)
         schulze_choice = [(str(x), str(x)) for x in range(1, stars+1)]
+        #Ie 5 stars = 1 point, 1 star 5 points
+        schulze_choice.reverse()
         
         schema = colander.Schema()
         for proposal in proposals:
             schema.add(colander.SchemaNode(colander.String(),
                                            name=proposal.uid,
+                                           #To make missing even less desired than the regular stars
+                                           #Schulze can't handle null value or empty dicts.
+                                           #This does however produce the same result
+                                           missing=stars+1,
                                            title=proposal.title,
                                            widget=StarWidget(values=schulze_choice)),)
         return schema
