@@ -17,6 +17,9 @@ class SchulzePollPlugin(PollPlugin):
     title = u'Schulze STV'
 
     def __init__(self, context):
+        """ Remember that init is run every time the adapter adapts something,
+            so don't put configuration defaults or similar here.
+        """
         self.context = context
 
     def get_settings_schema(self):
