@@ -42,6 +42,8 @@ class SchulzePollPlugin(PollPlugin):
         #Ie 5 stars = 1 point, 1 star 5 points
         schulze_choice.reverse()
         
+        valid_entries = [str(x) for x in range(1, stars+2)] #To include the missing value
+        
         schema = colander.Schema()
         for proposal in proposals:
             schema.add(colander.SchemaNode(colander.String(),
@@ -51,6 +53,7 @@ class SchulzePollPlugin(PollPlugin):
                                            #This does however produce the same result
                                            missing=stars+1,
                                            title=proposal.title,
+                                           validator=colander.OneOf(valid_entries),
                                            widget=StarWidget(values=schulze_choice)),)
         return schema
 
