@@ -18,8 +18,6 @@ class SchulzePollPlugin(PollPlugin):
 
     def __init__(self, context):
         self.context = context
-        settings = {'winners':1}
-        context.poll_settings = settings
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -32,9 +30,12 @@ class SchulzePollPlugin(PollPlugin):
         proposals = self.context.get_proposal_objects()
 
         #Schulze works with ranking, so we add as many numbers as there are alternatives
-        num_proposals = len(proposals)
+        stars = len(proposals)
+        max_stars = self.context.poll_settings.get('max_stars', 5)
+        if max_stars < stars:
+            stars = max_stars
         #SelectWidget expects a list where each item has a readable title and a value (title, value)
-        schulze_choice = [(str(x), str(x)) for x in range(1, num_proposals+1)]
+        schulze_choice = [(str(x), str(x)) for x in range(1, stars+1)]
         
         schema = colander.Schema()
         for proposal in proposals:
@@ -85,4 +86,6 @@ class SettingsSchema(colander.Schema):
     """ Settings for a Schulze poll
     """
     winners = colander.SchemaNode(colander.Int(),
-                                  default=1)
+                                  default=1,)
+    max_stars = colander.SchemaNode(colander.Int(),
+                                    default=5,)
