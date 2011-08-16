@@ -11,14 +11,14 @@
 	<h3>Poll result</h3>
 	
     <h4>Approved</h4>
-	<tal:iterate repeat="winner result['winners']">
+	<tal:iterate repeat="winner result.get('winners', ())">
 		<tal:defs define="proposal get_proposal_by_uid(winner)">
 			<div tal:content="proposal.title">Title</div>
 		</tal:defs>
 	</tal:iterate>
 	
 	<h4>Denied</h4>
-    <tal:iterate repeat="denied result['candidates'] - result['winners']">
+    <tal:iterate repeat="denied result['candidates'] - result.get('winners', set())">
         <tal:defs define="proposal get_proposal_by_uid(denied)">
             <div tal:content="proposal.title">Title</div>
         </tal:defs>

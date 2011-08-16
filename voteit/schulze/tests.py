@@ -97,7 +97,12 @@ class SchulzeSpecificTests(unittest.TestCase):
         self._add_votes(poll)
         self._close_poll(poll)
         self.assertEqual(poll.ballots, (({u'p1uid': 1, u'p2uid': 2, u'p3uid': 3}, 3),))
-
+    
+    def test_close_with_no_votes(self):
+        poll = self._setup_poll_fixture()
+        self._close_poll(poll)
+        self.assertEqual({'candidates': set([u'p1uid', u'p2uid', u'p3uid'])}, poll.poll_result)
+        
     def test_poll_result(self):
         poll = self._setup_poll_fixture()
         self._add_votes(poll)

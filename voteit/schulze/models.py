@@ -64,7 +64,9 @@ class SchulzePollPlugin(PollPlugin):
         #IMPORTANT! Use deepcopy, we don't want the SchulzeSTV to modify our ballots, just calculate a result
         ballots = deepcopy(self.context.ballots)
         if not ballots:
-            raise ValueError("It's not possible to use this version of Schulze STV without any votes. At least one is needed.")
+            self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
+            return
+            #aise ValueError("It's not possible to use this version of Schulze STV without any votes. At least one is needed.")
         winners = self.context.poll_settings.get('winners', 1)
         schulze_ballots = self.schulze_format_ballots(ballots)
         self.context.poll_result = SchulzeSTV(schulze_ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
