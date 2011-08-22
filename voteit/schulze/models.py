@@ -90,8 +90,19 @@ class SchulzePollPlugin(PollPlugin):
             It returns a dictionary with proposal uid as key and new state as value.
             Like: {'<uid>':'approved', '<uid>', 'denied'}
         """
-        #Not implemented yet
-        return {}
+        result = {}
+        
+        winners = self.context.poll_result.get('winners', ())
+        losers = self.context.poll_result['candidates'] - set(winners)
+
+        if winners:
+            for winner in winners:
+                result[winner] = 'approved'
+
+            for loser in losers:
+                result[loser] = 'denied'
+        
+        return result
 
     def render_raw_data(self):
         return Response(unicode(self.context.ballots))
