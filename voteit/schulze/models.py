@@ -15,6 +15,8 @@ class SchulzePollPlugin(PollPlugin):
 
     name = u'schulze_stv'
     title = u'Schulze STV'
+    #FIXME: Description of Schulze STV
+    description = u''
 
     def __init__(self, context):
         """ Remember that init is run every time the adapter adapts something,
