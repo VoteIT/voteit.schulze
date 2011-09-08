@@ -9,6 +9,9 @@ from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.models.vote import Vote
 from voteit.core.widget import StarWidget
 
+from voteit.schulze import VoteITSchulzeMF as _
+from voteit.core.views.api import APIView
+
 
 class SchulzePollPlugin(PollPlugin):
     """ Poll plugin for the Schulze STV Vote """
@@ -48,6 +51,8 @@ class SchulzePollPlugin(PollPlugin):
         
         schema = colander.Schema()
         for proposal in proposals:
+            description = _("Created by ${userid}",
+                            mapping={'userid':proposal.creators[0]})
             schema.add(colander.SchemaNode(colander.String(),
                                            name=proposal.uid,
                                            #To make missing even less desired than the regular stars
@@ -55,6 +60,7 @@ class SchulzePollPlugin(PollPlugin):
                                            #This does however produce the same result
                                            missing=stars+1,
                                            title=proposal.title,
+                                           description=description,
                                            validator=colander.OneOf(valid_entries),
                                            widget=StarWidget(values=schulze_choice)),)
         return schema

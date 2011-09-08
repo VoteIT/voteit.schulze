@@ -1,50 +1,50 @@
-<tal:no_result condition="not result">
+<tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
 	
-    <h3>No result yet</h3>
-	
-    <p>Poll hasn't closed</p>
-	
-</tal:no_result>
+<h4 i18n:translate="">Approved</h4>
+<tal:iterate repeat="winner result.get('winners', ())">
+	<div class="proposal wf-state-approved" tal:define="proposal get_proposal_by_uid(winner)">
+		<div class="wf-state" tal:content="proposal.title">Title</div>
+		<div class="meta" i18n:translate="">Created by <span i18n:name="userid" tal:replace="proposal.creators[0]">userid</span></div>
+	</div>
+</tal:iterate>
 
-<tal:result condition="result">
-	
-	<h3>Poll result</h3>
-	
-    <h4>Approved</h4>
-	<tal:iterate repeat="winner result.get('winners', ())">
-		<tal:defs define="proposal get_proposal_by_uid(winner)">
-			<div tal:content="proposal.title">Title</div>
-		</tal:defs>
-	</tal:iterate>
-	
-	<h4>Denied</h4>
-    <tal:iterate repeat="denied result['candidates'] - result.get('winners', set())">
-        <tal:defs define="proposal get_proposal_by_uid(denied)">
-            <div tal:content="proposal.title">Title</div>
-        </tal:defs>
-    </tal:iterate>
-	
-	<h4>About this poll</h4>
+<div class="toggle_area toggle_closed">
+    <a class="toggle_minimize read_more" i18n:translate="">Poll result details</a>
+    <div class="minimizable_area">
+
+    <h4 i18n:translate="">About this poll</h4>
     <table>
-    	<tr>
-            <th>Number of voters:</th>
+        <tr>
+            <th i18n:translate="">Number of voters:</th>
             <td tal:content="no_users">3</td>
-    	</tr>
-		<tr>
-            <th>Possible winners:</th>
-			<td tal:content="no_winners">1</td>
-		</tr>
+        </tr>
+        <tr>
+            <th i18n:translate="">Possible winners:</th>
+            <td tal:content="no_winners">1</td>
+        </tr>
         <tr tal:condition="result['tie_breaker']|False">
-            <th>Poll was a tie breaker between:</th>
+            <th i18n:translate="">Poll was a tie breaker between:</th>
             <td>
-            	<ul>
-	            	<tal:iterate repeat="tied result['tie_breaker']">
-	            	<tal:def define="proposal get_proposal_by_uid(tied)">
-	            		<li tal:content="proposal.title">Title</li>
-					</tal:def>
-	            	</tal:iterate>
-            	</ul>
+                <ul>
+                    <tal:iterate repeat="tied result['tie_breaker']">
+                    <tal:def define="proposal get_proposal_by_uid(tied)">
+                        <li tal:content="proposal.title">Title</li>
+                    </tal:def>
+                    </tal:iterate>
+                </ul>
             </td>
         </tr>
     </table>
-</tal:result>
+
+    <h4 i18n:translate="">Denied</h4>
+
+    <div class="proposal wf-state-denied" tal:repeat="denied result['candidates'] - result.get('winners', set())">
+        <tal:defs define="proposal get_proposal_by_uid(denied)">
+            <div class="wf-state" tal:content="proposal.title">Title</div>
+        </tal:defs>
+    </div>
+    
+    </div>
+    <div class="minimizable_inverted meta" i18n:translate="">Click above to see rejected proposals and other details</div>
+</div>
+</tal:main>

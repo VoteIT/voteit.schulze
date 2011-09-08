@@ -1,3 +1,7 @@
+from pyramid.i18n import TranslationStringFactory
+
+
+VoteITSchulzeMF = TranslationStringFactory('voteit.schulze')
 
 
 def includeme(config):

@@ -53,12 +53,15 @@ class SchulzeSpecificTests(unittest.TestCase):
         #FIXME: Proposals should be added to agenda items!
         p1 = Proposal()
         p1.uid = 'p1uid' #To make it simpler to test against
+        p1.creators = ['dummy']
         ai['p1'] = p1
         p2 = Proposal()
         p2.uid = 'p2uid'
+        p2.creators = ['dummy']
         ai['p2'] = p2
         p3 = Proposal()
         p3.uid = 'p3uid'
+        p3.creators = ['dummy']
         ai['p3'] = p3
         
         #Select proposals for this poll
