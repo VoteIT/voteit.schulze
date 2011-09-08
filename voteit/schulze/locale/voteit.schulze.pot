@@ -1,0 +1,64 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2011-09-08 15:57+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: voteit.schulze\n"
+
+#. Default: "About this poll"
+#: ./templates/result.pt:15
+msgid "About this poll"
+msgstr ""
+
+#. Default: "Approved"
+#: ./templates/result.pt:3
+msgid "Approved"
+msgstr ""
+
+#. Default: "Click above to see denied proposals and other details"
+#: ./templates/result.pt:48
+msgid "Click above to see denied proposals and other details"
+msgstr ""
+
+#. Default: "Created by ${userid}"
+#: ./templates/result.pt:7
+msgid "Created by ${userid}"
+msgstr ""
+
+#. Default: "Denied"
+#: ./templates/result.pt:39
+msgid "Denied"
+msgstr ""
+
+#. Default: "Number of voters:"
+#: ./templates/result.pt:18
+msgid "Number of voters:"
+msgstr ""
+
+#. Default: "Poll result details"
+#: ./templates/result.pt:12
+msgid "Poll result details"
+msgstr ""
+
+#. Default: "Poll was a tie breaker between:"
+#: ./templates/result.pt:26
+msgid "Poll was a tie breaker between:"
+msgstr ""
+
+#. Default: "Possible winners:"
+#: ./templates/result.pt:22
+msgid "Possible winners:"
+msgstr ""
+

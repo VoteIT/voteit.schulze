@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2011-09-08 15:57+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: ./templates/result.pt:15
+#. Default: "About this poll"
+msgid "About this poll"
+msgstr "Om denna omröstning"
+
+#: ./templates/result.pt:3
+#. Default: "Approved"
+msgid "Approved"
+msgstr "Bifallen"
+
+#: ./templates/result.pt:48
+#. Default: "Click above to see denied proposals and other details"
+msgid "Click above to see denied proposals and other details"
+msgstr "Klicka ovan för att se avslagna urkanden och andra detaljer"
+
+#: ./templates/result.pt:7
+#. Default: "Created by ${userid}"
+msgid "Created by ${userid}"
+msgstr "Skapad av ${userid}"
+
+#: ./templates/result.pt:39
+#. Default: "Denied"
+msgid "Denied"
+msgstr "Avslaget"
+
+#: ./templates/result.pt:18
+#. Default: "Number of voters:"
+msgid "Number of voters:"
+msgstr "Antal röstande:"
+
+#: ./templates/result.pt:12
+#. Default: "Poll result details"
+msgid "Poll result details"
+msgstr "Omröstningsdetaljer"
+
+#: ./templates/result.pt:26
+#. Default: "Poll was a tie breaker between:"
+msgid "Poll was a tie breaker between:"
+msgstr "Omröstningen blev jämn mellan:"
+
+#: ./templates/result.pt:22
+#. Default: "Possible winners:"
+msgid "Possible winners:"
+msgstr "Möjliga vinnare:"
+

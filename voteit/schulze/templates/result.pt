@@ -45,6 +45,6 @@
     </div>
     
     </div>
-    <div class="minimizable_inverted meta" i18n:translate="">Click above to see rejected proposals and other details</div>
+    <div class="minimizable_inverted meta" i18n:translate="">Click above to see denied proposals and other details</div>
 </div>
 </tal:main>

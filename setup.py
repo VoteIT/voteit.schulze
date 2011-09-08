@@ -12,6 +12,8 @@ requires = [
     'deform',
     'voteit.core',
     'python-vote-core',
+    'Babel',
+    'lingua',
     ]
 
 setup(name='voteit.schulze',
@@ -37,8 +39,8 @@ setup(name='voteit.schulze',
       entry_points = """\
       """,
       message_extractors = { '.': [
-              ('**.py',   'chameleon_python', None ),
-              ('**.pt',   'chameleon_xml', None ),
+              ('**.py',   'lingua_python', None ),
+              ('**.pt',   'lingua_xml', None ),
+              ('**.zcml',   'lingua_zcml', None ),
               ]},
-      
       )
