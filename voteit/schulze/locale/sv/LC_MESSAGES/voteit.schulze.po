@@ -52,7 +52,7 @@ msgstr "Omröstningsdetaljer"
 #: ./templates/result.pt:26
 #. Default: "Poll was a tie breaker between:"
 msgid "Poll was a tie breaker between:"
-msgstr "Omröstningen blev jämn mellan:"
+msgstr "Omröstningen blev lika mellan:"
 
 #: ./templates/result.pt:22
 #. Default: "Possible winners:"
