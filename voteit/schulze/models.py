@@ -19,7 +19,7 @@ class SchulzePollPlugin(PollPlugin):
     name = u'schulze_stv'
     title = u'Schulze STV'
     #FIXME: Description of Schulze STV
-    description = u''
+    description = u'Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.'
 
     def __init__(self, context):
         """ Remember that init is run every time the adapter adapts something,
