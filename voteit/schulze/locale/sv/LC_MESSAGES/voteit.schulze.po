@@ -27,7 +27,7 @@ msgstr "Bifallen"
 #: ./templates/result.pt:48
 #. Default: "Click above to see denied proposals and other details"
 msgid "Click above to see denied proposals and other details"
-msgstr "Klicka ovan för att se avslagna urkanden och andra detaljer"
+msgstr "Klicka ovan för att se avslagna yrkanden och andra detaljer"
 
 #: ./templates/result.pt:7
 #. Default: "Created by ${userid}"
@@ -47,15 +47,15 @@ msgstr "Antal röstande:"
 #: ./templates/result.pt:12
 #. Default: "Poll result details"
 msgid "Poll result details"
-msgstr "Omröstningsdetaljer"
+msgstr "Detaljerat resultat"
 
 #: ./templates/result.pt:26
 #. Default: "Poll was a tie breaker between:"
 msgid "Poll was a tie breaker between:"
-msgstr "Omröstningen blev lika mellan:"
+msgstr "Omröstningen blev lika och lottades mellan:"
 
 #: ./templates/result.pt:22
 #. Default: "Possible winners:"
 msgid "Possible winners:"
-msgstr "Möjliga vinnare:"
+msgstr "Antal möjliga vinnare:"
 
