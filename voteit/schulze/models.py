@@ -7,7 +7,7 @@ from pyramid.renderers import render
 from pyramid.response import Response
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.models.vote import Vote
-from voteit.core.widget import StarWidget
+from voteit.core.widgets import StarWidget
 
 from voteit.schulze import VoteITSchulzeMF as _
 from voteit.core.views.api import APIView
