@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-09-08 15:57+0000\n"
+"POT-Creation-Date: 2011-09-30 18:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,48 +14,59 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ./templates/result.pt:15
 #. Default: "About this poll"
+#: ./templates/result.pt:15
 msgid "About this poll"
 msgstr "Om denna omröstning"
 
-#: ./templates/result.pt:3
 #. Default: "Approved"
+#: ./templates/result.pt:3
 msgid "Approved"
 msgstr "Bifallen"
 
-#: ./templates/result.pt:48
 #. Default: "Click above to see denied proposals and other details"
+#: ./templates/result.pt:48
 msgid "Click above to see denied proposals and other details"
 msgstr "Klicka ovan för att se avslagna yrkanden och andra detaljer"
 
-#: ./templates/result.pt:7
 #. Default: "Created by ${userid}"
+#: ./models.py:55
+#: ./templates/result.pt:7
 msgid "Created by ${userid}"
 msgstr "Skapad av ${userid}"
 
-#: ./templates/result.pt:39
 #. Default: "Denied"
+#: ./templates/result.pt:39
 msgid "Denied"
 msgstr "Avslaget"
 
-#: ./templates/result.pt:18
 #. Default: "Number of voters:"
+#: ./templates/result.pt:18
 msgid "Number of voters:"
 msgstr "Antal röstande:"
 
-#: ./templates/result.pt:12
 #. Default: "Poll result details"
+#: ./templates/result.pt:12
 msgid "Poll result details"
 msgstr "Detaljerat resultat"
 
-#: ./templates/result.pt:26
 #. Default: "Poll was a tie breaker between:"
+#: ./templates/result.pt:26
 msgid "Poll was a tie breaker between:"
 msgstr "Omröstningen blev lika och lottades mellan:"
 
-#: ./templates/result.pt:22
 #. Default: "Possible winners:"
+#: ./templates/result.pt:22
 msgid "Possible winners:"
 msgstr "Antal möjliga vinnare:"
+
+#. Default: "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker."
+#: ./models.py:22
+msgid "description_schulze_stv"
+msgstr "Rangordna förslagen med stjärnor. Fler stjärnor betyder att du föredrar förslaget för de med färre stjärnor. VoteIT beräknar relationen mellan yrkandena och utser en eller flera vinnare. Vid lika avgör slumpen."
+
+#. Default: "Schulze STV"
+#: ./models.py:20
+msgid "schulze_stv_title"
+msgstr "Schultze STV"
 

@@ -17,9 +17,10 @@ class SchulzePollPlugin(PollPlugin):
     """ Poll plugin for the Schulze STV Vote """
 
     name = u'schulze_stv'
-    title = u'Schulze STV'
-    #FIXME: Description of Schulze STV
-    description = u'Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.'
+    title = _(u"schulze_stv_title", 
+			  default="Schulze STV")
+    description = _(u"description_schulze_stv", 
+					default = "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.")
 
     def __init__(self, context):
         """ Remember that init is run every time the adapter adapts something,

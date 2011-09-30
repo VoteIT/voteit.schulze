@@ -15,43 +15,10 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: voteit.schulze\n"
-
-#: ./templates/result.pt:15
-msgid "About this poll"
-msgstr ""
-
-#: ./templates/result.pt:3
-msgid "Approved"
-msgstr ""
-
-#: ./templates/result.pt:48
-msgid "Click above to see denied proposals and other details"
-msgstr ""
+"Domain: voteit.core\n"
 
 #: ./models.py:55
-#: ./templates/result.pt:7
 msgid "Created by ${userid}"
-msgstr ""
-
-#: ./templates/result.pt:39
-msgid "Denied"
-msgstr ""
-
-#: ./templates/result.pt:18
-msgid "Number of voters:"
-msgstr ""
-
-#: ./templates/result.pt:12
-msgid "Poll result details"
-msgstr ""
-
-#: ./templates/result.pt:26
-msgid "Poll was a tie breaker between:"
-msgstr ""
-
-#: ./templates/result.pt:22
-msgid "Possible winners:"
 msgstr ""
 
 #. Default: "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker."
