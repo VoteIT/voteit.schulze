@@ -28,7 +28,7 @@
                 <ul>
                     <tal:iterate repeat="tied result['tie_breaker']">
                     <tal:def define="proposal get_proposal_by_uid(tied)">
-                        <li tal:content="proposal.title">Title</li>
+                        <li tal:content="structure proposal.title">Title</li>
                     </tal:def>
                     </tal:iterate>
                 </ul>
@@ -40,7 +40,7 @@
 
     <div class="proposal wf-state-denied" tal:repeat="denied result['candidates'] - result.get('winners', set())">
         <tal:defs define="proposal get_proposal_by_uid(denied)">
-            <div class="wf-state" tal:content="proposal.title">Title</div>
+            <div class="wf-state" tal:content="structure proposal.title">Title</div>
         </tal:defs>
     </div>
     
