@@ -3,7 +3,7 @@
 <h4 i18n:translate="">Approved</h4>
 <tal:iterate repeat="winner result.get('winners', ())">
 	<div class="proposal wf-state-approved" tal:define="proposal get_proposal_by_uid(winner)">
-		<div class="wf-state" tal:content="proposal.title">Title</div>
+		<div class="wf-state" tal:content="structure proposal.title">Title</div>
 		<div class="meta" i18n:translate="">Created by <span i18n:name="userid" tal:replace="proposal.creators[0]">userid</span></div>
 	</div>
 </tal:iterate>
