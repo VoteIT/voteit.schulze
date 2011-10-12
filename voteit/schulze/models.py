@@ -1,16 +1,14 @@
 from copy import deepcopy
 
 import colander
-import deform
 from pyvotecore.schulze_stv import SchulzeSTV
 from pyramid.renderers import render
 from pyramid.response import Response
 from voteit.core.models.poll_plugin import PollPlugin
-from voteit.core.models.vote import Vote
 from voteit.core.widgets import StarWidget
+from voteit.core.models.vote import Vote
 
 from voteit.schulze import VoteITSchulzeMF as _
-from voteit.core.views.api import APIView
 
 
 class SchulzePollPlugin(PollPlugin):
@@ -21,12 +19,6 @@ class SchulzePollPlugin(PollPlugin):
 			  default="Schulze STV")
     description = _(u"description_schulze_stv", 
 					default = "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.")
-
-    def __init__(self, context):
-        """ Remember that init is run every time the adapter adapts something,
-            so don't put configuration defaults or similar here.
-        """
-        self.context = context
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -67,6 +59,7 @@ class SchulzePollPlugin(PollPlugin):
         return schema
 
     def get_vote_class(self):
+        """ This actually returns a name of the factory, or the Vote class. """
         return Vote
 
     def handle_close(self):
@@ -74,8 +67,7 @@ class SchulzePollPlugin(PollPlugin):
         ballots = deepcopy(self.context.ballots)
         if not ballots:
             self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
-            return
-            #aise ValueError("It's not possible to use this version of Schulze STV without any votes. At least one is needed.")
+            raise ValueError("It's not possible to use this version of Schulze STV without any votes. At least one is needed.")
         winners = self.context.poll_settings.get('winners', 1)
         schulze_ballots = self.schulze_format_ballots(ballots)
         self.context.poll_result = SchulzeSTV(schulze_ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
@@ -115,7 +107,8 @@ class SchulzePollPlugin(PollPlugin):
 
     def render_raw_data(self):
         return Response(unicode(self.context.ballots))
-        
+
+
 class SettingsSchema(colander.Schema):
     """ Settings for a Schulze poll
     """
