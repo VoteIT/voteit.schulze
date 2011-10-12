@@ -4,6 +4,7 @@ import colander
 from pyvotecore.schulze_stv import SchulzeSTV
 from pyramid.renderers import render
 from pyramid.response import Response
+from pyramid.url import resource_url
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.widgets import StarWidget
 from voteit.core.models.vote import Vote
@@ -78,13 +79,14 @@ class SchulzePollPlugin(PollPlugin):
             formatted.append({'count':count, 'ballot':ballot})
         return formatted
 
-    def render_result(self):
+    def render_result(self, request):
         response = {}
         response['result'] = self.context.poll_result
         response['no_users'] = len(self.context.get_voted_userids())
         response['no_winners'] = self.context.poll_settings.get('winners', 1)
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
-        return render('templates/result.pt', response)
+        response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
+        return render('templates/result.pt', response, request=request)
 
     def change_states_of(self):
         """ This gets called when a poll has finished.
