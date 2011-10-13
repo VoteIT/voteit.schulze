@@ -40,7 +40,7 @@
 
             <div tal:condition="not denied_proposals" i18n:translate="">No proposals were denied in this poll</div>
 
-            <div class="proposal wf-state-denied" tal:condition="denied_proposals" tal:repeat="proposal denied_proposals">
+            <div class="proposal wf-state-denied" tal:condition="denied_proposals" tal:repeat="denied denied_proposals">
                 <tal:defs define="proposal get_proposal_by_uid(denied)">
                     <div class="wf-state" tal:content="structure proposal.title">Title</div>
                 </tal:defs>
