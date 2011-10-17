@@ -6,7 +6,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
-requires = [
+requires = (
     'pyramid',
     'colander',
     'deform',
@@ -14,7 +14,7 @@ requires = [
     'python-vote-core',
     'Babel',
     'lingua',
-    ]
+    )
 
 setup(name='voteit.schulze',
       version='0.0',
