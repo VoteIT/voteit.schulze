@@ -34,8 +34,11 @@ class SchulzePollPlugin(PollPlugin):
         #Schulze works with ranking, so we add as many numbers as there are alternatives
         stars = len(proposals)
         max_stars = self.context.poll_settings.get('max_stars', 5)
+        min_stars = self.context.poll_settings.get('min_stars', 5)
         if max_stars < stars:
             stars = max_stars
+        if min_stars > stars:
+            stars = min_stars
         #SelectWidget expects a list where each item has a readable title and a value (title, value)
         schulze_choice = [(str(x), str(x)) for x in range(1, stars+1)]
         #Ie 5 stars = 1 point, 1 star 5 points
@@ -117,4 +120,6 @@ class SettingsSchema(colander.Schema):
     winners = colander.SchemaNode(colander.Int(),
                                   default=1,)
     max_stars = colander.SchemaNode(colander.Int(),
+                                    default=5,)
+    min_stars = colander.SchemaNode(colander.Int(),
                                     default=5,)
