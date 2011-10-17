@@ -45,7 +45,7 @@ class SchulzePollPlugin(PollPlugin):
         
         schema = colander.Schema()
         for proposal in proposals:
-            description = _("Created by ${userid}",
+            creator_info = _("Created by ${userid}",
                             mapping={'userid':proposal.creators[0]})
             schema.add(colander.SchemaNode(colander.String(),
                                            name=proposal.uid,
@@ -54,9 +54,9 @@ class SchulzePollPlugin(PollPlugin):
                                            #This does however produce the same result
                                            missing=stars+1,
                                            title=proposal.title,
-                                           description=description,
                                            validator=colander.OneOf(valid_entries),
-                                           widget=StarWidget(values=schulze_choice)),)
+                                           widget=StarWidget(values = schulze_choice,
+                                                             creator_info = creator_info)),)
         return schema
 
     def get_vote_class(self):
