@@ -7,7 +7,6 @@ from pyramid.response import Response
 from pyramid.url import resource_url
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.widgets import StarWidget
-from voteit.core.models.vote import Vote
 
 from voteit.schulze import VoteITSchulzeMF as _
 
@@ -61,10 +60,6 @@ class SchulzePollPlugin(PollPlugin):
                                            widget=StarWidget(values = schulze_choice,
                                                              creator_info = creator_info)),)
         return schema
-
-    def get_vote_class(self):
-        """ This actually returns a name of the factory, or the Vote class. """
-        return Vote
 
     def handle_close(self):
         #IMPORTANT! Use deepcopy, we don't want the SchulzeSTV to modify our ballots, just calculate a result
