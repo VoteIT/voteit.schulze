@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-09-30 18:18+0000\n"
+"POT-Creation-Date: 2011-10-18 07:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,50 +17,73 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: voteit.schulze\n"
 
-#: ./templates/result.pt:15
+#. Default: "About this poll"
+#: ./templates/result.pt:14
 msgid "About this poll"
 msgstr ""
 
+#. Default: "Approved"
 #: ./templates/result.pt:3
 msgid "Approved"
 msgstr ""
 
-#: ./templates/result.pt:48
+#. Default: "Click above to see denied proposals and other details"
+#: ./templates/result.pt:54
 msgid "Click above to see denied proposals and other details"
 msgstr ""
 
-#: ./models.py:55
+#. Default: "Created by ${userid}"
 #: ./templates/result.pt:7
 msgid "Created by ${userid}"
 msgstr ""
 
+#. Default: "Denied"
 #: ./templates/result.pt:39
 msgid "Denied"
 msgstr ""
 
-#: ./templates/result.pt:18
+#. Default: "No proposals were denied in this poll"
+#: ./templates/result.pt:41
+msgid "No proposals were denied in this poll"
+msgstr ""
+
+#. Default: "Number of voters:"
+#: ./templates/result.pt:17
 msgid "Number of voters:"
 msgstr ""
 
+#. Default: "Poll result details"
 #: ./templates/result.pt:12
 msgid "Poll result details"
 msgstr ""
 
-#: ./templates/result.pt:26
+#. Default: "Poll was a tie breaker between:"
+#: ./templates/result.pt:25
 msgid "Poll was a tie breaker between:"
 msgstr ""
 
-#: ./templates/result.pt:22
+#. Default: "Possible winners:"
+#: ./templates/result.pt:21
 msgid "Possible winners:"
 msgstr ""
 
+#. Default: "Raw data"
+#: ./templates/result.pt:50
+msgid "Raw data"
+msgstr ""
+
+#. Default: "This file contains all the raw data that was used in the calculation of the result."
+#: ./templates/result.pt:51
+msgid "This file contains all the raw data that was used in the calculation of the result."
+msgstr ""
+
 #. Default: "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker."
-#: ./models.py:22
+#: ./models.py:21
 msgid "description_schulze_stv"
 msgstr ""
 
 #. Default: "Schulze STV"
-#: ./models.py:20
+#: ./models.py:19
 msgid "schulze_stv_title"
 msgstr ""
 
