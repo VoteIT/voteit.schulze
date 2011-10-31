@@ -3,7 +3,7 @@
 <h4 i18n:translate="">Approved</h4>
 <tal:iterate repeat="winner result.get('winners', ())">
     <div class="proposal wf-state-approved" tal:define="proposal get_proposal_by_uid(winner)">
-        <div class="wf-state" tal:content="structure proposal.title">Title</div>
+        <div class="icon iconpadding approved" tal:content="structure proposal.title">Title</div>
         <div class="meta" i18n:translate="">Created by <span i18n:name="userid" tal:replace="proposal.creators[0]">userid</span></div>
     </div>
 </tal:iterate>
@@ -40,9 +40,9 @@
 
             <div tal:condition="not denied_proposals" i18n:translate="">No proposals were denied in this poll</div>
 
-            <div class="proposal wf-state-denied" tal:condition="denied_proposals" tal:repeat="denied denied_proposals">
+            <div class="proposal" tal:condition="denied_proposals" tal:repeat="denied denied_proposals">
                 <tal:defs define="proposal get_proposal_by_uid(denied)">
-                    <div class="wf-state" tal:content="structure proposal.title">Title</div>
+                    <div class="icon iconpadding denied" tal:content="structure proposal.title">Title</div>
                 </tal:defs>
             </div>
         </tal:denied>
