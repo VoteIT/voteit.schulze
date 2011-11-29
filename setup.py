@@ -37,6 +37,8 @@ setup(name='voteit.schulze',
       tests_require= requires,
       test_suite="voteit.schulze",
       entry_points = """\
+      [fanstatic.libraries]
+      voteit_schulze_lib = voteit.schulze.fanstaticlib:voteit_schulze_lib
       """,
       message_extractors = { '.': [
               ('**.py',   'lingua_python', None ),
