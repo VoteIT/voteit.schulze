@@ -23,7 +23,10 @@ class SchulzePollPlugin(PollPlugin):
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
         """
-        return SettingsSchema()
+        schema = SettingsSchema()
+        schema.title = _(u"Poll settings")
+        schema.description = _(u"Settings for Schulze STV") 
+        return schema
     
     def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
