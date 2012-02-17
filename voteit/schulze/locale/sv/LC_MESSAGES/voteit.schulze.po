@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-10-18 07:47+0000\n"
+"POT-Creation-Date: 2012-02-17 13:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,73 +14,82 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ./templates/result.pt:14
 #. Default: "About this poll"
+#: ./templates/result.pt:14
 msgid "About this poll"
 msgstr "Om denna omröstning"
 
-#: ./templates/result.pt:3
 #. Default: "Approved"
+#: ./templates/result.pt:3
 msgid "Approved"
 msgstr "Bifallen"
 
-#: ./templates/result.pt:54
 #. Default: "Click above to see denied proposals and other details"
+#: ./templates/result.pt:54
 msgid "Click above to see denied proposals and other details"
 msgstr "Klicka ovan för att se avslagna yrkanden och andra detaljer"
 
-#: ./templates/result.pt:7
 #. Default: "Created by ${userid}"
+#: ./models.py:56
+#: ./templates/result.pt:7
 msgid "Created by ${userid}"
 msgstr "Skapad av ${userid}"
 
-#: ./templates/result.pt:39
 #. Default: "Denied"
+#: ./templates/result.pt:39
 msgid "Denied"
 msgstr "Avslaget"
 
-#: ./templates/result.pt:41
 #. Default: "No proposals were denied in this poll"
+#: ./templates/result.pt:41
 msgid "No proposals were denied in this poll"
 msgstr "Inga yrkanden avslogs i omröstningen"
 
-#: ./templates/result.pt:17
 #. Default: "Number of voters:"
+#: ./templates/result.pt:17
 msgid "Number of voters:"
 msgstr "Antal röstande:"
 
-#: ./templates/result.pt:12
 #. Default: "Poll result details"
+#: ./templates/result.pt:12
 msgid "Poll result details"
 msgstr "Detaljerat resultat"
 
-#: ./templates/result.pt:25
+#: ./models.py:27
+msgid "Poll settings"
+msgstr ""
+
 #. Default: "Poll was a tie breaker between:"
+#: ./templates/result.pt:25
 msgid "Poll was a tie breaker between:"
 msgstr "Omröstningen blev lika och lottades mellan:"
 
-#: ./templates/result.pt:21
 #. Default: "Possible winners:"
+#: ./templates/result.pt:21
 msgid "Possible winners:"
 msgstr "Antal möjliga vinnare:"
 
-#: ./templates/result.pt:50
 #. Default: "Raw data"
+#: ./templates/result.pt:50
 msgid "Raw data"
 msgstr "Rådata"
 
-#: ./templates/result.pt:51
+#: ./models.py:28
+msgid "Settings for Schulze STV"
+msgstr ""
+
 #. Default: "This file contains all the raw data that was used in the calculation of the result."
+#: ./templates/result.pt:51
 msgid "This file contains all the raw data that was used in the calculation of the result."
 msgstr "Denna fil innehåller all rådata som användes under beräkningen av resultatet."
 
-#: ./models.py:21
 #. Default: "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker."
+#: ./models.py:20
 msgid "description_schulze_stv"
 msgstr "Rangordna förslagen med stjärnor. Fler stjärnor betyder att du föredrar förslaget för de med färre stjärnor. VoteIT beräknar relationen mellan yrkandena och utser en eller flera vinnare. Vid lika avgör slumpen."
 
-#: ./models.py:19
 #. Default: "Schulze STV"
+#: ./models.py:18
 msgid "schulze_stv_title"
 msgstr "Schultze STV"
 
