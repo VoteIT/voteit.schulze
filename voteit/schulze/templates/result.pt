@@ -8,7 +8,7 @@
     </div>
 </tal:iterate>
 
-<div class="toggle_area toggle_closed">
+<div class="toggle_area toggle_closed" tal:condition="complete">
     <a class="toggle_minimize read_more" i18n:translate="">Poll result details</a>
     <div class="minimizable_area">
         <h4 i18n:translate="">About this poll</h4>

@@ -83,13 +83,14 @@ class SchulzePollPlugin(PollPlugin):
             formatted.append({'count':count, 'ballot':ballot})
         return formatted
 
-    def render_result(self, request):
+    def render_result(self, request, complete=True):
         response = {}
         response['result'] = self.context.poll_result
         response['no_users'] = len(self.context.get_voted_userids())
         response['no_winners'] = self.context.poll_settings.get('winners', 1)
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
+        response['complete'] = complete
         return render('templates/result.pt', response, request=request)
 
     def change_states_of(self):
