@@ -27,7 +27,7 @@ msgstr "Bifallen"
 #. Default: "Click above to see denied proposals and other details"
 #: ./templates/result.pt:54
 msgid "Click above to see denied proposals and other details"
-msgstr "Klicka ovan för att se avslagna yrkanden och andra detaljer"
+msgstr "Klicka ovan för att se avslagna förslag och andra detaljer"
 
 #. Default: "Created by ${userid}"
 #: ./models.py:56
@@ -42,16 +42,16 @@ msgstr "Avslaget"
 
 #: ./models.py:128
 msgid "Maximum stars"
-msgstr ""
+msgstr "Maximalt antal stjärnor"
 
 #: ./models.py:133
 msgid "Minumum stars"
-msgstr ""
+msgstr "Minimalt antal stjärnor"
 
 #. Default: "No proposals were denied in this poll"
 #: ./templates/result.pt:41
 msgid "No proposals were denied in this poll"
-msgstr "Inga yrkanden avslogs i omröstningen"
+msgstr "Inga förslag avslogs i omröstningen"
 
 #. Default: "Number of voters:"
 #: ./templates/result.pt:17
@@ -84,7 +84,7 @@ msgstr "Rådata"
 
 #: ./models.py:28
 msgid "Settings for Schulze STV"
-msgstr "Inställningar för Schulze STV"
+msgstr "Inställningar för Schulze STV. Dessa behöver inte ändras om du inte har särskilt skäl till det."
 
 #. Default: "This file contains all the raw data that was used in the calculation of the result."
 #: ./templates/result.pt:51
@@ -93,27 +93,27 @@ msgstr "Denna fil innehåller all rådata som användes under beräkningen av re
 
 #: ./models.py:123
 msgid "Winners"
-msgstr ""
+msgstr "Vinnare"
 
 #. Default: "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker."
 #: ./models.py:20
 msgid "description_schulze_stv"
-msgstr "Rangordna förslagen med stjärnor. Fler stjärnor betyder att du föredrar förslaget för de med färre stjärnor. VoteIT beräknar relationen mellan yrkandena och utser en eller flera vinnare. Vid lika avgör slumpen."
+msgstr "Rangordna förslagen med stjärnor. Fler stjärnor betyder att du föredrar förslaget för de med färre stjärnor. VoteIT beräknar relationen mellan förslagen och utser en eller flera vinnare. Vid lika avgör slumpen."
 
 #. Default: "The maximum numbers of stars regarless of number of proposals"
 #: ./models.py:129
 msgid "schulze_config_max_stars_description"
-msgstr ""
+msgstr "Det maximala antalet stjärnor oavsett antal förslag"
 
 #. Default: "The minimum numbers of stars regarless of number of proposals"
 #: ./models.py:134
 msgid "schulze_config_min_stars_description"
-msgstr ""
+msgstr "Det minimala antalet stjärnor oavsett antal förslag"
 
 #. Default: "Numbers of possible winners in the poll"
 #: ./models.py:124
 msgid "schulze_config_winners_description"
-msgstr ""
+msgstr "Antal möjliga vinnare i omröstningen"
 
 #. Default: "Schulze STV"
 #: ./models.py:18
