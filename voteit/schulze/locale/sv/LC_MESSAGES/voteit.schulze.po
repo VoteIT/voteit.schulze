@@ -57,7 +57,7 @@ msgstr "Detaljerat resultat"
 
 #: ./models.py:27
 msgid "Poll settings"
-msgstr ""
+msgstr "Omröstningsinställningar"
 
 #. Default: "Poll was a tie breaker between:"
 #: ./templates/result.pt:25
@@ -76,7 +76,7 @@ msgstr "Rådata"
 
 #: ./models.py:28
 msgid "Settings for Schulze STV"
-msgstr ""
+msgstr "Inställningar för Schulze STV"
 
 #. Default: "This file contains all the raw data that was used in the calculation of the result."
 #: ./templates/result.pt:51
