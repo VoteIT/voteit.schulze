@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-02-17 13:09+0000\n"
+"POT-Creation-Date: 2012-03-07 14:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,14 @@ msgstr "Skapad av ${userid}"
 #: ./templates/result.pt:39
 msgid "Denied"
 msgstr "Avslaget"
+
+#: ./models.py:128
+msgid "Maximum stars"
+msgstr ""
+
+#: ./models.py:133
+msgid "Minumum stars"
+msgstr ""
 
 #. Default: "No proposals were denied in this poll"
 #: ./templates/result.pt:41
@@ -83,10 +91,29 @@ msgstr ""
 msgid "This file contains all the raw data that was used in the calculation of the result."
 msgstr "Denna fil innehåller all rådata som användes under beräkningen av resultatet."
 
+#: ./models.py:123
+msgid "Winners"
+msgstr ""
+
 #. Default: "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker."
 #: ./models.py:20
 msgid "description_schulze_stv"
 msgstr "Rangordna förslagen med stjärnor. Fler stjärnor betyder att du föredrar förslaget för de med färre stjärnor. VoteIT beräknar relationen mellan yrkandena och utser en eller flera vinnare. Vid lika avgör slumpen."
+
+#. Default: "The maximum numbers of stars regarless of number of proposals"
+#: ./models.py:129
+msgid "schulze_config_max_stars_description"
+msgstr ""
+
+#. Default: "The minimum numbers of stars regarless of number of proposals"
+#: ./models.py:134
+msgid "schulze_config_min_stars_description"
+msgstr ""
+
+#. Default: "Numbers of possible winners in the poll"
+#: ./models.py:124
+msgid "schulze_config_winners_description"
+msgstr ""
 
 #. Default: "Schulze STV"
 #: ./models.py:18

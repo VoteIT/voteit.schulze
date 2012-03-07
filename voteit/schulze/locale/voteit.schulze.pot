@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-02-17 13:09+0000\n"
+"POT-Creation-Date: 2012-03-07 14:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,6 +36,14 @@ msgstr ""
 
 #: ./templates/result.pt:39
 msgid "Denied"
+msgstr ""
+
+#: ./models.py:128
+msgid "Maximum stars"
+msgstr ""
+
+#: ./models.py:133
+msgid "Minumum stars"
 msgstr ""
 
 #: ./templates/result.pt:41
@@ -74,9 +82,28 @@ msgstr ""
 msgid "This file contains all the raw data that was used in the calculation of the result."
 msgstr ""
 
+#: ./models.py:123
+msgid "Winners"
+msgstr ""
+
 #. Default: "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker."
 #: ./models.py:20
 msgid "description_schulze_stv"
+msgstr ""
+
+#. Default: "The maximum numbers of stars regarless of number of proposals"
+#: ./models.py:129
+msgid "schulze_config_max_stars_description"
+msgstr ""
+
+#. Default: "The minimum numbers of stars regarless of number of proposals"
+#: ./models.py:134
+msgid "schulze_config_min_stars_description"
+msgstr ""
+
+#. Default: "Numbers of possible winners in the poll"
+#: ./models.py:124
+msgid "schulze_config_winners_description"
 msgstr ""
 
 #. Default: "Schulze STV"
