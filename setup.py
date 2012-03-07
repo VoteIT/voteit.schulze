@@ -8,7 +8,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = (
     'pyramid',
-    'colander',
+    'colander==0.9.5',
     'deform',
     'voteit.core',
     'python-vote-core',
