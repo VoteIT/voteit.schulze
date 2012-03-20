@@ -54,7 +54,6 @@ class SchulzeSpecificTests(unittest.TestCase):
         poll.set_field_value('poll_plugin', 'schulze_stv')
         
         #Add proposals
-        #FIXME: Proposals should be added to agenda items!
         p1 = Proposal(creators = ['dummy'])
         p1.uid = 'p1uid' #To make it simpler to test against
         ai['p1'] = p1
