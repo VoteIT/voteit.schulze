@@ -11,7 +11,7 @@ requires = (
     'colander==0.9.5',
     'deform',
     'voteit.core',
-    'python-vote-core',
+    'python-vote-core==20120423.0',
     'Babel',
     'lingua',
     )
