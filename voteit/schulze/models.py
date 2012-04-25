@@ -2,6 +2,7 @@ from copy import deepcopy
 
 import colander
 from pyvotecore.schulze_stv import SchulzeSTV
+from pyvotecore.schulze_pr import SchulzePR
 from pyramid.renderers import render
 from pyramid.response import Response
 from pyramid.url import resource_url
@@ -11,22 +12,11 @@ from voteit.core.widgets import StarWidget
 from voteit.schulze import VoteITSchulzeMF as _
 from voteit.schulze.fanstaticlib import voteit_schulze
 
-class SchulzePollPlugin(PollPlugin):
-    """ Poll plugin for the Schulze STV Vote """
 
-    name = u'schulze_stv'
-    title = _(u"schulze_stv_title", 
-			  default="Schulze STV")
-    description = _(u"description_schulze_stv", 
-					default = "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.")
-
-    def get_settings_schema(self):
-        """ Get an instance of the schema used to render a form for editing settings.
-        """
-        schema = SettingsSchema()
-        schema.title = _(u"Poll settings")
-        schema.description = _(u"Settings for Schulze STV") 
-        return schema
+class SchulzeBase(object):
+    """ Common methods for Schulze ballots. This is ment to be a mixin
+        for an adapter. It won't work by itself.
+    """
     
     def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
@@ -67,6 +57,34 @@ class SchulzePollPlugin(PollPlugin):
                                                              creator_info = creator_info)),)
         return schema
 
+
+    def schulze_format_ballots(self, ballots):
+        formatted = []
+        for (ballot, count) in ballots:
+            formatted.append({'count':count, 'ballot':ballot})
+        return formatted
+
+    def render_raw_data(self):
+        return Response(unicode(self.context.ballots))
+
+
+class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
+    """ Poll plugin for the Schulze STV Vote """
+
+    name = u'schulze_stv'
+    title = _(u"schulze_stv_title", 
+              default="Schulze STV")
+    description = _(u"description_schulze_stv", 
+                    default = "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.")
+
+    def get_settings_schema(self):
+        """ Get an instance of the schema used to render a form for editing settings.
+        """
+        schema = SettingsSchema()
+        schema.title = _(u"Poll settings")
+        schema.description = _(u"Settings for Schulze STV") 
+        return schema
+
     def handle_close(self):
         #IMPORTANT! Use deepcopy, we don't want the SchulzeSTV to modify our ballots, just calculate a result
         ballots = deepcopy(self.context.ballots)
@@ -77,11 +95,21 @@ class SchulzePollPlugin(PollPlugin):
         schulze_ballots = self.schulze_format_ballots(ballots)
         self.context.poll_result = SchulzeSTV(schulze_ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
 
-    def schulze_format_ballots(self, ballots):
-        formatted = []
-        for (ballot, count) in ballots:
-            formatted.append({'count':count, 'ballot':ballot})
-        return formatted
+    def change_states_of(self):
+        """ This gets called when a poll has finished.
+            It returns a dictionary with proposal uid as key and new state as value.
+            Like: {'<uid>':'approved', '<uid>', 'denied'}
+        """
+        result = {}
+        winners = self.context.poll_result.get('winners', ())
+        losers = self.context.poll_result['candidates'] - set(winners)
+
+        if winners:
+            for winner in winners:
+                result[winner] = 'approved'
+            for loser in losers:
+                result[loser] = 'denied'
+        return result
 
     def render_result(self, request, complete=True):
         response = {}
@@ -91,29 +119,44 @@ class SchulzePollPlugin(PollPlugin):
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
         response['complete'] = complete
-        return render('templates/result.pt', response, request=request)
+        return render('templates/result_stv.pt', response, request=request)
 
-    def change_states_of(self):
-        """ This gets called when a poll has finished.
-            It returns a dictionary with proposal uid as key and new state as value.
-            Like: {'<uid>':'approved', '<uid>', 'denied'}
+
+class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
+    """ Poll plugin for the Schulze PR ranking """
+
+    name = u'schulze_pr'
+    title = _(u"schulze_pr_title", 
+              default="Schulze PR (ranking only)")
+    description = _(u"description_schulze_pr", 
+                    default = "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.")
+
+    def get_settings_schema(self):
+        """ Get an instance of the schema used to render a form for editing settings.
         """
-        result = {}
-        
-        winners = self.context.poll_result.get('winners', ())
-        losers = self.context.poll_result['candidates'] - set(winners)
+        schema = SettingsSchema()
+        schema.title = _(u"Poll settings")
+        schema.description = _(u"Settings for Schulze PR")
+        del schema['winners']
+        return schema
 
-        if winners:
-            for winner in winners:
-                result[winner] = 'approved'
+    def handle_close(self):
+        #IMPORTANT! Use deepcopy, we don't want the SchulzePR to modify our ballots, just calculate a result
+        ballots = deepcopy(self.context.ballots)
+        if not ballots:
+            self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
+            raise ValueError("It's not possible to use this version of Schulze PR without any votes. At least one is needed.")
+        schulze_ballots = self.schulze_format_ballots(ballots)
+        self.context.poll_result = SchulzePR(schulze_ballots, ballot_notation = "ranking").as_dict()
 
-            for loser in losers:
-                result[loser] = 'denied'
-        
-        return result
-
-    def render_raw_data(self):
-        return Response(unicode(self.context.ballots))
+    def render_result(self, request, complete=True):
+        response = {}
+        response['result'] = self.context.poll_result
+        response['no_users'] = len(self.context.get_voted_userids())
+        response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
+        response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
+        response['complete'] = complete
+        return render('templates/result_pr.pt', response, request=request)
 
 
 class SettingsSchema(colander.Schema):

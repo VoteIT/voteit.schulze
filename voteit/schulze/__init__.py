@@ -7,8 +7,9 @@ VoteITSchulzeMF = TranslationStringFactory('voteit.schulze')
 def includeme(config):
     from voteit.core.models.interfaces import IPoll
     from voteit.core.models.interfaces import IPollPlugin
-
-    from voteit.schulze.models import SchulzePollPlugin
-    
-    config.registry.registerAdapter(SchulzePollPlugin, (IPoll,), IPollPlugin, SchulzePollPlugin.name)
     config.add_translation_dirs('voteit.schulze:locale/')
+
+    from voteit.schulze.models import SchulzeSTVPollPlugin
+    config.registry.registerAdapter(SchulzeSTVPollPlugin, (IPoll,), IPollPlugin, SchulzeSTVPollPlugin.name)
+    from voteit.schulze.models import SchulzePRPollPlugin
+    config.registry.registerAdapter(SchulzePRPollPlugin, (IPoll,), IPollPlugin, SchulzePRPollPlugin.name)
