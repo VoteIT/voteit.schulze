@@ -10,7 +10,6 @@ from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.widgets import StarWidget
 
 from voteit.schulze import VoteITSchulzeMF as _
-from voteit.schulze.fanstaticlib import voteit_schulze
 
 
 class SchulzeBase(object):
@@ -21,9 +20,6 @@ class SchulzeBase(object):
     def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
         """
-        # load js and css specifically for schulze
-        voteit_schulze.need()
-        
         proposals = self.context.get_proposal_objects()
 
         #Schulze works with ranking, so we add as many numbers as there are alternatives

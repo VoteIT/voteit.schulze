@@ -17,8 +17,8 @@ requires = (
     )
 
 setup(name='voteit.schulze',
-      version='0.0',
-      description='Schulze poll for VoteIT',
+      version='0.1dev',
+      description='Schulze polls for VoteIT',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
         "Programming Language :: Python",
@@ -26,9 +26,9 @@ setup(name='voteit.schulze',
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
-      author='',
-      author_email='',
-      url='',
+      author='VoteIT development team + contributors',
+      author_email='info@voteit.se',
+      url='http://www.voteit.se',
       keywords='web pylons pyramid',
       packages=find_packages(),
       include_package_data=True,
@@ -37,8 +37,6 @@ setup(name='voteit.schulze',
       tests_require= requires,
       test_suite="voteit.schulze",
       entry_points = """\
-      [fanstatic.libraries]
-      voteit_schulze_lib = voteit.schulze.fanstaticlib:voteit_schulze_lib
       """,
       message_extractors = { '.': [
               ('**.py',   'lingua_python', None ),
