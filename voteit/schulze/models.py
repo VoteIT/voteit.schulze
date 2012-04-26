@@ -69,13 +69,16 @@ class SchulzeBase(object):
 
 
 class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
-    """ Poll plugin for the Schulze STV Vote """
-
+    """ Poll plugin for the Schulze STV Polls. """
     name = u'schulze_stv'
     title = _(u"schulze_stv_title", 
               default="Schulze STV")
     description = _(u"description_schulze_stv", 
-                    default = "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.")
+                    default = "Order the proposals with stars. "
+                              "The more stars the more you prefer the proposal. "
+                              "VoteIT calculates the relation between the "
+                              "proposals and finds a winner. "
+                              "In case of a tie there is a random tie breaker.")
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -123,13 +126,18 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
 
 
 class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
-    """ Poll plugin for the Schulze PR ranking """
-
+    """ Poll plugin for the Schulze PR ranking polls. It will sort a list
+        of proposals according to the voters preference.
+    """
     name = u'schulze_pr'
     title = _(u"schulze_pr_title", 
               default="Schulze PR (ranking only)")
-    description = _(u"description_schulze_pr", 
-                    default = "Order the proposals with stars. The more stars the more you prefer the proposal. VoteIT calculates the relation between the proposals and finds a winner. In case of a tie there is a radom tie breaker.")
+    description = _(u"description_schulze_pr",
+                    default = "Order the proposals with stars. "
+                              "The more stars the more you prefer the proposal. "
+                              "VoteIT calculates the relation between the "
+                              "proposals and sorts them according to all voters preference. "
+                              "In case of a tie there's a random tie breaker.")
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
