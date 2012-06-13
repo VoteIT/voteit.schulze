@@ -30,8 +30,9 @@ class SchulzeBase(object):
             stars = max_stars
         if min_stars > stars:
             stars = min_stars
-        #SelectWidget expects a list where each item has a readable title and a value (title, value)
-        schulze_choice = [(str(x), str(x)) for x in range(1, stars+1)]
+        #SelectWidget expects a list where each item has a value and a readable title  (value, title)
+        #the title should be the value reversed 
+        schulze_choice = [(str(x), str(stars-x+1)) for x in range(1, stars+1)]
         #Ie 5 stars = 1 point, 1 star 5 points
         schulze_choice.reverse()
         
