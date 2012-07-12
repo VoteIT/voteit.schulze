@@ -1,31 +1,46 @@
 <tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
     
-<h4 i18n:translate="">Ranking</h4>
-<tal:iterate repeat="proposal_uid result.get('order', ())">
-    <div class="proposal" tal:define="proposal get_proposal_by_uid(proposal_uid)">
-        <div>
-            <b tal:content="'(%s)' % repeat['proposal_uid'].number">1</b>
-            <tal:title tal:content="structure proposal.title">Title</tal:title>
-        </div>
-        <div class="meta" i18n:translate="">Created by <span i18n:name="userid" tal:replace="proposal.creators[0]">userid</span></div>
-    </div>
-</tal:iterate>
+<tal:summary condition="not complete">
+	<tal:iterate repeat="proposal_uid result.get('order', ())">
+		<tal:proposal
+			define="brain api.get_metadata_for_query(uid=proposal_uid)[0]" 
+			replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
+	    	Proposal
+	    </tal:proposal>
+    </tal:iterate>
+</tal:summary>
 
-<div class="toggle_area toggle_closed" tal:condition="complete">
-    <a class="toggle_minimize read_more" i18n:translate="">Poll result details</a>
-    <div class="minimizable_area">
-        <h4 i18n:translate="">About this poll</h4>
-        <table>
-            <tr>
-                <th i18n:translate="">Number of voters:</th>
-                <td tal:content="no_users">3</td>
-            </tr>
-        </table>
+<tal:complete condition="complete">
+    
+	<h4 i18n:translate="">Ranking</h4>
+	<tal:iterate repeat="proposal_uid result.get('order', ())">
+	    <div class="proposal" tal:define="proposal get_proposal_by_uid(proposal_uid)">
+	        <div>
+	            <b tal:content="'(%s)' % repeat['proposal_uid'].number">1</b>
+	            <tal:title tal:content="structure proposal.title">Title</tal:title>
+	        </div>
+	        <div class="meta" i18n:translate="">Created by <span i18n:name="userid" tal:replace="proposal.creators[0]">userid</span></div>
+	    </div>
+	</tal:iterate>
+	
+	<div class="toggle_area toggle_closed" tal:condition="complete">
+	    <a class="toggle_minimize read_more" i18n:translate="">Poll result details</a>
+	    <div class="minimizable_area">
+	        <h4 i18n:translate="">About this poll</h4>
+	        <table>
+	            <tr>
+	                <th i18n:translate="">Number of voters:</th>
+	                <td tal:content="no_users">3</td>
+	            </tr>
+	        </table>
+	
+	        <h4 i18n:translate="">Raw data</h4>
+	        <div i18n:translate="">This file contains all the raw data that was used in the calculation of the result.</div>
+	        <a href="${raw_data_link}" target="_blank" i18n:translate="">Raw data</a>
+	    </div>
+	    <div class="minimizable_inverted meta" i18n:translate="">Click above to see denied proposals and other details</div>
+	</div>
+</tal:complete>
 
-        <h4 i18n:translate="">Raw data</h4>
-        <div i18n:translate="">This file contains all the raw data that was used in the calculation of the result.</div>
-        <a href="${raw_data_link}" target="_blank" i18n:translate="">Raw data</a>
-    </div>
-    <div class="minimizable_inverted meta" i18n:translate="">Click above to see denied proposals and other details</div>
-</div>
 </tal:main>
+	

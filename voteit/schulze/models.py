@@ -6,10 +6,12 @@ from pyvotecore.schulze_pr import SchulzePR
 from pyramid.renderers import render
 from pyramid.response import Response
 from pyramid.url import resource_url
+from repoze.catalog.query import Any
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.widgets import StarWidget
 
 from voteit.schulze import VoteITSchulzeMF as _
+from voteit.core.models.proposal import Proposal
 
 
 class SchulzeBase(object):
@@ -17,11 +19,15 @@ class SchulzeBase(object):
         for an adapter. It won't work by itself.
     """
     
-    def get_vote_schema(self):
+    def get_vote_schema(self, request, api):
         """ Get an instance of the schema that this poll uses.
         """
-        proposals = self.context.get_proposal_objects()
-
+        
+        query = api.root.catalog.query
+        get_metadata = api.root.catalog.document_map.get_metadata
+        num, results = query(Any('uid', self.context.proposal_uids), sort_index = 'created')
+        proposals = [get_metadata(x) for x in results]
+        
         #Schulze works with ranking, so we add as many numbers as there are alternatives
         stars = len(proposals)
         max_stars = self.context.poll_settings.get('max_stars', 5)
@@ -40,18 +46,17 @@ class SchulzeBase(object):
         
         schema = colander.Schema()
         for proposal in proposals:
-            creator_info = _("Created by ${userid}",
-                            mapping={'userid':proposal.creators[0]})
             schema.add(colander.SchemaNode(colander.String(),
-                                           name=proposal.uid,
+                                           name=proposal['uid'],
                                            #To make missing even less desired than the regular stars
                                            #Schulze can't handle null value or empty dicts.
                                            #This does however produce the same result
                                            missing=stars+1,
-                                           title=proposal.title,
+                                           title=proposal['title'],
                                            validator=colander.OneOf(valid_entries),
                                            widget=StarWidget(values = schulze_choice,
-                                                             creator_info = creator_info)),)
+                                                             proposal = proposal,
+                                                             api = api,)))
         return schema
 
 
@@ -111,8 +116,10 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
                 result[loser] = 'denied'
         return result
 
-    def render_result(self, request, complete=True):
+    def render_result(self, request, api, complete=True):
+        
         response = {}
+        response['api'] = api
         response['result'] = self.context.poll_result
         response['no_users'] = len(self.context.get_voted_userids())
         response['no_winners'] = self.context.poll_settings.get('winners', 1)
@@ -154,8 +161,9 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
         schulze_ballots = self.schulze_format_ballots(ballots)
         self.context.poll_result = SchulzePR(schulze_ballots, ballot_notation = "ranking").as_dict()
 
-    def render_result(self, request, complete=True):
+    def render_result(self, request, api, complete=True):
         response = {}
+        response['api'] = api
         response['result'] = self.context.poll_result
         response['no_users'] = len(self.context.get_voted_userids())
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
