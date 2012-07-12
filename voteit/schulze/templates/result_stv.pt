@@ -8,6 +8,16 @@
 	    	Proposal
 	    </tal:proposal>
     </tal:iterate>
+   	
+    <div class="denied">
+    <tal:iterate repeat="looser result['candidates'] - result.get('winners', set())">
+		<tal:proposal
+			define="brain api.get_metadata_for_query(uid=looser)[0]" 
+			replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
+	    	Proposal
+	    </tal:proposal>
+    </tal:iterate>
+   	</div>
 </tal:summary>
 	
 <tal:complete condition="complete">
