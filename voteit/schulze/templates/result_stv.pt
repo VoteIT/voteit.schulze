@@ -1,6 +1,7 @@
 <tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
 	
 <tal:summary condition="not complete">
+	<div class="approved">
 	<tal:iterate repeat="winner result.get('winners', ())">
 		<tal:proposal
 			define="brain api.get_metadata_for_query(uid=winner)[0]" 
@@ -8,6 +9,7 @@
 	    	Proposal
 	    </tal:proposal>
     </tal:iterate>
+   	</div>
    	
     <div class="denied">
     <tal:iterate repeat="looser result['candidates'] - result.get('winners', set())">
