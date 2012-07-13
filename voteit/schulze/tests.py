@@ -5,6 +5,8 @@ from pyramid import testing
 from zope.interface.verify import verifyObject
 from zope.interface.verify import verifyClass
 
+from voteit.core.models.site import SiteRoot
+from voteit.core.models.users import Users
 from voteit.core.models.agenda_item import AgendaItem
 from voteit.core.models.poll import Poll
 from voteit.core.models.poll_plugin import PollPlugin
@@ -35,7 +37,12 @@ class SchulzeBaseTests(unittest.TestCase):
     def test_get_vote_schema(self):
         poll = _setup_poll_fixture(self.config)
         obj = self._dummy_plugin(poll)
-        self.assertIsInstance(obj.get_vote_schema(), colander.SchemaNode)
+        
+        request = testing.DummyRequest()
+        from voteit.core.views.api import APIView
+        api = APIView(poll, request)
+        
+        self.assertIsInstance(obj.get_vote_schema(request, api), colander.SchemaNode)
 
     def test_render_raw_data(self):
         poll = _setup_poll_fixture(self.config)
@@ -115,7 +122,9 @@ class SchulzeSTVTests(unittest.TestCase):
         poll.close_poll()
         plugin = poll.get_poll_plugin()
         request = testing.DummyRequest()
-        self.assertTrue('Poll result' in plugin.render_result(request))
+        from voteit.core.views.api import APIView
+        api = APIView(poll, request)
+        self.assertTrue('Poll result' in plugin.render_result(request, api))
 
 
 class SchulzePRTests(unittest.TestCase):
@@ -176,7 +185,9 @@ class SchulzePRTests(unittest.TestCase):
         poll.close_poll()
         plugin = poll.get_poll_plugin()
         request = testing.DummyRequest()
-        self.assertTrue('Poll result' in plugin.render_result(request))
+        from voteit.core.views.api import APIView
+        api = APIView(poll, request)
+        self.assertTrue('Poll result' in plugin.render_result(request, api))
 
 
 class IntegrationTests(unittest.TestCase):
@@ -206,8 +217,16 @@ def _setup_poll_fixture(config):
     #Register plugin
     config.include('voteit.schulze')
     
+    #Enable catalog 
+    config.include('voteit.core.models.catalog')
+    config.include('voteit.core.models.unread')
+    config.include('voteit.core.models.user_tags')
+    
     request = testing.DummyRequest()
-    ai = AgendaItem()
+    
+    root = SiteRoot()
+    
+    root['ai'] = ai = AgendaItem()
     ai.set_workflow_state(request, 'upcoming')
     ai.set_workflow_state(request, 'ongoing')
     

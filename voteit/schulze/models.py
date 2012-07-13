@@ -19,7 +19,7 @@ class SchulzeBase(object):
         for an adapter. It won't work by itself.
     """
     
-    def get_vote_schema(self, request, api):
+    def get_vote_schema(self, request=None, api=None):
         """ Get an instance of the schema that this poll uses.
         """
         
