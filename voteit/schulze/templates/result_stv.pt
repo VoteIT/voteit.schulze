@@ -20,6 +20,10 @@
 	    </tal:proposal>
     </tal:iterate>
    	</div>
+   	
+   	<div class="show_denied">
+		<a href="#" i18n:translate="">Show denied proposals</a>
+	</div>
 </tal:summary>
 	
 <tal:complete condition="complete">
