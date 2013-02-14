@@ -8,7 +8,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = (
     'pyramid',
-    'colander==0.9.5',
+    'colander',
     'deform',
     'voteit.core',
     'python-vote-core==20120423.0',
@@ -29,7 +29,7 @@ setup(name='voteit.schulze',
       author='VoteIT development team + contributors',
       author_email='info@voteit.se',
       url='http://www.voteit.se',
-      keywords='web pylons pyramid',
+      keywords='web pylons pyramid voteit',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
@@ -41,6 +41,5 @@ setup(name='voteit.schulze',
       message_extractors = { '.': [
               ('**.py',   'lingua_python', None ),
               ('**.pt',   'lingua_xml', None ),
-              ('**.zcml',   'lingua_zcml', None ),
               ]},
       )
