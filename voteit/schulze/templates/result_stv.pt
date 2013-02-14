@@ -1,39 +1,44 @@
 <tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
-	
+<tal:defs define="winners result.get('winners', ());
+                  loosers result['candidates'] - winners;">
 <tal:summary condition="not complete">
-	<div class="approved">
-	<tal:iterate repeat="winner result.get('winners', ())">
-		<tal:proposal
-			define="brain api.get_metadata_for_query(uid=winner)[0]" 
-			replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
-	    	Proposal
-	    </tal:proposal>
-    </tal:iterate>
-   	</div>
-   	
-    <div class="denied">
-    <tal:iterate repeat="looser result['candidates'] - result.get('winners', set())">
-		<tal:proposal
-			define="brain api.get_metadata_for_query(uid=looser)[0]" 
-			replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
-	    	Proposal
-	    </tal:proposal>
-    </tal:iterate>
-   	</div>
-   	
-   	<div class="show_denied">
-		<a href="#" i18n:translate="">Show denied proposals</a>
-	</div>
+
+    <div class="toggle_area toggle_closed">
+        <tal:iterate repeat="winner winners">
+            <tal:proposal
+                define="brain api.get_metadata_for_query(uid=winner)[0]" 
+                replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
+                Proposal
+            </tal:proposal>
+        </tal:iterate>
+
+        <tal:denied condition="loosers">
+        <p><a class="toggle_minimize read_more" i18n:translate="">
+            Show <tal:count i18n:name="count" tal:content="len(loosers)"></tal:count> denied proposals
+        </a></p><br/>
+        <div class="minimizable_area">
+            <tal:iterate repeat="looser loosers">
+                <tal:proposal
+                    define="brain api.get_metadata_for_query(uid=looser)[0]" 
+                    replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
+                    Proposal
+                </tal:proposal>
+            </tal:iterate>
+        </div>
+        </tal:denied>
+    </div>
+
 </tal:summary>
 	
 <tal:complete condition="complete">
     
 	<h4 i18n:translate="">Approved</h4>
-	<tal:iterate repeat="winner result.get('winners', ())">
-	    <div class="proposal wf-state-approved" tal:define="proposal get_proposal_by_uid(winner)">
-	        <div class="icon iconpadding approved" tal:content="structure proposal.title">Title</div>
-	        <div class="meta" i18n:translate="">Created by <span i18n:name="userid" tal:replace="proposal.creators[0]">userid</span></div>
-	    </div>
+	<tal:iterate repeat="winner winners">
+        <tal:proposal
+            define="brain api.get_metadata_for_query(uid=winner)[0]" 
+            replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
+            Proposal
+        </tal:proposal>
 	</tal:iterate>
 	
 	<div class="toggle_area toggle_closed">
@@ -41,6 +46,10 @@
 	    <div class="minimizable_area">
 	        <h4 i18n:translate="">About this poll</h4>
 	        <table>
+                <tr>
+                    <th i18n:translate="">Number of proposals:</th>
+                    <td tal:content="no_proposals">3</td>
+                </tr>
 	            <tr>
 	                <th i18n:translate="">Number of voters:</th>
 	                <td tal:content="no_users">3</td>
@@ -63,17 +72,17 @@
 	            </tr>
 	        </table>
 	
-	        <tal:denied define="denied_proposals result['candidates'] - result.get('winners', set())">
-	            <h4 i18n:translate="">Denied</h4>
-	
-	            <div tal:condition="not denied_proposals" i18n:translate="">No proposals were denied in this poll</div>
-	
-	            <div class="proposal" tal:condition="denied_proposals" tal:repeat="denied denied_proposals">
-	                <tal:defs define="proposal get_proposal_by_uid(denied)">
-	                    <div class="icon iconpadding denied" tal:content="structure proposal.title">Title</div>
-	                </tal:defs>
-	            </div>
-	        </tal:denied>
+            <h4 i18n:translate="">Denied</h4>
+
+            <div tal:condition="not loosers" i18n:translate="">No proposals were denied in this poll</div>
+
+            <div class="proposal" tal:condition="loosers" tal:repeat="looser loosers">
+                <tal:proposal
+                    define="brain api.get_metadata_for_query(uid=looser)[0]" 
+                    replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
+                    Proposal
+                </tal:proposal>
+            </div>
 	
 	        <h4 i18n:translate="">Raw data</h4>
 	        <div i18n:translate="">This file contains all the raw data that was used in the calculation of the result.</div>
@@ -82,4 +91,5 @@
 	    <div class="minimizable_inverted meta" i18n:translate="">Click above to see denied proposals and other details</div>
 	</div>
 </tal:complete>
+</tal:defs>
 </tal:main>

@@ -11,7 +11,6 @@ from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.widgets import StarWidget
 
 from voteit.schulze import VoteITSchulzeMF as _
-from voteit.core.models.proposal import Proposal
 
 
 class SchulzeBase(object):
@@ -121,6 +120,7 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
         response = {}
         response['api'] = api
         response['result'] = self.context.poll_result
+        response['no_proposals'] = len(self.context.proposal_uids)
         response['no_users'] = len(self.context.get_voted_userids())
         response['no_winners'] = self.context.poll_settings.get('winners', 1)
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
@@ -165,6 +165,7 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
         response = {}
         response['api'] = api
         response['result'] = self.context.poll_result
+        response['no_proposals'] = len(self.context.proposal_uids)
         response['no_users'] = len(self.context.get_voted_userids())
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)

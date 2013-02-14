@@ -5,14 +5,15 @@ from pyramid import testing
 from zope.interface.verify import verifyObject
 from zope.interface.verify import verifyClass
 
-from voteit.core.models.site import SiteRoot
-from voteit.core.models.users import Users
 from voteit.core.models.agenda_item import AgendaItem
+from voteit.core.models.meeting import Meeting
 from voteit.core.models.poll import Poll
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.models.proposal import Proposal
 from voteit.core.models.interfaces import IPollPlugin
 from voteit.core.models.interfaces import IVote
+from voteit.core.security import unrestricted_wf_transition_to
+from voteit.core.testing_helpers import bootstrap_and_fixture
 
 
 class SchulzeBaseTests(unittest.TestCase):
@@ -208,27 +209,24 @@ class IntegrationTests(unittest.TestCase):
         self.failUnless(self.config.registry.queryAdapter(poll, IPollPlugin, name = 'schulze_pr'))
 
 
-
 def _setup_poll_fixture(config):
-    #Enable workflows
-    config.include('pyramid_zcml')
-    config.load_zcml('voteit.core:configure.zcml')
 
     #Register plugin
     config.include('voteit.schulze')
     
-    #Enable catalog 
-    config.include('voteit.core.models.catalog')
-    config.include('voteit.core.models.unread')
-    config.include('voteit.core.models.user_tags')
+    config.include('voteit.core.testing_helpers.register_catalog')
+    config.include('voteit.core.testing_helpers.register_security_policies')
+    config.scan('voteit.core.subscribers.catalog')    
+    config.scan('voteit.core.views.components.proposals')
+    config.scan('voteit.core.views.components.creators_info')
+    config.scan('voteit.core.views.components.metadata_listing')
+    root = bootstrap_and_fixture(config)
     
-    request = testing.DummyRequest()
-    
-    root = SiteRoot()
-    
-    root['ai'] = ai = AgendaItem()
-    ai.set_workflow_state(request, 'upcoming')
-    ai.set_workflow_state(request, 'ongoing')
+    root['m'] = Meeting()
+    unrestricted_wf_transition_to(root['m'], 'ongoing')
+    root['m']['ai'] = ai = AgendaItem()
+    unrestricted_wf_transition_to(ai, 'upcoming')
+    unrestricted_wf_transition_to(ai, 'ongoing')
     
     #Setup poll
     ai['poll'] = Poll()
@@ -249,8 +247,8 @@ def _setup_poll_fixture(config):
     poll.proposal_uids = (p1.uid, p2.uid, p3.uid)
 
     #Set poll as ongoing
-    poll.set_workflow_state(request, 'upcoming')
-    poll.set_workflow_state(request, 'ongoing')
+    unrestricted_wf_transition_to(poll, 'upcoming')
+    unrestricted_wf_transition_to(poll, 'ongoing')
 
     return poll
 
@@ -260,13 +258,13 @@ def _add_votes(poll):
 
     #Add 3 votes
     v1 = plugin.get_vote_class()(creators = ['one'])
-    v1.set_vote_data({ai['p1'].uid:1, ai['p2'].uid:2, ai['p3'].uid:3})
+    v1.set_vote_data({ai['p1'].uid:1, ai['p2'].uid:2, ai['p3'].uid:3}, notify = False)
     poll['v1'] = v1
     
     v2 = plugin.get_vote_class()(creators = ['two'])
-    v2.set_vote_data({ai['p1'].uid:1, ai['p2'].uid:2, ai['p3'].uid:3})
+    v2.set_vote_data({ai['p1'].uid:1, ai['p2'].uid:2, ai['p3'].uid:3}, notify = False)
     poll['v2'] = v2
     
     v3 = plugin.get_vote_class()(creators = ['three'])
-    v3.set_vote_data({ai['p1'].uid:1, ai['p2'].uid:2, ai['p3'].uid:3})
+    v3.set_vote_data({ai['p1'].uid:1, ai['p2'].uid:2, ai['p3'].uid:3}, notify = False)
     poll['v3'] = v3
