@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.schulze 0.1dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-02-14 15:18+0100\n"
+"POT-Creation-Date: 2013-03-13 14:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "description_schulze_stv"
 msgstr ""
 
-#: voteit/schulze/models.py:88 voteit/schulze/models.py:150
+#: voteit/schulze/models.py:88 voteit/schulze/models.py:151
 msgid "Poll settings"
 msgstr ""
 
@@ -37,7 +37,7 @@ msgid "Settings for Schulze STV"
 msgstr ""
 
 #. Default: Schulze PR (ranking only)
-#: voteit/schulze/models.py:137
+#: voteit/schulze/models.py:138
 msgid "schulze_pr_title"
 msgstr ""
 
@@ -45,38 +45,38 @@ msgstr ""
 #. the proposal. VoteIT calculates the relation between the proposals and sorts
 #. them according to all voters preference. In case of a tie there's a random
 #. tie breaker.
-#: voteit/schulze/models.py:139
+#: voteit/schulze/models.py:140
 msgid "description_schulze_pr"
 msgstr ""
 
-#: voteit/schulze/models.py:151
+#: voteit/schulze/models.py:152
 msgid "Settings for Schulze PR"
 msgstr ""
 
-#: voteit/schulze/models.py:180
+#: voteit/schulze/models.py:182
 msgid "Winners"
 msgstr ""
 
 #. Default: Numbers of possible winners in the poll
-#: voteit/schulze/models.py:181
+#: voteit/schulze/models.py:183
 msgid "schulze_config_winners_description"
 msgstr ""
 
-#: voteit/schulze/models.py:185
+#: voteit/schulze/models.py:187
 msgid "Maximum stars"
 msgstr ""
 
 #. Default: The maximum numbers of stars regarless of number of proposals
-#: voteit/schulze/models.py:186
+#: voteit/schulze/models.py:188
 msgid "schulze_config_max_stars_description"
 msgstr ""
 
-#: voteit/schulze/models.py:190
+#: voteit/schulze/models.py:192
 msgid "Minumum stars"
 msgstr ""
 
 #. Default: The minimum numbers of stars regarless of number of proposals
-#: voteit/schulze/models.py:191
+#: voteit/schulze/models.py:193
 msgid "schulze_config_min_stars_description"
 msgstr ""
 
@@ -108,20 +108,25 @@ msgstr ""
 msgid "Number of voters:"
 msgstr ""
 
-#: voteit/schulze/templates/result_pr.pt:42
-#: voteit/schulze/templates/result_pr.pt:44
-#: voteit/schulze/templates/result_stv.pt:87
-#: voteit/schulze/templates/result_stv.pt:89
-msgid "Raw data"
-msgstr ""
-
-#: voteit/schulze/templates/result_pr.pt:43
-#: voteit/schulze/templates/result_stv.pt:88
-msgid "This file contains all the raw data that was used in the calculation of the result."
+#: voteit/schulze/templates/result_pr.pt:41
+#: voteit/schulze/templates/result_stv.pt:58
+msgid "Number of votes:"
 msgstr ""
 
 #: voteit/schulze/templates/result_pr.pt:46
+#: voteit/schulze/templates/result_pr.pt:48
 #: voteit/schulze/templates/result_stv.pt:91
+#: voteit/schulze/templates/result_stv.pt:93
+msgid "Raw data"
+msgstr ""
+
+#: voteit/schulze/templates/result_pr.pt:47
+#: voteit/schulze/templates/result_stv.pt:92
+msgid "This file contains all the raw data that was used in the calculation of the result."
+msgstr ""
+
+#: voteit/schulze/templates/result_pr.pt:50
+#: voteit/schulze/templates/result_stv.pt:95
 msgid "Click above to see denied proposals and other details"
 msgstr ""
 
@@ -133,19 +138,19 @@ msgstr ""
 msgid "Approved"
 msgstr ""
 
-#: voteit/schulze/templates/result_stv.pt:58
+#: voteit/schulze/templates/result_stv.pt:62
 msgid "Possible winners:"
 msgstr ""
 
-#: voteit/schulze/templates/result_stv.pt:62
+#: voteit/schulze/templates/result_stv.pt:66
 msgid "Poll was a tie breaker between:"
 msgstr ""
 
-#: voteit/schulze/templates/result_stv.pt:75
+#: voteit/schulze/templates/result_stv.pt:79
 msgid "Denied"
 msgstr ""
 
-#: voteit/schulze/templates/result_stv.pt:77
+#: voteit/schulze/templates/result_stv.pt:81
 msgid "No proposals were denied in this poll"
 msgstr ""
 

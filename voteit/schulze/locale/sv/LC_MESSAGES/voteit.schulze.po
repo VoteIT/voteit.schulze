@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.schulze\n"
 "Report-Msgid-Bugs-To: support@voteit.se\n"
-"POT-Creation-Date: 2013-02-14 15:18+0100\n"
-"PO-Revision-Date: 2013-02-14 15:19+0100\n"
+"POT-Creation-Date: 2013-03-13 14:44+0100\n"
+"PO-Revision-Date: 2013-03-13 14:46+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <support@voteit.se>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #. Default: Schulze STV
 #: voteit/schulze/models.py:75
@@ -28,7 +28,7 @@ msgstr ""
 "förslaget före de med färre stjärnor. VoteIT beräknar relationen mellan "
 "förslagen och utser en eller flera vinnare. Vid lika avgör slumpen."
 
-#: voteit/schulze/models.py:88 voteit/schulze/models.py:150
+#: voteit/schulze/models.py:88 voteit/schulze/models.py:151
 msgid "Poll settings"
 msgstr "Omröstningsinställningar"
 
@@ -37,7 +37,7 @@ msgid "Settings for Schulze STV"
 msgstr "Inställningar för Schulze STV"
 
 #. Default: Schulze PR (ranking only)
-#: voteit/schulze/models.py:137
+#: voteit/schulze/models.py:138
 msgid "schulze_pr_title"
 msgstr "Schulze PR (bara rankning)"
 
@@ -45,41 +45,41 @@ msgstr "Schulze PR (bara rankning)"
 #. the proposal. VoteIT calculates the relation between the proposals and sorts
 #. them according to all voters preference. In case of a tie there's a random
 #. tie breaker.
-#: voteit/schulze/models.py:139
+#: voteit/schulze/models.py:140
 msgid "description_schulze_pr"
 msgstr ""
 "Rangordna förslagen med stjärnor. Fler stjärnor betyder att du föredrar "
 "förslaget mer. VoteIT beräknar relationen mellan förslagen och sorterar dem "
 "i enlighet med de röstandes preferenser. Om det blir lika avgör slumpen."
 
-#: voteit/schulze/models.py:151
+#: voteit/schulze/models.py:152
 msgid "Settings for Schulze PR"
 msgstr "Inställningar för Schulze PR"
 
-#: voteit/schulze/models.py:180
+#: voteit/schulze/models.py:182
 msgid "Winners"
 msgstr "Vinnare"
 
 #. Default: Numbers of possible winners in the poll
-#: voteit/schulze/models.py:181
+#: voteit/schulze/models.py:183
 msgid "schulze_config_winners_description"
 msgstr "Antal möjliga vinnare i omröstningen"
 
-#: voteit/schulze/models.py:185
+#: voteit/schulze/models.py:187
 msgid "Maximum stars"
 msgstr "Maximalt antal stjärnor"
 
 #. Default: The maximum numbers of stars regarless of number of proposals
-#: voteit/schulze/models.py:186
+#: voteit/schulze/models.py:188
 msgid "schulze_config_max_stars_description"
 msgstr "Det maximala antalet stjärnor oavsett antal förslag"
 
-#: voteit/schulze/models.py:190
+#: voteit/schulze/models.py:192
 msgid "Minumum stars"
 msgstr "Minimalt antal stjärnor"
 
 #. Default: The minimum numbers of stars regarless of number of proposals
-#: voteit/schulze/models.py:191
+#: voteit/schulze/models.py:193
 msgid "schulze_config_min_stars_description"
 msgstr "Det minimala antalet stjärnor oavsett antal förslag"
 
@@ -103,7 +103,6 @@ msgstr "Om denna omröstning"
 
 #: voteit/schulze/templates/result_pr.pt:33
 #: voteit/schulze/templates/result_stv.pt:50
-#| msgid "Number of voters:"
 msgid "Number of proposals:"
 msgstr "Antal förslag:"
 
@@ -112,28 +111,33 @@ msgstr "Antal förslag:"
 msgid "Number of voters:"
 msgstr "Antal röstande:"
 
-#: voteit/schulze/templates/result_pr.pt:42
-#: voteit/schulze/templates/result_pr.pt:44
-#: voteit/schulze/templates/result_stv.pt:87
-#: voteit/schulze/templates/result_stv.pt:89
+#: voteit/schulze/templates/result_pr.pt:41
+#: voteit/schulze/templates/result_stv.pt:58
+#| msgid "Number of voters:"
+msgid "Number of votes:"
+msgstr "Antal röster:"
+
+#: voteit/schulze/templates/result_pr.pt:46
+#: voteit/schulze/templates/result_pr.pt:48
+#: voteit/schulze/templates/result_stv.pt:91
+#: voteit/schulze/templates/result_stv.pt:93
 msgid "Raw data"
 msgstr "Rådata"
 
-#: voteit/schulze/templates/result_pr.pt:43
-#: voteit/schulze/templates/result_stv.pt:88
+#: voteit/schulze/templates/result_pr.pt:47
+#: voteit/schulze/templates/result_stv.pt:92
 msgid ""
 "This file contains all the raw data that was used in the calculation of the "
 "result."
 msgstr ""
 "Denna fil innehåller all rådata som användes under beräkningen av resultatet."
 
-#: voteit/schulze/templates/result_pr.pt:46
-#: voteit/schulze/templates/result_stv.pt:91
+#: voteit/schulze/templates/result_pr.pt:50
+#: voteit/schulze/templates/result_stv.pt:95
 msgid "Click above to see denied proposals and other details"
 msgstr "Klicka ovan för att se avslagna förslag och andra detaljer"
 
 #: voteit/schulze/templates/result_stv.pt:16
-#| msgid "Show denied proposals"
 msgid "Show ${count} denied proposals"
 msgstr "Visa ${count} avslagna förslag"
 
@@ -141,18 +145,18 @@ msgstr "Visa ${count} avslagna förslag"
 msgid "Approved"
 msgstr "Bifallen"
 
-#: voteit/schulze/templates/result_stv.pt:58
+#: voteit/schulze/templates/result_stv.pt:62
 msgid "Possible winners:"
 msgstr "Antal möjliga vinnare:"
 
-#: voteit/schulze/templates/result_stv.pt:62
+#: voteit/schulze/templates/result_stv.pt:66
 msgid "Poll was a tie breaker between:"
 msgstr "Omröstningen blev lika och lottades mellan:"
 
-#: voteit/schulze/templates/result_stv.pt:75
+#: voteit/schulze/templates/result_stv.pt:79
 msgid "Denied"
 msgstr "Avslaget"
 
-#: voteit/schulze/templates/result_stv.pt:77
+#: voteit/schulze/templates/result_stv.pt:81
 msgid "No proposals were denied in this poll"
 msgstr "Inga förslag avslogs i omröstningen"
