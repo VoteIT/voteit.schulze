@@ -122,6 +122,7 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
         response['result'] = self.context.poll_result
         response['no_proposals'] = len(self.context.proposal_uids)
         response['no_users'] = len(self.context.get_voted_userids())
+        response['no_votes'] = len(self.context.get_content(content_type = 'Vote'))
         response['no_winners'] = self.context.poll_settings.get('winners', 1)
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
@@ -167,6 +168,7 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
         response['result'] = self.context.poll_result
         response['no_proposals'] = len(self.context.proposal_uids)
         response['no_users'] = len(self.context.get_voted_userids())
+        response['no_votes'] = len(self.context.get_content(content_type = 'Vote'))
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
         response['complete'] = complete

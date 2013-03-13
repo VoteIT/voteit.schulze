@@ -33,10 +33,14 @@
                     <th i18n:translate="">Number of proposals:</th>
                     <td tal:content="no_proposals">3</td>
                 </tr>
-	            <tr>
-	                <th i18n:translate="">Number of voters:</th>
-	                <td tal:content="no_users">3</td>
-	            </tr>
+                <tr>
+                    <th i18n:translate="">Number of voters:</th>
+                    <td tal:content="no_users">3</td>
+                </tr>
+                <tr>
+                    <th i18n:translate="">Number of votes:</th>
+                    <td tal:content="no_votes">3</td>
+                </tr>
 	        </table>
 	
 	        <h4 i18n:translate="">Raw data</h4>
