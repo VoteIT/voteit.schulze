@@ -5,7 +5,6 @@ from pyvotecore.schulze_stv import SchulzeSTV
 from pyvotecore.schulze_pr import SchulzePR
 from pyramid.renderers import render
 from pyramid.response import Response
-from pyramid.url import resource_url
 from repoze.catalog.query import Any
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.widgets import StarWidget
@@ -125,7 +124,7 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
         response['no_votes'] = len(self.context.get_content(content_type = 'Vote'))
         response['no_winners'] = self.context.poll_settings.get('winners', 1)
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
-        response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
+        response['raw_data_link'] = request.resource_url(self.context, 'poll_raw_data')
         response['complete'] = complete
         return render('templates/result_stv.pt', response, request=request)
 
@@ -170,7 +169,7 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
         response['no_users'] = len(self.context.get_voted_userids())
         response['no_votes'] = len(self.context.get_content(content_type = 'Vote'))
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
-        response['raw_data_link'] = "%spoll_raw_data" % resource_url(self.context, request)
+        response['raw_data_link'] = request.resource_url(self.context, 'poll_raw_data')
         response['complete'] = complete
         return render('templates/result_pr.pt', response, request=request)
 
