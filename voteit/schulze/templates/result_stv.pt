@@ -13,7 +13,7 @@
         </tal:iterate>
 
         <tal:denied condition="loosers">
-        <p><a class="toggle_minimize read_more" i18n:translate="">
+        <p><a class="toggle_minimize read_more" href="javascript:" i18n:translate="">
             Show <tal:count i18n:name="count" tal:content="len(loosers)"></tal:count> denied proposals
         </a></p><br/>
         <div class="minimizable_area">
@@ -42,7 +42,7 @@
 	</tal:iterate>
 	
 	<div class="toggle_area toggle_closed">
-	    <a class="toggle_minimize read_more" i18n:translate="">Poll result details</a>
+	    <a class="toggle_minimize read_more" href="javascript:" i18n:translate="">Poll result details</a>
 	    <div class="minimizable_area">
 	        <h4 i18n:translate="">About this poll</h4>
 	        <table>
