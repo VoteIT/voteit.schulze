@@ -1,0 +1,12 @@
+language: python
+
+python:
+  - 2.7
+
+install:
+  - pip install -I setuptools==7.0
+  - python bootstrap.py
+  - bin/buildout
+
+script: bin/py setup.py test -q
+
