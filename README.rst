@@ -1,6 +1,9 @@
 Schulze Polls for VoteIT
 ========================
 
+.. image:: https://travis-ci.org/VoteIT/voteit.schulze.png?branch=master
+    :target: https://travis-ci.org/VoteIT/voteit.schulze
+
 This is a plugin package for VoteIT that provides functionality
 for Schulze STV and PR polls.
 
