@@ -91,12 +91,15 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
     def handle_close(self):
         #IMPORTANT! Use deepcopy, we don't want the SchulzeSTV to modify our ballots, just calculate a result
         ballots = deepcopy(self.context.ballots)
-        if not ballots:
+        if ballots:
+            winners = self.context.poll_settings.get('winners', 1)
+            schulze_ballots = self.schulze_format_ballots(ballots)
+            self.context.poll_result = SchulzeSTV(schulze_ballots,
+                                                  ballot_notation = "ranking",
+                                                  required_winners=winners).as_dict()
+        else:
+            #No votes!
             self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
-            raise ValueError("It's not possible to use this version of Schulze STV without any votes. At least one is needed.")
-        winners = self.context.poll_settings.get('winners', 1)
-        schulze_ballots = self.schulze_format_ballots(ballots)
-        self.context.poll_result = SchulzeSTV(schulze_ballots, ballot_notation = "ranking", required_winners=winners).as_dict()
 
     def change_states_of(self):
         """ This gets called when a poll has finished.
@@ -115,7 +118,6 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
         return result
 
     def render_result(self, request, api, complete=True):
-        
         response = {}
         response['api'] = api
         response['result'] = self.context.poll_result
@@ -155,22 +157,27 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
     def handle_close(self):
         #IMPORTANT! Use deepcopy, we don't want the SchulzePR to modify our ballots, just calculate a result
         ballots = deepcopy(self.context.ballots)
-        if not ballots:
+        if ballots:
+            schulze_ballots = self.schulze_format_ballots(ballots)
+            self.context.poll_result = SchulzePR(schulze_ballots,
+                                                 ballot_notation = "ranking").as_dict()
+            #raise ValueError("It's not possible to use this version of Schulze PR without any votes. At least one is needed.")
+        else:
+            #No votes!
             self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
-            raise ValueError("It's not possible to use this version of Schulze PR without any votes. At least one is needed.")
-        schulze_ballots = self.schulze_format_ballots(ballots)
-        self.context.poll_result = SchulzePR(schulze_ballots, ballot_notation = "ranking").as_dict()
 
     def render_result(self, request, api, complete=True):
         response = {}
         response['api'] = api
-        response['result'] = self.context.poll_result
+        response['result'] = result = self.context.poll_result
         response['no_proposals'] = len(self.context.proposal_uids)
         response['no_users'] = len(self.context.get_voted_userids())
         response['no_votes'] = len(self.context.get_content(content_type = 'Vote'))
         response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
         response['raw_data_link'] = request.resource_url(self.context, 'poll_raw_data')
         response['complete'] = complete
+        response['has_result'] = bool(result.get('order', None))
+        response['proposal_uids'] = result.get('order', result.get('candidates', set()))
         return render('templates/result_pr.pt', response, request=request)
 
 

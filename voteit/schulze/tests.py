@@ -4,7 +4,6 @@ import colander
 from pyramid import testing
 from zope.interface.verify import verifyObject
 from zope.interface.verify import verifyClass
-
 from voteit.core.models.agenda_item import AgendaItem
 from voteit.core.models.meeting import Meeting
 from voteit.core.models.poll import Poll
@@ -107,7 +106,10 @@ class SchulzeSTVTests(unittest.TestCase):
     def test_close_with_no_votes(self):
         poll = _setup_poll_fixture(self.config)
         poll.set_field_value('poll_plugin', 'schulze_stv')
-        self.assertRaises(ValueError, poll.close_poll)
+        poll.close_poll()
+        marker = object()
+        self.assertEqual(poll.poll_result.get('winners', marker), marker)
+        self.assertIn('candidates', poll.poll_result)
 
     def test_poll_result(self):
         poll = _setup_poll_fixture(self.config)
@@ -165,7 +167,10 @@ class SchulzePRTests(unittest.TestCase):
     def test_close_with_no_votes(self):
         poll = _setup_poll_fixture(self.config)
         poll.set_field_value('poll_plugin', 'schulze_pr')
-        self.assertRaises(ValueError, poll.close_poll)
+        poll.close_poll()
+        marker = object()
+        self.assertEqual(poll.poll_result.get('order', marker), marker)
+        self.assertIn('candidates', poll.poll_result)
 
     def test_poll_result(self):
         poll = _setup_poll_fixture(self.config)

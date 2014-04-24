@@ -1,8 +1,8 @@
 <tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
     
 <tal:summary condition="not complete">
-	<tal:iterate repeat="proposal_uid result.get('order', ())">
-	    <b>${repeat['proposal_uid'].number}</b>
+	<tal:iterate repeat="proposal_uid proposal_uids">
+	    <b tal:condition="has_result">${repeat['proposal_uid'].number}</b>
 		<tal:proposal
 			define="brain api.get_metadata_for_query(uid=proposal_uid)[0]" 
 			replace="structure api.render_single_view_component(api.context, api.request, 'proposal', 'block', brain=brain)">
