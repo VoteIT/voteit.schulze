@@ -1,14 +1,12 @@
 from copy import deepcopy
 
-import colander
-from pyvotecore.schulze_stv import SchulzeSTV
-from pyvotecore.schulze_pr import SchulzePR
 from pyramid.renderers import render
 from pyramid.response import Response
-from repoze.catalog.query import Any
+from pyvotecore.schulze_pr import SchulzePR
+from pyvotecore.schulze_stv import SchulzeSTV
 from voteit.core.models.poll_plugin import PollPlugin
+import colander
 import deform
-#from voteit.core.widgets import StarWidget
 
 from voteit.schulze.schemas import SettingsSchema
 from voteit.schulze import _
@@ -18,9 +16,17 @@ class SchulzeBase(object):
     """ Common methods for Schulze ballots. This is ment to be a mixin
         for an adapter. It won't work by itself.
     """
-    
+
     def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
+
+            Maximum and minimum number of stars is a setting for the widget
+            about the number of stars to display. It has nothing to do with validation or similar.
+
+            About the rating and how Schulze STV and PR calculates them:
+            Note that higher is less preferred. Missing should be highest
+            "normal" value +1 to avoid mixing it with an active stance on something.
+            That makes it possible to just rate some of the proposals.
         """
         proposals = self.context.get_proposal_objects()
         #Schulze works with ranking, so we add as many numbers as there are alternatives
@@ -32,7 +38,7 @@ class SchulzeBase(object):
         if min_stars > stars:
             stars = min_stars
         #SelectWidget expects a list where each item has a value and a readable title  (value, title)
-        #the title should be the value reversed 
+        #the title should be the value reversed so 5 stars doesn't say "1" although it really is that value.
         schulze_choice = [(str(x), str(stars-x+1)) for x in range(1, stars+1)]
         #Ie 5 stars = 1 point, 1 star 5 points
         schulze_choice.reverse()
@@ -48,7 +54,9 @@ class SchulzeBase(object):
                                            missing = stars+1,
                                            title = title,
                                            validator = colander.OneOf(valid_entries),
-                                           widget = deform.widget.RadioChoiceWidget(values = schulze_choice)))
+                                           widget = deform.widget.RadioChoiceWidget(values = schulze_choice,
+                                                                                    template = 'star_choice',
+                                                                                    readonly_template = 'readonly/star_choice')))
         return schema
 
     def schulze_format_ballots(self, ballots):
@@ -155,9 +163,7 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
             schulze_ballots = self.schulze_format_ballots(ballots)
             self.context.poll_result = SchulzePR(schulze_ballots,
                                                  ballot_notation = "ranking").as_dict()
-            #raise ValueError("It's not possible to use this version of Schulze PR without any votes. At least one is needed.")
         else:
-            #No votes!
             self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
 
     def render_result(self, view):
@@ -167,10 +173,9 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
             proposals.append(view.resolve_uid(uid))
         response['proposals'] = proposals
         response['context'] = self.context
-        #response['proposal_uids'] = result.get('order', result.get('candidates', set()))
         return render('templates/result_pr.pt', response, request = view.request)
 
 
 def includeme(config):
-        config.registry.registerAdapter(SchulzeSTVPollPlugin, name = SchulzeSTVPollPlugin.name)
-        config.registry.registerAdapter(SchulzePRPollPlugin, name = SchulzePRPollPlugin.name)
+    config.registry.registerAdapter(SchulzeSTVPollPlugin, name = SchulzeSTVPollPlugin.name)
+    config.registry.registerAdapter(SchulzePRPollPlugin, name = SchulzePRPollPlugin.name)

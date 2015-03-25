@@ -12,8 +12,6 @@ requires = (
     'deform',
     'voteit.core',
     'python-vote-core==20120423.0',
-    'Babel',
-    'lingua',
     )
 
 setup(name='voteit.schulze',
@@ -37,6 +35,8 @@ setup(name='voteit.schulze',
       tests_require= requires,
       test_suite="voteit.schulze",
       entry_points = """\
+      [fanstatic.libraries]
+      voteit_schulze = voteit.schulze.fanstatic_lib:library
       """,
       message_extractors = { '.': [
               ('**.py',   'lingua_python', None ),

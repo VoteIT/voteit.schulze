@@ -26,4 +26,3 @@ Use this if you want to sort proposals according to preference. It has no
 winner, it only outsput the prefered order of all the voters.
 
 More information: `<http://en.wikipedia.org/wiki/Proportional_representation>`_
-
