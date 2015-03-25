@@ -1,18 +1,23 @@
 import unittest
 
-import colander
+from arche.views.base import BaseView
 from pyramid import testing
-from zope.interface.verify import verifyObject
-from zope.interface.verify import verifyClass
+from pyramid.traversal import find_root
 from voteit.core.models.agenda_item import AgendaItem
+from voteit.core.models.interfaces import IPollPlugin
+from voteit.core.models.interfaces import IVote
 from voteit.core.models.meeting import Meeting
 from voteit.core.models.poll import Poll
 from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.models.proposal import Proposal
-from voteit.core.models.interfaces import IPollPlugin
-from voteit.core.models.interfaces import IVote
 from voteit.core.security import unrestricted_wf_transition_to
 from voteit.core.testing_helpers import bootstrap_and_fixture
+from voteit.core.testing_helpers import attach_request_method
+from voteit.core.helpers import creators_info
+from voteit.core.helpers import get_userinfo_url
+from zope.interface.verify import verifyClass
+from zope.interface.verify import verifyObject
+import colander
 
 
 class SchulzeBaseTests(unittest.TestCase):
@@ -37,12 +42,7 @@ class SchulzeBaseTests(unittest.TestCase):
     def test_get_vote_schema(self):
         poll = _setup_poll_fixture(self.config)
         obj = self._dummy_plugin(poll)
-        
-        request = testing.DummyRequest()
-        from voteit.core.views.api import APIView
-        api = APIView(poll, request)
-        
-        self.assertIsInstance(obj.get_vote_schema(request, api), colander.SchemaNode)
+        self.assertIsInstance(obj.get_vote_schema(), colander.Schema)
 
     def test_render_raw_data(self):
         poll = _setup_poll_fixture(self.config)
@@ -63,11 +63,6 @@ class SchulzeBaseTests(unittest.TestCase):
         plugin = poll.get_poll_plugin()
         self.assertEqual(plugin.schulze_format_ballots(poll.ballots),
                          [{'count': 3, 'ballot': {u'p1uid': 1, u'p2uid': 2, u'p3uid': 3}}])
-
-    def test_get_vote_class(self):
-        #From poll plugin base, but still good to test
-        obj = self._dummy_plugin(Poll())
-        self.failUnless(verifyClass(IVote, obj.get_vote_class()))
 
 
 class SchulzeSTVTests(unittest.TestCase):
@@ -125,9 +120,13 @@ class SchulzeSTVTests(unittest.TestCase):
         poll.close_poll()
         plugin = poll.get_poll_plugin()
         request = testing.DummyRequest()
-        from voteit.core.views.api import APIView
-        api = APIView(poll, request)
-        self.assertTrue('Poll result' in plugin.render_result(request, api))
+        request.root = find_root(poll)
+        attach_request_method(request, creators_info, 'creators_info')
+        attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
+        view = BaseView(poll, request)
+        result = plugin.render_result(view)
+        self.assertTrue('first proposal' in result)
+        self.assertTrue('third proposal' in result)
 
 
 class SchulzePRTests(unittest.TestCase):
@@ -191,9 +190,13 @@ class SchulzePRTests(unittest.TestCase):
         poll.close_poll()
         plugin = poll.get_poll_plugin()
         request = testing.DummyRequest()
-        from voteit.core.views.api import APIView
-        api = APIView(poll, request)
-        self.assertTrue('Poll result' in plugin.render_result(request, api))
+        request.root = find_root(poll)
+        attach_request_method(request, creators_info, 'creators_info')
+        attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
+        view = BaseView(poll, request)
+        result = plugin.render_result(view)
+        self.assertTrue('first proposal' in result)
+        self.assertTrue('third proposal' in result)
 
 
 class IntegrationTests(unittest.TestCase):
@@ -215,46 +218,38 @@ class IntegrationTests(unittest.TestCase):
 
 
 def _setup_poll_fixture(config):
-
+    config.testing_securitypolicy('admin', permissive = True)
+    config.include('pyramid_chameleon')
     #Register plugin
     config.include('voteit.schulze')
-    
-    config.include('voteit.core.testing_helpers.register_catalog')
-    config.include('voteit.core.testing_helpers.register_security_policies')
-    config.scan('voteit.core.subscribers.catalog')    
-    config.scan('voteit.core.views.components.proposals')
-    config.scan('voteit.core.views.components.creators_info')
-    config.scan('voteit.core.views.components.metadata_listing')
+    config.include('arche.models.catalog')
+    config.include('voteit.core.models.catalog')
+    config.include('voteit.core.models.unread')
+    config.include('voteit.core.models.user_tags')
     root = bootstrap_and_fixture(config)
-    
     root['m'] = Meeting()
     unrestricted_wf_transition_to(root['m'], 'ongoing')
     root['m']['ai'] = ai = AgendaItem()
     unrestricted_wf_transition_to(ai, 'upcoming')
     unrestricted_wf_transition_to(ai, 'ongoing')
-    
     #Setup poll
     ai['poll'] = Poll()
     poll = ai['poll']
-    
     #Add proposals
-    p1 = Proposal(creators = ['dummy'])
+    p1 = Proposal(creators = ['dummy'], text = 'first proposal')
     p1.uid = 'p1uid' #To make it simpler to test against
     ai['p1'] = p1
-    p2 = Proposal(creators = ['dummy'])
+    p2 = Proposal(creators = ['dummy'], text = 'second proposal')
     p2.uid = 'p2uid'
     ai['p2'] = p2
-    p3 = Proposal(creators = ['dummy'])
+    p3 = Proposal(creators = ['dummy'], text = 'third proposal')
     p3.uid = 'p3uid'
     ai['p3'] = p3
-    
     #Select proposals for this poll
     poll.proposal_uids = (p1.uid, p2.uid, p3.uid)
-
     #Set poll as ongoing
     unrestricted_wf_transition_to(poll, 'upcoming')
     unrestricted_wf_transition_to(poll, 'ongoing')
-
     return poll
 
 def _add_votes(poll):

@@ -7,9 +7,11 @@ from pyramid.renderers import render
 from pyramid.response import Response
 from repoze.catalog.query import Any
 from voteit.core.models.poll_plugin import PollPlugin
-from voteit.core.widgets import StarWidget
+import deform
+#from voteit.core.widgets import StarWidget
 
-from voteit.schulze import VoteITSchulzeMF as _
+from voteit.schulze.schemas import SettingsSchema
+from voteit.schulze import _
 
 
 class SchulzeBase(object):
@@ -17,15 +19,10 @@ class SchulzeBase(object):
         for an adapter. It won't work by itself.
     """
     
-    def get_vote_schema(self, request=None, api=None):
+    def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
         """
-        
-        query = api.root.catalog.query
-        get_metadata = api.root.catalog.document_map.get_metadata
-        num, results = query(Any('uid', self.context.proposal_uids), sort_index = 'created')
-        proposals = [get_metadata(x) for x in results]
-        
+        proposals = self.context.get_proposal_objects()
         #Schulze works with ranking, so we add as many numbers as there are alternatives
         stars = len(proposals)
         max_stars = self.context.poll_settings.get('max_stars', 5)
@@ -39,24 +36,20 @@ class SchulzeBase(object):
         schulze_choice = [(str(x), str(stars-x+1)) for x in range(1, stars+1)]
         #Ie 5 stars = 1 point, 1 star 5 points
         schulze_choice.reverse()
-        
         valid_entries = [str(x) for x in range(1, stars+2)] #To include the missing value
-        
         schema = colander.Schema()
         for proposal in proposals:
+            title = "#%s: %s" % (proposal.aid, proposal.text)
             schema.add(colander.SchemaNode(colander.String(),
-                                           name=proposal['uid'],
+                                           name = proposal.uid,
                                            #To make missing even less desired than the regular stars
                                            #Schulze can't handle null value or empty dicts.
                                            #This does however produce the same result
-                                           missing=stars+1,
-                                           title=proposal['title'],
-                                           validator=colander.OneOf(valid_entries),
-                                           widget=StarWidget(values = schulze_choice,
-                                                             proposal = proposal,
-                                                             api = api,)))
+                                           missing = stars+1,
+                                           title = title,
+                                           validator = colander.OneOf(valid_entries),
+                                           widget = deform.widget.RadioChoiceWidget(values = schulze_choice)))
         return schema
-
 
     def schulze_format_ballots(self, ballots):
         formatted = []
@@ -96,7 +89,7 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
             schulze_ballots = self.schulze_format_ballots(ballots)
             self.context.poll_result = SchulzeSTV(schulze_ballots,
                                                   ballot_notation = "ranking",
-                                                  required_winners=winners).as_dict()
+                                                  required_winners = winners).as_dict()
         else:
             #No votes!
             self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
@@ -109,7 +102,6 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
         result = {}
         winners = self.context.poll_result.get('winners', ())
         losers = self.context.poll_result['candidates'] - set(winners)
-
         if winners:
             for winner in winners:
                 result[winner] = 'approved'
@@ -117,18 +109,20 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
                 result[loser] = 'denied'
         return result
 
-    def render_result(self, request, api, complete=True):
+    def render_result(self, view):
+        winner_uids = self.context.poll_result.get('winners', set())
+        winners = []
+        for uid in winner_uids:
+            winners.append(view.resolve_uid(uid))
+        looser_uids = set(self.context.poll_result['candidates']) - winner_uids
+        loosers = []
+        for uid in looser_uids:
+            loosers.append(view.resolve_uid(uid))
         response = {}
-        response['api'] = api
-        response['result'] = self.context.poll_result
-        response['no_proposals'] = len(self.context.proposal_uids)
-        response['no_users'] = len(self.context.get_voted_userids())
-        response['no_votes'] = len(self.context.get_content(content_type = 'Vote'))
-        response['no_winners'] = self.context.poll_settings.get('winners', 1)
-        response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
-        response['raw_data_link'] = request.resource_url(self.context, 'poll_raw_data')
-        response['complete'] = complete
-        return render('templates/result_stv.pt', response, request=request)
+        response['context'] = self.context
+        response['winners'] = winners
+        response['loosers'] = loosers
+        return render('templates/result_stv.pt', response, request = view.request)
 
 
 class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
@@ -166,36 +160,17 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
             #No votes!
             self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
 
-    def render_result(self, request, api, complete=True):
+    def render_result(self, view):
         response = {}
-        response['api'] = api
-        response['result'] = result = self.context.poll_result
-        response['no_proposals'] = len(self.context.proposal_uids)
-        response['no_users'] = len(self.context.get_voted_userids())
-        response['no_votes'] = len(self.context.get_content(content_type = 'Vote'))
-        response['get_proposal_by_uid'] = self.context.get_proposal_by_uid
-        response['raw_data_link'] = request.resource_url(self.context, 'poll_raw_data')
-        response['complete'] = complete
-        response['has_result'] = bool(result.get('order', None))
-        response['proposal_uids'] = result.get('order', result.get('candidates', set()))
-        return render('templates/result_pr.pt', response, request=request)
+        proposals = []
+        for uid in self.context.poll_result.get('order', ()):
+            proposals.append(view.resolve_uid(uid))
+        response['proposals'] = proposals
+        response['context'] = self.context
+        #response['proposal_uids'] = result.get('order', result.get('candidates', set()))
+        return render('templates/result_pr.pt', response, request = view.request)
 
 
-class SettingsSchema(colander.Schema):
-    """ Settings for a Schulze poll
-    """
-    winners = colander.SchemaNode(colander.Int(),
-                                  title = _(u"Winners"),
-                                  description = _(u"schulze_config_winners_description",
-                                                  default=u"Numbers of possible winners in the poll"),
-                                  default=1,)
-    max_stars = colander.SchemaNode(colander.Int(),
-                                    title = _(u"Maximum stars"),
-                                    description = _(u"schulze_config_max_stars_description",
-                                                    default=u"The maximum numbers of stars regarless of number of proposals"),
-                                    default=5,)
-    min_stars = colander.SchemaNode(colander.Int(),
-                                    title = _(u"Minumum stars"),
-                                    description = _(u"schulze_config_min_stars_description",
-                                                    default=u"The minimum numbers of stars regarless of number of proposals"),
-                                    default=5,)
+def includeme(config):
+        config.registry.registerAdapter(SchulzeSTVPollPlugin, name = SchulzeSTVPollPlugin.name)
+        config.registry.registerAdapter(SchulzePRPollPlugin, name = SchulzePRPollPlugin.name)
