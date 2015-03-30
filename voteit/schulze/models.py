@@ -10,6 +10,7 @@ import deform
 
 from voteit.schulze.schemas import SettingsSchema
 from voteit.schulze import _
+from voteit.schulze.schemas import SchulzePollSchema
 
 
 class SchulzeBase(object):
@@ -43,7 +44,8 @@ class SchulzeBase(object):
         #Ie 5 stars = 1 point, 1 star 5 points
         schulze_choice.reverse()
         valid_entries = [str(x) for x in range(1, stars+2)] #To include the missing value
-        schema = colander.Schema()
+        #This schema creation method is due to legacy code.
+        schema = SchulzePollSchema()
         for proposal in proposals:
             title = "#%s: %s" % (proposal.aid, proposal.text)
             schema.add(colander.SchemaNode(colander.String(),

@@ -1,4 +1,5 @@
 import colander
+import deform
 
 from voteit.schulze import _
 
@@ -21,3 +22,9 @@ class SettingsSchema(colander.Schema):
                                     description = _(u"schulze_config_min_stars_description",
                                                     default=u"The minimum numbers of stars regarless of number of proposals"),
                                     default=5,)
+
+
+#The schema will be populated in the schulze poll plugin
+class SchulzePollSchema(colander.Schema ):
+    widget = deform.widget.FormWidget(template = 'form_modal',
+                                      readonly_template = 'readonly/form_modal')
