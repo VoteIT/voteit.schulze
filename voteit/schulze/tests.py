@@ -121,6 +121,7 @@ class SchulzeSTVTests(unittest.TestCase):
         plugin = poll.get_poll_plugin()
         request = testing.DummyRequest()
         request.root = find_root(poll)
+        request.meeting = request.root['m']
         attach_request_method(request, creators_info, 'creators_info')
         attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
         view = BaseView(poll, request)
@@ -191,6 +192,7 @@ class SchulzePRTests(unittest.TestCase):
         plugin = poll.get_poll_plugin()
         request = testing.DummyRequest()
         request.root = find_root(poll)
+        request.meeting = request.root['m']
         attach_request_method(request, creators_info, 'creators_info')
         attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
         view = BaseView(poll, request)
