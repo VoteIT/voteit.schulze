@@ -1,7 +1,8 @@
 <tal:main
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="voteit.schulze">
-<div id="${field.oid}" class="starwidget clearfix">
+<div id="${field.oid}">
+  <span class="starwidget">
   ${field.start_rename()}
   <tal:loop tal:repeat="choice field.widget.values">
       <input tal:attributes="checked choice[0] == cstruct;
@@ -12,12 +13,17 @@
            value="${choice[0]}"
            id="${field.oid}-${repeat.choice.index}"
            disabled = "disabled" />
+     <label for="${field.oid}-${repeat.choice.index}" title="${choice[1]}"></label>
   </tal:loop>
   ${field.end_rename()}
+  </span>
 </div>
 <script type="text/javascript">
   deform.addCallback('${field.oid}', function(oid) {
-      $('input[name="' + oid + '"]').rating();
-    });
+    //Mark previous labels as selected
+    var radio_elem = $('#' + oid + ' input[type="radio"]:checked');
+    $(radio_elem).siblings('input[type="radio"]').removeClass('before-selection');
+    $(radio_elem).prevAll('input[type="radio"]').addClass('before-selection');
+  });
 </script>
 </tal:main>
