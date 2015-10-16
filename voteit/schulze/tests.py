@@ -227,7 +227,6 @@ def _setup_poll_fixture(config):
     config.include('arche.models.catalog')
     config.include('voteit.core.models.catalog')
     config.include('voteit.core.models.unread')
-    config.include('voteit.core.models.user_tags')
     root = bootstrap_and_fixture(config)
     root['m'] = Meeting()
     unrestricted_wf_transition_to(root['m'], 'ongoing')
