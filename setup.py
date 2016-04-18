@@ -38,8 +38,4 @@ setup(name='voteit.schulze',
       [fanstatic.libraries]
       voteit_schulze = voteit.schulze.fanstatic_lib:library
       """,
-      message_extractors = { '.': [
-              ('**.py',   'lingua_python', None ),
-              ('**.pt',   'lingua_xml', None ),
-              ]},
       )
