@@ -1,0 +1,119 @@
+<tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title"
+    i18n:translate="">
+    Results of
+    <tal:ts replace="context.title" i18n:name="title" />
+  </h4>
+</div>
+<div class="modal-body">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <tal:ts i18n:translate="schulze_result_explanation">
+    Schulze polls compare all proposals to each other.
+    If you click the "Detailed result" button, you'll see how that specific
+    proposal faired against others. The number within paranthesis is the absolute number
+    of votes who preferred that option.</tal:ts>
+</div>
+<div tal:condition="tied_winners" class="modal-body"
+     i18n:translate="schulze_tied_description">
+  Result was a tie between
+  <tal:iter repeat="prop tied_winners" i18n:name="prop_ids">
+    <b>#${prop.aid}</b>${repeat['prop'].end and '.' or ', '}
+  </tal:iter>
+  The winner was picked randomly.
+</div>
+<tal:iterate repeat="prop proposals">
+  <div class="modal-body">
+    <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)" />
+    ${prop.title}
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-sm-4">
+        <span tal:condition="prop in winners" class="label label-approved">
+          <span class="glyphicon glyphicon-approved"></span>
+          <tal:approved i18n:translate="">Approved</tal:approved>
+        </span>
+        <span tal:condition="prop in loosers" class="label label-denied">
+          <span class="glyphicon glyphicon-denied"></span>
+          <tal:denied i18n:translate="">Denied</tal:denied>
+        </span>
+      </div>
+      <div class="col-sm-4">
+        <b>#${prop.aid}</b>
+      </div>
+      <div class="col-sm-4">
+        <p class="text-right">
+        <a class="btn btn-default btn-xs" data-toggle="collapse"
+           href="#prop-details-${prop.uid}"
+           aria-expanded="false"
+           aria-controls="prop-details-${prop.uid}">
+          <span class="glyphicon glyphicon-info-sign"></span>
+          <tal:ts i18n:translate="">Detailed result</tal:ts>
+        </a>
+        </p>
+      </div>
+    </div>
+    <div class="collapse" id="prop-details-${prop.uid}">
+      <hr/>
+      <div class="">
+        <tal:iter repeat="(other_uid, val) pairs[prop.uid].items()">
+          <tal:defs tal:define="percentages perc(prop.uid, other_uid)">
+          <div class="row">
+            <div class="col-sm-4">
+              <span class="label label-approved">
+              #${prop.aid} (${pairs[prop.uid][other_uid]})
+              </span>
+            </div>
+            <div class="col-sm-4 text-center">
+              <span class="label label-warning">
+              Equal (${total_votes - pairs[other_uid][prop.uid] - pairs[prop.uid][other_uid]})
+              </span>
+            </div>
+            <div class="col-sm-4 text-right">
+              <span class="label label-denied">
+              #${proposals_dict[other_uid].aid}  (${pairs[other_uid][prop.uid]})
+              </span>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="progress">
+                <div class="progress-bar progress-bar-success"
+                  role="progressbar"
+                  aria-valuenow="${percentages[prop.uid]}"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: ${percentages[prop.uid]}%">
+                  ${percentages[prop.uid]}%
+                </div>
+                <div class="progress-bar progress-bar-warning"
+                  role="progressbar"
+                  aria-valuenow="${percentages['equal']}"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: ${percentages['equal']}%">
+                  ${percentages['equal']}%
+                </div>
+                <div class="progress-bar progress-bar-danger"
+                  role="progressbar"
+                  aria-valuenow="${percentages[other_uid]}"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="width: ${percentages[other_uid]}%">
+                  ${percentages[other_uid]}%
+                </div>
+              </div>
+            </div>
+          </div>
+          </tal:defs>
+        </tal:iter>
+      </div>
+    </div>
+  </div>
+  <hr/>
+</tal:iterate>
+</tal:main>

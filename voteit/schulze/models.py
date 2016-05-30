@@ -1,7 +1,9 @@
 from copy import deepcopy
+from decimal import Decimal
 
 from pyramid.renderers import render
 from pyramid.response import Response
+from pyvotecore.schulze_method import SchulzeMethod
 from pyvotecore.schulze_pr import SchulzePR
 from pyvotecore.schulze_stv import SchulzeSTV
 from voteit.core.models.poll_plugin import PollPlugin
@@ -13,10 +15,31 @@ from voteit.schulze import _
 from voteit.schulze.schemas import SchulzePollSchema
 
 
-class SchulzeBase(object):
+def format_ranking(pairs):
+    """
+    Input looks something like this:
+    {(u'bd2c71ca-0444-4d96-8a00-d1bf896e3051', u'0b43972f-0be8-49c6-a1ef-6de2fd5b6fca'): 0,
+     (u'bd2c71ca-0444-4d96-8a00-d1bf896e3051', u'fdb177a9-c7e0-4958-8e0d-8e89d0e311b2'): 1,
+     (u'fdb177a9-c7e0-4958-8e0d-8e89d0e311b2', u'bd2c71ca-0444-4d96-8a00-d1bf896e3051'): 1,
+     (u'0b43972f-0be8-49c6-a1ef-6de2fd5b6fca', u'fdb177a9-c7e0-4958-8e0d-8e89d0e311b2'): 1,
+     (u'fdb177a9-c7e0-4958-8e0d-8e89d0e311b2', u'0b43972f-0be8-49c6-a1ef-6de2fd5b6fca'): 1,
+     (u'0b43972f-0be8-49c6-a1ef-6de2fd5b6fca', u'bd2c71ca-0444-4d96-8a00-d1bf896e3051'): 2}
+    """
+    results = {}
+    for (pair, rank) in pairs.items():
+        preferred = results.setdefault(pair[0], {})
+        preferred[pair[1]] = rank
+    return results
+
+
+class SchulzeBase(PollPlugin):
     """ Common methods for Schulze ballots. This is ment to be a mixin
         for an adapter. It won't work by itself.
     """
+    voter_description = _("schulze_base_description",
+                          default="Rank proposals with stars - more is better. "
+                                  "When the result is calculated, each proposal will "
+                                  "be compared to every other based on preference.")
 
     def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
@@ -48,17 +71,19 @@ class SchulzeBase(object):
         schema = SchulzePollSchema()
         for proposal in proposals:
             title = "#%s: %s" % (proposal.aid, proposal.text)
-            schema.add(colander.SchemaNode(colander.String(),
-                                           name = proposal.uid,
-                                           #To make missing even less desired than the regular stars
-                                           #Schulze can't handle null value or empty dicts.
-                                           #This does however produce the same result
-                                           missing = stars+1,
-                                           title = title,
-                                           validator = colander.OneOf(valid_entries),
-                                           widget = deform.widget.RadioChoiceWidget(values = schulze_choice,
-                                                                                    template = 'star_choice',
-                                                                                    readonly_template = 'readonly/star_choice')))
+            schema.add(colander.SchemaNode(
+                colander.String(),
+                name = proposal.uid,
+                #To make missing even less desired than the regular stars
+                #Schulze can't handle null value or empty dicts.
+                #This does however produce the same result
+                missing = stars+1,
+                title = title,
+                validator = colander.OneOf(valid_entries),
+                widget = deform.widget.RadioChoiceWidget(values = schulze_choice,
+                                                        template = 'star_choice',
+                                                        readonly_template = 'readonly/star_choice')))
+        schema.description = self.voter_description
         return schema
 
     def schulze_format_ballots(self, ballots):
@@ -71,17 +96,96 @@ class SchulzeBase(object):
         return Response(unicode(self.context.ballots))
 
 
-class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
+class SchulzePollPlugin(SchulzeBase):
+    """ Regular Schulze poll - one winner.
+    """
+    name = 'schulze'
+    title = _("Schulze (Single winner with detailed results)")
+    description = _("moderator_description_schulze",
+                    default = "Ranked poll suitable for most occations where "
+                              "you want a single winner. Voters rank proposals with stars.")
+
+    def get_settings_schema(self):
+        """ Get an instance of the schema used to render a form for editing settings.
+        """
+        schema = SettingsSchema()
+        schema.title = _(u"Poll settings")
+        schema.description = _(u"Settings for Schulze STV")
+        del schema['winners']
+        return schema
+
+    def handle_close(self):
+        #IMPORTANT! Use deepcopy, we don't want the SchulzeSTV to modify our ballots, just calculate a result
+        ballots = deepcopy(self.context.ballots)
+        if ballots:
+            schulze_ballots = self.schulze_format_ballots(ballots)
+            self.context.poll_result = SchulzeMethod(schulze_ballots,
+                                                     ballot_notation = "ranking").as_dict()
+        else:
+            #No votes!
+            self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
+
+    def change_states_of(self):
+        """ This gets called when a poll has finished.
+            It returns a dictionary with proposal uid as key and new state as value.
+            Like: {'<uid>':'approved', '<uid>', 'denied'}
+        """
+        result = {}
+        winner = self.context.poll_result.get('winner', '')
+        losers = self.context.poll_result['candidates'] - set([winner])
+        if winner:
+            result[winner] = 'approved'
+            for loser in losers:
+                result[loser] = 'denied'
+        return result
+
+    def render_result(self, view):
+        winner_uid = self.context.poll_result.get('winner', set())
+        winner = view.resolve_uid(winner_uid)
+        tied_winners = []
+        for uid in self.context.poll_result.get('tied_winners', ()):
+            tied_winners.append(view.resolve_uid(uid))
+        looser_uids = set(self.context.poll_result['candidates']) - set([winner_uid])
+        loosers = []
+        for uid in looser_uids:
+            loosers.append(view.resolve_uid(uid))
+        response = {}
+        response['context'] = self.context
+        response['pairs'] = pairs = format_ranking(self.context.poll_result['pairs'])
+        response['total_votes'] = total_votes = len(self.context) #Should be ok...
+        response['proposals_dict'] = dict([(x.uid, x) for x in self.context.get_proposal_objects()])
+        response['winners'] = [winner]
+        response['tied_winners'] = tied_winners
+        response['loosers'] = loosers
+        response['proposals'] = [winner] + loosers
+        def _perc(primary_uid, vs_uid):
+            primary = Decimal(pairs[primary_uid][vs_uid])
+            vs = Decimal(pairs[vs_uid][primary_uid])
+            result = {}
+            try:
+                result[primary_uid] = int(round(primary / total_votes * 100))
+            except ZeroDivisionError:
+                result[primary_uid] = 0
+            try:
+                result[vs_uid] = int(round(vs / total_votes * 100))
+            except ZeroDivisionError:
+                result[vs_uid] = 0
+            result['equal'] = 100 - result[primary_uid] - result[vs_uid]
+            return result
+        response['perc'] = _perc
+        return render('templates/result_schulze.pt', response, request = view.request)
+
+
+class SchulzeSTVPollPlugin(SchulzeBase):
     """ Poll plugin for the Schulze STV Polls. """
     name = u'schulze_stv'
     title = _(u"schulze_stv_title", 
-              default="Schulze STV")
-    description = _(u"description_schulze_stv", 
-                    default = "Order the proposals with stars. "
-                              "The more stars the more you prefer the proposal. "
-                              "VoteIT calculates the relation between the "
-                              "proposals and finds a winner. "
-                              "In case of a tie there is a random tie breaker.")
+              default="Schulze STV (Multiple winner, proportional")
+    description = _("moderator_description_schulze_stv",
+                    default = "This poll can handle multiple winners too, "
+                              "but may suffer from performance problems. "
+                              "Each new possible winner increases complexity expontentially. "
+                              "Computations may take a very long time with more than 6 winners!")
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -135,19 +239,20 @@ class SchulzeSTVPollPlugin(SchulzeBase, PollPlugin):
         return render('templates/result_stv.pt', response, request = view.request)
 
 
-class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
+class SchulzePRPollPlugin(SchulzeBase):
     """ Poll plugin for the Schulze PR ranking polls. It will sort a list
         of proposals according to the voters preference.
     """
     name = u'schulze_pr'
     title = _(u"schulze_pr_title", 
-              default="Schulze PR (ranking only)")
-    description = _(u"description_schulze_pr",
-                    default = "Order the proposals with stars. "
-                              "The more stars the more you prefer the proposal. "
-                              "VoteIT calculates the relation between the "
-                              "proposals and sorts them according to all voters preference. "
-                              "In case of a tie there's a random tie breaker.")
+              default="Schulze PR (Sorted result, proportional)")
+    description = _("moderator_description_schulze_pr",
+                    default = "This poll sorts all the proposals according "
+                              "to the preference of all voters. "
+                              "The result will be proportional. "
+                              "Note: Computational complexity grows expontentially "
+                              "with each added proposal. Over 5 proposals may be tricky. "
+                              "Use with caution!")
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -179,5 +284,6 @@ class SchulzePRPollPlugin(SchulzeBase, PollPlugin):
 
 
 def includeme(config):
+    config.registry.registerAdapter(SchulzePollPlugin, name = SchulzePollPlugin.name)
     config.registry.registerAdapter(SchulzeSTVPollPlugin, name = SchulzeSTVPollPlugin.name)
     config.registry.registerAdapter(SchulzePRPollPlugin, name = SchulzePRPollPlugin.name)

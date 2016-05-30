@@ -25,6 +25,6 @@ class SettingsSchema(colander.Schema):
 
 
 #The schema will be populated in the schulze poll plugin
-class SchulzePollSchema(colander.Schema ):
+class SchulzePollSchema(colander.Schema):
     widget = deform.widget.FormWidget(template = 'form_modal',
                                       readonly_template = 'readonly/form_modal')

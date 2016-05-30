@@ -5,24 +5,31 @@ Schulze Polls for VoteIT
     :target: https://travis-ci.org/VoteIT/voteit.schulze
 
 This is a plugin package for VoteIT that provides functionality
-for Schulze STV and PR polls.
+for regular Schulze, STV and PR polls.
 
-You can read more about the Schulze method here: `<http://en.wikipedia.org/wiki/Schulze_Method>`_
+
+Schulze Method
+--------------
+
+Single winner with proper analysis of how each proposal was picked.
+Use this for most cases where you want a single winner.
+
+More information: `<https://en.wikipedia.org/wiki/Schulze_method>`_
 
 
 Schulze STV (Single Transferable Vote)
 --------------------------------------
 
-Use this for elections where you want one or more winners. It doesn't
+Use this for elections where you want 2 or more winners. It doesn't
 rank the winners though, they're only displayed.
 
 More information: `<http://en.wikipedia.org/wiki/Schulze_STV>`_
 
 
-Schulze PR (Proportional Representation)
-----------------------------------------
+Schulze PR (Proportional Ranking)
+---------------------------------
 
 Use this if you want to sort proposals according to preference. It has no
-winner, it only outsput the prefered order of all the voters.
-
-More information: `<http://en.wikipedia.org/wiki/Proportional_representation>`_
+winner, it only outputs the preferred order of all the voters.
+It's very computationally heavy, and complexity increases exponentially with each
+new proposal. Any more than 5-6 proposals may cause problems. Use carefully!
