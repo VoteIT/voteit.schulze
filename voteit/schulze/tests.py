@@ -224,9 +224,7 @@ def _setup_poll_fixture(config):
     config.include('pyramid_chameleon')
     #Register plugin
     config.include('voteit.schulze')
-    config.include('arche.models.catalog')
-    config.include('voteit.core.models.catalog')
-    config.include('voteit.core.models.unread')
+    config.include('voteit.core.testing_helpers.register_catalog')
     root = bootstrap_and_fixture(config)
     root['m'] = Meeting()
     unrestricted_wf_transition_to(root['m'], 'ongoing')
