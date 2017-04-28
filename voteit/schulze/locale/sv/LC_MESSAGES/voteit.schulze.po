@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.schulze\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-05-30 19:52+0200\n"
-"PO-Revision-Date: 2016-05-30 19:58+0200\n"
+"POT-Creation-Date: 2017-04-28 14:51+0200\n"
+"PO-Revision-Date: 2017-04-28 14:53+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <support@voteit.se>\n"
 "Language: sv\n"
@@ -23,29 +23,29 @@ msgstr ""
 "Ranka förslag med stjärnor - fler är bättre. När resultatet beräknas kommer "
 "varje förslag jämföras med alla andra baserat på preferens."
 
-#: voteit/schulze/models.py:103
+#: voteit/schulze/models.py:105
 msgid "Schulze (Single winner with detailed results)"
 msgstr "Schulze (En vinnare med detaljerat resultat)"
 
 #. Default: Ranked poll suitable for most occations where you want a single
 #. winner. Voters rank proposals with stars.
-#: voteit/schulze/models.py:104
+#: voteit/schulze/models.py:106
 msgid "moderator_description_schulze"
 msgstr ""
 "Rangordningsvotering lämpad för de flesta tillfällen med ett vinnande "
 "förslag. Röstberättigade rankar förslagen med stjärnor."
 
-#: voteit/schulze/models.py:112 voteit/schulze/models.py:194
-#: voteit/schulze/models.py:261
+#: voteit/schulze/models.py:114 voteit/schulze/models.py:196
+#: voteit/schulze/models.py:263
 msgid "Poll settings"
 msgstr "Omröstningsinställningar"
 
-#: voteit/schulze/models.py:113 voteit/schulze/models.py:195
+#: voteit/schulze/models.py:115 voteit/schulze/models.py:197
 msgid "Settings for Schulze STV"
 msgstr "Inställningar för Schulze STV"
 
 #. Default: Schulze STV (Multiple winner, proportional
-#: voteit/schulze/models.py:182
+#: voteit/schulze/models.py:184
 msgid "schulze_stv_title"
 msgstr "Schultze STV"
 
@@ -53,7 +53,7 @@ msgstr "Schultze STV"
 #. performance problems. Each new possible winner increases complexity
 #. expontentially. Computations may take a very long time with more than 6
 #. winners!
-#: voteit/schulze/models.py:184
+#: voteit/schulze/models.py:186
 msgid "moderator_description_schulze_stv"
 msgstr ""
 "Omröstningen kan hantera många vinnare, men kan få prestandaproblem. Varje "
@@ -61,7 +61,7 @@ msgstr ""
 "lång tid med 6 eller fler vinnare!"
 
 #. Default: Schulze PR (Sorted result, proportional)
-#: voteit/schulze/models.py:247
+#: voteit/schulze/models.py:249
 msgid "schulze_pr_title"
 msgstr "Schulze PR (bara rankning)"
 
@@ -69,7 +69,7 @@ msgstr "Schulze PR (bara rankning)"
 #. all voters. The result will be proportional. Note: Computational complexity
 #. grows expontentially with each added proposal. Over 5 proposals may be
 #. tricky. Use with caution!
-#: voteit/schulze/models.py:249
+#: voteit/schulze/models.py:251
 msgid "moderator_description_schulze_pr"
 msgstr ""
 "Denna omröstning sorterar förslagen i enlighet med alla röstberättigades "
@@ -77,34 +77,37 @@ msgstr ""
 "exponentiellt med varje tillagt förslag. Över 5 förslag kan ta tid. Använd "
 "med försiktighet!"
 
-#: voteit/schulze/models.py:262
+#: voteit/schulze/models.py:264
 msgid "Settings for Schulze PR"
 msgstr "Inställningar för Schulze PR"
 
-#: voteit/schulze/schemas.py:11
-msgid "Winners"
-msgstr "Vinnare"
-
-#. Default: Numbers of possible winners in the poll
 #: voteit/schulze/schemas.py:12
-msgid "schulze_config_winners_description"
-msgstr "Antal möjliga vinnare i omröstningen"
+msgid "Winners (For 1, use regular Schulze)"
+msgstr "Vinnare (För 1, använd vanlig Schulze)"
 
-#: voteit/schulze/schemas.py:16
+#. Default: Note! With more than 5 winners, the result may take an extremely
+#. long time to calculate. Consult VoteIT development team before using this!
+#: voteit/schulze/schemas.py:13
+msgid "schulze_config_winners_description"
+msgstr ""
+"Obs! Med fler än 5 vinnare kan resultatet ta extremt lång tid att beräkna. "
+"Prata med VoteITs utvecklingsteam innan ni använder den inställningen!"
+
+#: voteit/schulze/schemas.py:21
 msgid "Maximum stars"
 msgstr "Maximalt antal stjärnor"
 
 #. Default: The maximum numbers of stars regarless of number of proposals
-#: voteit/schulze/schemas.py:17
+#: voteit/schulze/schemas.py:22
 msgid "schulze_config_max_stars_description"
 msgstr "Det maximala antalet stjärnor oavsett antal förslag"
 
-#: voteit/schulze/schemas.py:21
+#: voteit/schulze/schemas.py:28
 msgid "Minumum stars"
 msgstr "Minimalt antal stjärnor"
 
 #. Default: The minimum numbers of stars regarless of number of proposals
-#: voteit/schulze/schemas.py:22
+#: voteit/schulze/schemas.py:29
 msgid "schulze_config_min_stars_description"
 msgstr "Det minimala antalet stjärnor oavsett antal förslag"
 
@@ -147,6 +150,9 @@ msgstr "Detaljerat resultat"
 #: voteit/schulze/templates/widgets/star_choice.pt:7
 msgid "Clear selection"
 msgstr "Rensa val"
+
+#~ msgid "Winners"
+#~ msgstr "Vinnare"
 
 #~ msgid "Ranking"
 #~ msgstr "Rankning"
