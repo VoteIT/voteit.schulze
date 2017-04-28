@@ -70,7 +70,7 @@ class SchulzeBase(PollPlugin):
         #This schema creation method is due to legacy code.
         schema = SchulzePollSchema()
         for proposal in proposals:
-            title = "#%s: %s" % (proposal.aid, proposal.text)
+            title = "#%s" % proposal.aid
             schema.add(colander.SchemaNode(
                 colander.String(),
                 name = proposal.uid,
@@ -79,10 +79,12 @@ class SchulzeBase(PollPlugin):
                 #This does however produce the same result
                 missing = stars+1,
                 title = title,
+                description = proposal.text,
                 validator = colander.OneOf(valid_entries),
-                widget = deform.widget.RadioChoiceWidget(values = schulze_choice,
-                                                        template = 'star_choice',
-                                                        readonly_template = 'readonly/star_choice')))
+                widget = deform.widget.RadioChoiceWidget(
+                    values = schulze_choice,
+                    template = 'star_choice',
+                    readonly_template = 'readonly/star_choice')))
         schema.description = self.voter_description
         return schema
 
