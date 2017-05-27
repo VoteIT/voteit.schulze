@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-04-28 14:51+0200\n"
+"POT-Creation-Date: 2017-05-27 10:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,16 +120,36 @@ msgstr ""
 msgid "schulze_tied_description"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:37
+#: ././voteit/schulze/templates/result_schulze.pt:42
 msgid "Approved"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:41
+#: ././voteit/schulze/templates/result_schulze.pt:46
 msgid "Denied"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:54
+#: ././voteit/schulze/templates/result_schulze.pt:56
 msgid "Detailed result"
+msgstr ""
+
+#: ././voteit/schulze/templates/result_schulze.pt:64
+msgid "The proposal above in green, opposing proposal in red."
+msgstr ""
+
+#: ././voteit/schulze/templates/result_schulze.pt:70
+msgid "... vs"
+msgstr ""
+
+#: ././voteit/schulze/templates/result_schulze.pt:78
+msgid "Approve"
+msgstr ""
+
+#: ././voteit/schulze/templates/result_schulze.pt:84
+msgid "Equal"
+msgstr ""
+
+#: ././voteit/schulze/templates/result_schulze.pt:90
+msgid "Approve other"
 msgstr ""
 
 #: ././voteit/schulze/templates/widgets/star_choice.pt:7

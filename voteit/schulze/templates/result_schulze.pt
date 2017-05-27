@@ -23,15 +23,20 @@
   </tal:iter>
   The winner was picked randomly.
 </div>
+<hr/>
 <tal:iterate repeat="prop proposals">
   <div class="modal-body">
-    <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)" />
-    ${prop.title}
+
+      <p>
+          <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)" />
+          ${prop.title}
+      </p>
+      <p><b>#${prop.aid}</b></p>
+
   </div>
   <div class="modal-body">
-
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-6">
         <span tal:condition="prop in winners" class="label label-approved">
           <span class="glyphicon glyphicon-approved"></span>
           <tal:approved i18n:translate="">Approved</tal:approved>
@@ -41,10 +46,7 @@
           <tal:denied i18n:translate="">Denied</tal:denied>
         </span>
       </div>
-      <div class="col-sm-4">
-        <b>#${prop.aid}</b>
-      </div>
-      <div class="col-sm-4">
+      <div class="col-sm-6">
         <p class="text-right">
         <a class="btn btn-default btn-xs" data-toggle="collapse"
            href="#prop-details-${prop.uid}"
@@ -56,25 +58,37 @@
         </p>
       </div>
     </div>
+
     <div class="collapse" id="prop-details-${prop.uid}">
+        <div class="well">
+            <span i18n:translate="">The proposal above in green, opposing proposal in red.</span>
       <hr/>
-      <div class="">
+      <div>
         <tal:iter repeat="(other_uid, val) pairs[prop.uid].items()">
           <tal:defs tal:define="percentages perc(prop.uid, other_uid)">
+          <p class="text-right ">
+            <span i18n:translate="">... vs</span>
+            <a data-toggle="schulze-prop-popover" data-placement="bottom"
+               data-trigger="focus hover click"
+                data-content="${proposals_dict[other_uid].text}">#${proposals_dict[other_uid].aid}</a>
+          </p>
           <div class="row">
             <div class="col-sm-4">
               <span class="label label-approved">
-              #${prop.aid} (${pairs[prop.uid][other_uid]})
+                <span i18n:translate="">Approve</span>
+                (${pairs[prop.uid][other_uid]})
               </span>
             </div>
             <div class="col-sm-4 text-center">
               <span class="label label-warning">
-              Equal (${total_votes - pairs[other_uid][prop.uid] - pairs[prop.uid][other_uid]})
+              <span i18n:translate="">Equal</span>
+               (${total_votes - pairs[other_uid][prop.uid] - pairs[prop.uid][other_uid]})
               </span>
             </div>
             <div class="col-sm-4 text-right">
               <span class="label label-denied">
-              #${proposals_dict[other_uid].aid}  (${pairs[other_uid][prop.uid]})
+              <span i18n:translate="">Approve other</span>
+              (${pairs[other_uid][prop.uid]})
               </span>
             </div>
           </div>
@@ -112,8 +126,15 @@
           </tal:defs>
         </tal:iter>
       </div>
+        </div>
     </div>
   </div>
   <hr/>
+    <script>
+        try {
+            $('[data-toggle="schulze-prop-popover"]').popover()
+        } catch(e) {}
+
+    </script>
 </tal:iterate>
 </tal:main>

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.schulze\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-04-28 14:51+0200\n"
-"PO-Revision-Date: 2017-04-28 14:53+0200\n"
+"POT-Creation-Date: 2017-05-27 10:12+0200\n"
+"PO-Revision-Date: 2017-05-27 10:13+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <support@voteit.se>\n"
 "Language: sv\n"
@@ -135,17 +135,37 @@ msgstr ""
 msgid "schulze_tied_description"
 msgstr "Resultatet blev lika mellan ${prop_ids} Vinnaren lottades fram."
 
-#: voteit/schulze/templates/result_schulze.pt:37
+#: voteit/schulze/templates/result_schulze.pt:42
 msgid "Approved"
 msgstr "Bifallen"
 
-#: voteit/schulze/templates/result_schulze.pt:41
+#: voteit/schulze/templates/result_schulze.pt:46
 msgid "Denied"
 msgstr "Avslaget"
 
-#: voteit/schulze/templates/result_schulze.pt:54
+#: voteit/schulze/templates/result_schulze.pt:56
 msgid "Detailed result"
 msgstr "Detaljerat resultat"
+
+#: voteit/schulze/templates/result_schulze.pt:64
+msgid "The proposal above in green, opposing proposal in red."
+msgstr "Förslaget ovan i grönt, motstående förslag i rött."
+
+#: voteit/schulze/templates/result_schulze.pt:70
+msgid "... vs"
+msgstr "… mot"
+
+#: voteit/schulze/templates/result_schulze.pt:78
+msgid "Approve"
+msgstr "Bifall"
+
+#: voteit/schulze/templates/result_schulze.pt:84
+msgid "Equal"
+msgstr "Lika"
+
+#: voteit/schulze/templates/result_schulze.pt:90
+msgid "Approve other"
+msgstr "Bifall motstående förslag"
 
 #: voteit/schulze/templates/widgets/star_choice.pt:7
 msgid "Clear selection"
