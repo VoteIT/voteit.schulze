@@ -5,7 +5,6 @@ from pyramid import testing
 from pyramid.traversal import find_root
 from voteit.core.models.agenda_item import AgendaItem
 from voteit.core.models.interfaces import IPollPlugin
-from voteit.core.models.interfaces import IVote
 from voteit.core.models.meeting import Meeting
 from voteit.core.models.poll import Poll
 from voteit.core.models.poll_plugin import PollPlugin
@@ -63,6 +62,77 @@ class SchulzeBaseTests(unittest.TestCase):
         plugin = poll.get_poll_plugin()
         self.assertEqual(plugin.schulze_format_ballots(poll.ballots),
                          [{'count': 3, 'ballot': {u'p1uid': 1, u'p2uid': 2, u'p3uid': 3}}])
+
+
+class SortedSchulzePollPluginTests(unittest.TestCase):
+    def setUp(self):
+        request = testing.DummyRequest()
+        self.config = testing.setUp(request=request)
+
+    def tearDown(self):
+        testing.tearDown()
+
+    @property
+    def _cut(self):
+        from voteit.schulze.models import SortedSchulzePollPlugin
+        return SortedSchulzePollPlugin
+
+    def _fixture(self):
+        poll = _setup_poll_fixture(self.config)
+        poll.poll_plugin = self._cut.name
+        return poll
+
+    def test_close_with_no_votes(self):
+        poll = self._fixture()
+        poll.close_poll()
+        marker = object()
+        self.assertEqual(poll.poll_result.get('winners', marker), marker)
+        self.assertIn('candidates', poll.poll_result)
+
+    def test_eliminate_candidate(self):
+        poll = self._fixture()
+        _add_votes(poll)
+        ballots = poll.calculate_ballots()
+        obj = self._cut(poll)
+        ballots = obj.schulze_format_ballots(ballots)
+        self.assertEqual(ballots, [{'count': 3, 'ballot': {u'p1uid': 1, u'p2uid': 2, u'p3uid': 3}}])
+        ballots = obj.eliminate_candidate('p1uid', ballots)
+        self.assertEqual(ballots, [{'count': 3, 'ballot': {u'p2uid': 2, u'p3uid': 3}}])
+
+    def test_poll_result_2_winners(self):
+        poll = self._fixture()
+        _add_votes(poll)
+        poll.poll_settings['winners'] = 2
+        poll.close_poll()
+        self.assertEqual(
+            list(['p1uid', 'p2uid']),
+            poll.poll_result['winners']
+        )
+
+    def test_poll_result_no_winner_restriciton(self):
+        poll = self._fixture()
+        _add_votes(poll)
+        poll.close_poll()
+        self.assertEqual(
+            list(['p1uid', 'p2uid', 'p3uid']),
+            poll.poll_result['winners']
+        )
+
+    def test_render_result(self):
+        poll = self._fixture()
+        _add_votes(poll)
+        poll.poll_settings['winners'] = 2
+        poll.close_poll()
+        plugin = poll.get_poll_plugin()
+        request = testing.DummyRequest()
+        request.root = find_root(poll)
+        request.meeting = request.root['m']
+        attach_request_method(request, creators_info, 'creators_info')
+        attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
+        view = BaseView(poll, request)
+        result = plugin.render_result(view)
+        self.assertTrue('first proposal' in result)
+        self.assertTrue('second proposal' in result)
 
 
 class SchulzeSTVTests(unittest.TestCase):

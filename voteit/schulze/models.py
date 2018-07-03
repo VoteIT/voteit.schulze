@@ -117,7 +117,8 @@ class SchulzePollPlugin(SchulzeBase):
         return schema
 
     def handle_close(self):
-        #IMPORTANT! Use deepcopy, we don't want the SchulzeSTV to modify our ballots, just calculate a result
+        # IMPORTANT! Use deepcopy, we don't want the SchulzePollPlugin to modify our ballots,
+        # just calculate a result
         ballots = deepcopy(self.context.ballots)
         if ballots:
             schulze_ballots = self.schulze_format_ballots(ballots)
@@ -176,6 +177,91 @@ class SchulzePollPlugin(SchulzeBase):
             return result
         response['perc'] = _perc
         return render('templates/result_schulze.pt', response, request = view.request)
+
+
+class SortedSchulzePollPlugin(SchulzeBase):
+    """ A regular Schulze poll that's repeated until everything is sorted.
+        This is a non-proportionally ranked method
+    """
+    name = 'sorted_schulze'
+    title = _("Sorted non-proportional Schulze")
+    description = _(
+        "moderator_description_sorted_non_proportional",
+        default = "A regular Schulze poll is repeated until all "
+        "candidates have a ranking. The result is non-proportional, "
+        "and each stage produces the condorcet winner "
+        "within the remaining candidates. "
+        "Voters rank proposals with stars."
+    )
+
+    def get_settings_schema(self):
+        """ Get an instance of the schema used to render a form for editing settings.
+        """
+        schema = SettingsSchema()
+        schema.title = _(u"Poll settings")
+        schema.description = _(u"Settings for Sorted Schulze")
+        del schema['winners']
+        schema.add(
+            colander.SchemaNode(
+                colander.Int(),
+                title=_("Restrict number of winners"),
+                description=_("Use 0 to sort all"),
+                default=0,
+                missing=0,
+            )
+        )
+        return schema
+
+    def handle_close(self):
+        """
+        Calculate results per round instead. Each round has exactly 1 winner.
+        (It could be a randomized tie though)
+        """
+        # IMPORTANT! Use deepcopy, we don't want the SortedSchulzePollPlugin to modify our ballots,
+        # just calculate a result
+        ballots = deepcopy(self.context.ballots)
+        wcount = self.context.poll_settings.get('winners', 0)
+
+        if ballots:
+            candidates_left = set(self.context.proposals)
+            if wcount and len(self.context.proposals) > wcount:
+                rounds = wcount
+            else:
+                rounds = len(self.context.proposals)
+            schulze_ballots = self.schulze_format_ballots(ballots)
+            round_data = []
+            for i in range(rounds):
+                if len(candidates_left) > 1:
+                    # SchulzeMethod changed the ballots, so we need another copy here!
+                    res = SchulzeMethod(deepcopy(schulze_ballots), ballot_notation = "ranking").as_dict()
+                    round_data.append(res)
+                    schulze_ballots = self.eliminate_candidate(res['winner'], schulze_ballots)
+                    candidates_left.remove(res['winner'])
+                else:
+                    # Only 1 candidate left
+                    round_data.append({'winner': list(candidates_left)[0]})
+            self.context.poll_result = {
+                'rounds': round_data,
+                'candidates': set(self.context.proposals),
+                'winners': [x['winner'] for x in round_data]
+            }
+        else:
+            #No votes!
+            self.context.poll_result = {'candidates': set(self.context.proposals)}
+
+    def eliminate_candidate(self, uid, ballots):
+        """ Eliminate a candidate from formatted ballots. """
+        for ballot in ballots:
+            ballot['ballot'].pop(uid, None)
+        return ballots
+
+    def render_result(self, view):
+        response = {}
+        response['context'] = self.context
+        response['total_votes'] = len(self.context) #Should be ok...
+        response['proposals_dict'] = dict([(x.uid, x) for x in self.context.get_proposal_objects()])
+        response['winners'] = self.context.poll_result.get('winners', ())
+        return render('templates/result_sorted_schulze.pt', response, request = view.request)
 
 
 class SchulzeSTVPollPlugin(SchulzeBase):
@@ -287,5 +373,6 @@ class SchulzePRPollPlugin(SchulzeBase):
 
 def includeme(config):
     config.registry.registerAdapter(SchulzePollPlugin, name = SchulzePollPlugin.name)
+    config.registry.registerAdapter(SortedSchulzePollPlugin, name = SortedSchulzePollPlugin.name)
     config.registry.registerAdapter(SchulzeSTVPollPlugin, name = SchulzeSTVPollPlugin.name)
     config.registry.registerAdapter(SchulzePRPollPlugin, name = SchulzePRPollPlugin.name)

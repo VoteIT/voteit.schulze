@@ -1,0 +1,36 @@
+<tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title"
+    i18n:translate="">
+    Results of
+    <tal:ts replace="context.title" i18n:name="title" />
+  </h4>
+</div>
+<div class="modal-body">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <tal:ts i18n:translate="schulze_result_explanation">
+    Schulze polls compare all proposals to each other.
+    If you click the "Detailed result" button, you'll see how that specific
+    proposal faired against others. The number within paranthesis is the absolute number
+    of votes who preferred that option.</tal:ts>
+</div>
+
+    <div class="list-group">
+<tal:iterate repeat="prop_uid winners">
+  <div class="list-group-item" tal:define="prop proposals_dict[prop_uid]">
+      <p>
+          <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)" />
+          ${prop.title}
+      </p>
+      <p><b>#${prop.aid}</b></p>
+  </div>
+</tal:iterate>
+    </div>
+
+  <script>
+      try {
+          $('[data-toggle="schulze-prop-popover"]').popover()
+      } catch(e) {}
+  </script>
+</tal:main>
