@@ -1,49 +1,73 @@
 #
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-05-27 10:12+0200\n"
+"POT-Creation-Date: 2018-07-04 13:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Generated-By: Lingua 4.9\n"
+"Generated-By: Lingua 4.13\n"
 
 #. Default: Rank proposals with stars - more is better. When the result is
 #. calculated, each proposal will be compared to every other based on
 #. preference.
-#: ././voteit/schulze/models.py:39
+#: ./voteit/schulze/models.py:39
 msgid "schulze_base_description"
 msgstr ""
 
-#: ././voteit/schulze/models.py:105
+#: ./voteit/schulze/models.py:105
 msgid "Schulze (Single winner with detailed results)"
 msgstr ""
 
 #. Default: Ranked poll suitable for most occations where you want a single
 #. winner. Voters rank proposals with stars.
-#: ././voteit/schulze/models.py:106
+#: ./voteit/schulze/models.py:106
 msgid "moderator_description_schulze"
 msgstr ""
 
-#: ././voteit/schulze/models.py:114 ././voteit/schulze/models.py:196
-#: ././voteit/schulze/models.py:263
+#: ./voteit/schulze/models.py:114 ./voteit/schulze/models.py:201
+#: ./voteit/schulze/models.py:282 ./voteit/schulze/models.py:349
 msgid "Poll settings"
 msgstr ""
 
-#: ././voteit/schulze/models.py:115 ././voteit/schulze/models.py:197
+#: ./voteit/schulze/models.py:115 ./voteit/schulze/models.py:283
 msgid "Settings for Schulze STV"
 msgstr ""
 
+#: ./voteit/schulze/models.py:187
+msgid "Sorted non-proportional Schulze"
+msgstr ""
+
+#. Default: A regular Schulze poll is repeated until all candidates have a
+#. ranking. The result is non-proportional, and each stage produces the
+#. condorcet winner within the remaining candidates. Voters rank proposals with
+#. stars.
+#: ./voteit/schulze/models.py:188
+msgid "moderator_description_sorted_non_proportional"
+msgstr ""
+
+#: ./voteit/schulze/models.py:202
+msgid "Settings for Sorted Schulze"
+msgstr ""
+
+#: ./voteit/schulze/models.py:207
+msgid "Restrict number of winners"
+msgstr ""
+
+#: ./voteit/schulze/models.py:208
+msgid "Use 0 to sort all"
+msgstr ""
+
 #. Default: Schulze STV (Multiple winner, proportional
-#: ././voteit/schulze/models.py:184
+#: ./voteit/schulze/models.py:270
 msgid "schulze_stv_title"
 msgstr ""
 
@@ -51,12 +75,12 @@ msgstr ""
 #. performance problems. Each new possible winner increases complexity
 #. expontentially. Computations may take a very long time with more than 6
 #. winners!
-#: ././voteit/schulze/models.py:186
+#: ./voteit/schulze/models.py:272
 msgid "moderator_description_schulze_stv"
 msgstr ""
 
 #. Default: Schulze PR (Sorted result, proportional)
-#: ././voteit/schulze/models.py:249
+#: ./voteit/schulze/models.py:335
 msgid "schulze_pr_title"
 msgstr ""
 
@@ -64,45 +88,46 @@ msgstr ""
 #. all voters. The result will be proportional. Note: Computational complexity
 #. grows expontentially with each added proposal. Over 5 proposals may be
 #. tricky. Use with caution!
-#: ././voteit/schulze/models.py:251
+#: ./voteit/schulze/models.py:337
 msgid "moderator_description_schulze_pr"
 msgstr ""
 
-#: ././voteit/schulze/models.py:264
+#: ./voteit/schulze/models.py:350
 msgid "Settings for Schulze PR"
 msgstr ""
 
-#: ././voteit/schulze/schemas.py:12
+#: ./voteit/schulze/schemas.py:12
 msgid "Winners (For 1, use regular Schulze)"
 msgstr ""
 
 #. Default: Note! With more than 5 winners, the result may take an extremely
 #. long time to calculate. Consult VoteIT development team before using this!
-#: ././voteit/schulze/schemas.py:13
+#: ./voteit/schulze/schemas.py:13
 msgid "schulze_config_winners_description"
 msgstr ""
 
-#: ././voteit/schulze/schemas.py:21
+#: ./voteit/schulze/schemas.py:21
 msgid "Maximum stars"
 msgstr ""
 
 #. Default: The maximum numbers of stars regarless of number of proposals
-#: ././voteit/schulze/schemas.py:22
+#: ./voteit/schulze/schemas.py:22
 msgid "schulze_config_max_stars_description"
 msgstr ""
 
-#: ././voteit/schulze/schemas.py:28
+#: ./voteit/schulze/schemas.py:28
 msgid "Minumum stars"
 msgstr ""
 
 #. Default: The minimum numbers of stars regarless of number of proposals
-#: ././voteit/schulze/schemas.py:29
+#: ./voteit/schulze/schemas.py:29
 msgid "schulze_config_min_stars_description"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_pr.pt:5
-#: ././voteit/schulze/templates/result_schulze.pt:5
-#: ././voteit/schulze/templates/result_stv.pt:5
+#: ./voteit/schulze/templates/result_sorted_schulze.pt:5
+#: ./voteit/schulze/templates/result_pr.pt:5
+#: ./voteit/schulze/templates/result_stv.pt:5
+#: ./voteit/schulze/templates/result_schulze.pt:5
 msgid "Results of ${title}"
 msgstr ""
 
@@ -110,48 +135,49 @@ msgstr ""
 #. "Detailed result" button, you'll see how that specific proposal faired
 #. against others. The number within paranthesis is the absolute number of
 #. votes who preferred that option.
-#: ././voteit/schulze/templates/result_schulze.pt:12
+#: ./voteit/schulze/templates/result_sorted_schulze.pt:12
+#: ./voteit/schulze/templates/result_schulze.pt:12
 msgid "schulze_result_explanation"
 msgstr ""
 
 #. Default: Result was a tie between ${prop_ids} The winner was picked
 #. randomly.
-#: ././voteit/schulze/templates/result_schulze.pt:19
+#: ./voteit/schulze/templates/result_schulze.pt:19
 msgid "schulze_tied_description"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:42
+#: ./voteit/schulze/templates/result_schulze.pt:42
 msgid "Approved"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:46
+#: ./voteit/schulze/templates/result_schulze.pt:46
 msgid "Denied"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:56
+#: ./voteit/schulze/templates/result_schulze.pt:56
 msgid "Detailed result"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:64
+#: ./voteit/schulze/templates/result_schulze.pt:64
 msgid "The proposal above in green, opposing proposal in red."
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:70
+#: ./voteit/schulze/templates/result_schulze.pt:70
 msgid "... vs"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:78
+#: ./voteit/schulze/templates/result_schulze.pt:78
 msgid "Approve"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:84
+#: ./voteit/schulze/templates/result_schulze.pt:84
 msgid "Equal"
 msgstr ""
 
-#: ././voteit/schulze/templates/result_schulze.pt:90
+#: ./voteit/schulze/templates/result_schulze.pt:90
 msgid "Approve other"
 msgstr ""
 
-#: ././voteit/schulze/templates/widgets/star_choice.pt:7
+#: ./voteit/schulze/templates/widgets/star_choice.pt:7
 msgid "Clear selection"
 msgstr ""
