@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-07-04 13:29+0200\n"
+"POT-Creation-Date: 2018-07-05 13:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgid "Settings for Schulze STV"
 msgstr ""
 
 #: ./voteit/schulze/models.py:187
-msgid "Sorted non-proportional Schulze"
+msgid "Sorted Schulze"
 msgstr ""
 
 #. Default: A regular Schulze poll is repeated until all candidates have a

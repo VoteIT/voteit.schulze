@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.schulze\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-04 13:29+0200\n"
-"PO-Revision-Date: 2018-07-04 13:31+0200\n"
+"POT-Creation-Date: 2018-07-05 13:44+0200\n"
+"PO-Revision-Date: 2018-07-05 13:44+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <support@voteit.se>\n"
 "Language: sv\n"
@@ -45,8 +45,8 @@ msgid "Settings for Schulze STV"
 msgstr "Inställningar för Schulze STV"
 
 #: voteit/schulze/models.py:187
-msgid "Sorted non-proportional Schulze"
-msgstr "Sorterad icke-proportionell Schulze"
+msgid "Sorted Schulze"
+msgstr "Sorterad Schulze"
 
 #. Default: A regular Schulze poll is repeated until all candidates have a
 #. ranking. The result is non-proportional, and each stage produces the
@@ -200,6 +200,9 @@ msgstr "Bifall motstående förslag"
 #: voteit/schulze/templates/widgets/star_choice.pt:7
 msgid "Clear selection"
 msgstr "Rensa val"
+
+#~ msgid "Sorted non-proportional Schulze"
+#~ msgstr "Sorterad icke-proportionell Schulze"
 
 #~ msgid "Winners"
 #~ msgstr "Vinnare"
