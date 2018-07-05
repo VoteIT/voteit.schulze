@@ -36,10 +36,10 @@ class SchulzeBase(PollPlugin):
     """ Common methods for Schulze ballots. This is ment to be a mixin
         for an adapter. It won't work by itself.
     """
-    voter_description = _("schulze_base_description",
-                          default="Rank proposals with stars - more is better. "
-                                  "When the result is calculated, each proposal will "
-                                  "be compared to every other based on preference.")
+    description = _("schulze_base_description",
+                    default="Rank proposals with stars - more is better. "
+                            "When the result is calculated, each proposal will "
+                            "be compared to every other based on preference.")
 
     def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
@@ -85,7 +85,7 @@ class SchulzeBase(PollPlugin):
                     values = schulze_choice,
                     template = 'star_choice',
                     readonly_template = 'readonly/star_choice')))
-        schema.description = self.voter_description
+        schema.description = self.description
         return schema
 
     def schulze_format_ballots(self, ballots):
@@ -184,7 +184,7 @@ class SortedSchulzePollPlugin(SchulzeBase):
         This is a non-proportionally ranked method
     """
     name = 'sorted_schulze'
-    title = _("Sorted non-proportional Schulze")
+    title = _("Sorted Schulze")
     description = _(
         "moderator_description_sorted_non_proportional",
         default = "A regular Schulze poll is repeated until all "
