@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-07-05 13:44+0200\n"
+"POT-Creation-Date: 2018-07-06 14:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -131,11 +131,15 @@ msgstr ""
 msgid "Results of ${title}"
 msgstr ""
 
+#. Default: Schulze polls compare all proposals to each other pairwise.
+#: ./voteit/schulze/templates/result_sorted_schulze.pt:12
+msgid "sorted_schulze_result_explanation"
+msgstr ""
+
 #. Default: Schulze polls compare all proposals to each other. If you click the
 #. "Detailed result" button, you'll see how that specific proposal faired
 #. against others. The number within paranthesis is the absolute number of
 #. votes who preferred that option.
-#: ./voteit/schulze/templates/result_sorted_schulze.pt:12
 #: ./voteit/schulze/templates/result_schulze.pt:12
 msgid "schulze_result_explanation"
 msgstr ""

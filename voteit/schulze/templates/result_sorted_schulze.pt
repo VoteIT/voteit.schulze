@@ -9,23 +9,22 @@
 </div>
 <div class="modal-body">
     <span class="glyphicon glyphicon-info-sign"></span>
-    <tal:ts i18n:translate="schulze_result_explanation">
-    Schulze polls compare all proposals to each other.
-    If you click the "Detailed result" button, you'll see how that specific
-    proposal faired against others. The number within paranthesis is the absolute number
-    of votes who preferred that option.</tal:ts>
+    <tal:ts i18n:translate="sorted_schulze_result_explanation">
+    Schulze polls compare all proposals to each other pairwise.
+    </tal:ts>
 </div>
 
     <div class="list-group">
-<tal:iterate repeat="prop_uid winners">
-  <div class="list-group-item" tal:define="prop proposals_dict[prop_uid]">
-      <p>
-          <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)" />
-          ${prop.title}
-      </p>
-      <p><b>#${prop.aid}</b></p>
-  </div>
-</tal:iterate>
+        <tal:iterate repeat="prop_uid winners">
+          <div class="list-group-item" tal:define="prop proposals_dict[prop_uid]">
+              <p>
+                  <b>${repeat.prop_uid.number}.</b>
+                  <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)" />
+                  ${prop.title}
+              </p>
+              <p><b>#${prop.aid}</b></p>
+          </div>
+        </tal:iterate>
     </div>
 
   <script>
