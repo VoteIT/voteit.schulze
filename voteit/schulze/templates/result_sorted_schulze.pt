@@ -20,7 +20,7 @@
               <p>
                   <b>${repeat.prop_uid.number}.</b>
                   <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)" />
-                  ${prop.title}
+                  ${structure: request.transform_text(prop.text)}
               </p>
               <p><b>#${prop.aid}</b></p>
           </div>
