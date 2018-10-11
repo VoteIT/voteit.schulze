@@ -79,7 +79,10 @@ class SchulzeBase(PollPlugin):
                 #This does however produce the same result
                 missing = stars+1,
                 title = title,
-                description = proposal.text,
+                # FIXME: This is an ugly hack so we can render proposals properly within the widget
+                # description-fields won't render html.
+                proposal=proposal,
+                #description = proposal.text,
                 validator = colander.OneOf(valid_entries),
                 widget = deform.widget.RadioChoiceWidget(
                     values = schulze_choice,
