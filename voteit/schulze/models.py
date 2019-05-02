@@ -40,6 +40,7 @@ class SchulzeBase(PollPlugin):
                     default="Rank proposals with stars - more is better. "
                             "When the result is calculated, each proposal will "
                             "be compared to every other based on preference.")
+    proposals_min = 3
 
     def get_vote_schema(self):
         """ Get an instance of the schema that this poll uses.
@@ -196,6 +197,7 @@ class SortedSchulzePollPlugin(SchulzeBase):
         "within the remaining candidates. "
         "Voters rank proposals with stars."
     )
+    multiple_winners = True
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
