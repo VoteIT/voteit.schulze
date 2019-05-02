@@ -19,6 +19,7 @@
   ${field.end_rename()}
   </span>
   <div tal:content="structure field.request.render_proposal_text(field.schema.proposal)"></div>
+  <p>&nbsp;</p>
 </div>
 <script type="text/javascript">
   deform.addCallback('${field.oid}', function(oid) {
