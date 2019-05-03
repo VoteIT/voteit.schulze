@@ -2,6 +2,7 @@ import unittest
 
 from arche.views.base import BaseView
 from pyramid import testing
+from pyramid.request import apply_request_extensions
 from pyramid.traversal import find_root
 from voteit.core.models.agenda_item import AgendaItem
 from voteit.core.models.interfaces import IPollPlugin
@@ -11,9 +12,6 @@ from voteit.core.models.poll_plugin import PollPlugin
 from voteit.core.models.proposal import Proposal
 from voteit.core.security import unrestricted_wf_transition_to
 from voteit.core.testing_helpers import bootstrap_and_fixture
-from voteit.core.testing_helpers import attach_request_method
-from voteit.core.helpers import creators_info
-from voteit.core.helpers import get_userinfo_url
 from zope.interface.verify import verifyClass
 from zope.interface.verify import verifyObject
 import colander
@@ -127,8 +125,7 @@ class SortedSchulzePollPluginTests(unittest.TestCase):
         request = testing.DummyRequest()
         request.root = find_root(poll)
         request.meeting = request.root['m']
-        attach_request_method(request, creators_info, 'creators_info')
-        attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
+        apply_request_extensions(request)
         view = BaseView(poll, request)
         result = plugin.render_result(view)
         self.assertTrue('first proposal' in result)
@@ -192,8 +189,7 @@ class SchulzeSTVTests(unittest.TestCase):
         request = testing.DummyRequest()
         request.root = find_root(poll)
         request.meeting = request.root['m']
-        attach_request_method(request, creators_info, 'creators_info')
-        attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
+        apply_request_extensions(request)
         view = BaseView(poll, request)
         result = plugin.render_result(view)
         self.assertTrue('first proposal' in result)
@@ -263,8 +259,7 @@ class SchulzePRTests(unittest.TestCase):
         request = testing.DummyRequest()
         request.root = find_root(poll)
         request.meeting = request.root['m']
-        attach_request_method(request, creators_info, 'creators_info')
-        attach_request_method(request, get_userinfo_url, 'get_userinfo_url')
+        apply_request_extensions(request)
         view = BaseView(poll, request)
         result = plugin.render_result(view)
         self.assertTrue('first proposal' in result)
@@ -294,6 +289,7 @@ def _setup_poll_fixture(config):
     config.include('pyramid_chameleon')
     #Register plugin
     config.include('voteit.schulze')
+    config.include('voteit.core.helpers')
     config.include('voteit.core.testing_helpers.register_catalog')
     root = bootstrap_and_fixture(config)
     root['m'] = Meeting()
