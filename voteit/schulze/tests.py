@@ -314,7 +314,6 @@ def _setup_poll_fixture(config):
     poll.proposal_uids = (p1.uid, p2.uid, p3.uid)
     #Set poll as ongoing
     unrestricted_wf_transition_to(poll, 'upcoming')
-    unrestricted_wf_transition_to(poll, 'ongoing')
     return poll
 
 def _add_votes(poll):

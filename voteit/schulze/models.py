@@ -1,12 +1,13 @@
 from copy import deepcopy
 from decimal import Decimal
 
+from pyramid.httpexceptions import HTTPForbidden
 from pyramid.renderers import render
 from pyramid.response import Response
 from pyvotecore.schulze_method import SchulzeMethod
 from pyvotecore.schulze_pr import SchulzePR
 from pyvotecore.schulze_stv import SchulzeSTV
-from voteit.core.models.poll_plugin import PollPlugin
+from voteit.core.models import poll_plugin
 import colander
 import deform
 
@@ -32,7 +33,7 @@ def format_ranking(pairs):
     return results
 
 
-class SchulzeBase(PollPlugin):
+class SchulzeBase(poll_plugin.PollPlugin):
     """ Common methods for Schulze ballots. This is ment to be a mixin
         for an adapter. It won't work by itself.
     """
@@ -101,6 +102,10 @@ class SchulzeBase(PollPlugin):
     def render_raw_data(self):
         return Response(unicode(self.context.ballots))
 
+    def handle_start(self, request):
+        if len(self.context.proposals) < 2:
+            raise HTTPForbidden(_("Only one proposal selected, can't start poll."))
+
 
 class SchulzePollPlugin(SchulzeBase):
     """ Regular Schulze poll - one winner.
@@ -110,6 +115,16 @@ class SchulzePollPlugin(SchulzeBase):
     description = _("moderator_description_schulze",
                     default = "Ranked poll suitable for most occations where "
                               "you want a single winner. Voters rank proposals with stars.")
+    priority = 1
+    multiple_winners = False
+    criteria = (
+        poll_plugin.MajorityWinner(True),
+        poll_plugin.MajorityLooser(True),
+        poll_plugin.MutialMajority(True),
+        poll_plugin.CondorcetWinner(True),
+        poll_plugin.CondorcetLooser(True),
+        poll_plugin.CloneProof(True),
+    )
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -198,6 +213,17 @@ class SortedSchulzePollPlugin(SchulzeBase):
         "Voters rank proposals with stars."
     )
     multiple_winners = True
+    recommended_for = _("Board elections or sorting proposals according to preference.")
+    priority = 3
+    criteria = (
+        poll_plugin.MajorityWinner(True, comment=_("In each round")),
+        poll_plugin.MajorityLooser(True, comment=_("In each round")),
+        poll_plugin.MutialMajority(True, comment=_("In each round")),
+        poll_plugin.CondorcetWinner(True),
+        poll_plugin.CondorcetLooser(True),
+        poll_plugin.CloneProof(True),
+        poll_plugin.Proportional(False, comment=_("Incompatible with condorcet.")),
+    )
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -279,6 +305,7 @@ class SchulzeSTVPollPlugin(SchulzeBase):
                               "but may suffer from performance problems. "
                               "Each new possible winner increases complexity expontentially. "
                               "Computations may take a very long time with more than 6 winners!")
+    selectable = False  # Legacy plugin
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
@@ -346,6 +373,7 @@ class SchulzePRPollPlugin(SchulzeBase):
                               "Note: Computational complexity grows expontentially "
                               "with each added proposal. Over 5 proposals may be tricky. "
                               "Use with caution!")
+    selectable = False  # Legacy plugin
 
     def get_settings_schema(self):
         """ Get an instance of the schema used to render a form for editing settings.
