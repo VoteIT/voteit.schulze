@@ -2,6 +2,7 @@ import unittest
 
 from arche.views.base import BaseView
 from pyramid import testing
+from pyramid.httpexceptions import HTTPForbidden
 from pyramid.request import apply_request_extensions
 from pyramid.traversal import find_root
 from voteit.core.models.agenda_item import AgendaItem
@@ -82,10 +83,7 @@ class SortedSchulzePollPluginTests(unittest.TestCase):
 
     def test_close_with_no_votes(self):
         poll = self._fixture()
-        poll.close_poll()
-        marker = object()
-        self.assertEqual(poll.poll_result.get('winners', marker), marker)
-        self.assertIn('candidates', poll.poll_result)
+        self.assertRaises(HTTPForbidden, poll.close_poll)
 
     def test_eliminate_candidate(self):
         poll = self._fixture()
@@ -168,10 +166,7 @@ class SchulzeSTVTests(unittest.TestCase):
     def test_close_with_no_votes(self):
         poll = _setup_poll_fixture(self.config)
         poll.set_field_value('poll_plugin', 'schulze_stv')
-        poll.close_poll()
-        marker = object()
-        self.assertEqual(poll.poll_result.get('winners', marker), marker)
-        self.assertIn('candidates', poll.poll_result)
+        self.assertRaises(HTTPForbidden, poll.close_poll)
 
     def test_poll_result(self):
         poll = _setup_poll_fixture(self.config)
@@ -233,10 +228,7 @@ class SchulzePRTests(unittest.TestCase):
     def test_close_with_no_votes(self):
         poll = _setup_poll_fixture(self.config)
         poll.set_field_value('poll_plugin', 'schulze_pr')
-        poll.close_poll()
-        marker = object()
-        self.assertEqual(poll.poll_result.get('order', marker), marker)
-        self.assertIn('candidates', poll.poll_result)
+        self.assertRaises(HTTPForbidden, poll.close_poll)
 
     def test_poll_result(self):
         poll = _setup_poll_fixture(self.config)

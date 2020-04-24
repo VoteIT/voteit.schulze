@@ -144,8 +144,7 @@ class SchulzePollPlugin(SchulzeBase):
             self.context.poll_result = SchulzeMethod(schulze_ballots,
                                                      ballot_notation = "ranking").as_dict()
         else:
-            #No votes!
-            self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
+            raise HTTPForbidden(_("No votes, cancel the poll instead."))
 
     def change_states_of(self):
         """ This gets called when a poll has finished.
@@ -277,8 +276,7 @@ class SortedSchulzePollPlugin(SchulzeBase):
                 'winners': [x['winner'] for x in round_data]
             }
         else:
-            #No votes!
-            self.context.poll_result = {'candidates': set(self.context.proposals)}
+            raise HTTPForbidden(_("No votes, cancel the poll instead."))
 
     def eliminate_candidate(self, uid, ballots):
         """ Eliminate a candidate from formatted ballots. """
@@ -325,8 +323,7 @@ class SchulzeSTVPollPlugin(SchulzeBase):
                                                   ballot_notation = "ranking",
                                                   required_winners = winners).as_dict()
         else:
-            #No votes!
-            self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
+            raise HTTPForbidden(_("No votes, cancel the poll instead."))
 
     def change_states_of(self):
         """ This gets called when a poll has finished.
@@ -392,7 +389,7 @@ class SchulzePRPollPlugin(SchulzeBase):
             self.context.poll_result = SchulzePR(schulze_ballots,
                                                  ballot_notation = "ranking").as_dict()
         else:
-            self.context.poll_result = {'candidates': set(self.context.proposal_uids)}
+            raise HTTPForbidden(_("No votes, cancel the poll instead."))
 
     def render_result(self, view):
         response = {}
