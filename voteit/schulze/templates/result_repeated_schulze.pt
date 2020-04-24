@@ -1,0 +1,54 @@
+<tal:main xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.schulze">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"
+            i18n:translate="">
+            Results of
+            <tal:ts replace="context.title" i18n:name="title"/>
+        </h4>
+    </div>
+    <div class="modal-body">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <tal:ts i18n:translate="sorted_schulze_result_explanation">
+            Schulze polls compare all proposals to each other pairwise.
+        </tal:ts>
+    </div>
+
+    <div class="modal-header">
+        <h4 tal:condition="not sorted_all" i18n:translate="">Selected proposals</h4>
+        <h4 tal:condition="sorted_all" i18n:translate="">Sorted according to the users votes</h4>
+    </div>
+    <tal:iterate repeat="prop_uid winners">
+        <div class="modal-body" tal:define="prop proposals_dict[prop_uid]">
+            <p>
+                <b>${repeat.prop_uid.number}.</b>
+                <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)"/>:
+                ${structure: request.transform_text(prop.text)}
+            </p>
+            <p><b>#${prop.aid}</b></p>
+        </div>
+    </tal:iterate>
+
+    <tal:not_sorted_all condition="not sorted_all">
+        <div class="modal-header">
+            <h4>Other proposals</h4>
+        </div>
+        <tal:iterate repeat="prop_uid [k for k in proposals_dict if k not in winners]">
+            <div class="modal-body" tal:define="prop proposals_dict[prop_uid]">
+                <p>
+                    <tal:creator replace="structure request.creators_info(prop.creators, portrait = False)"/>:
+                    ${structure: request.transform_text(prop.text)}
+                </p>
+                <p><b>#${prop.aid}</b></p>
+            </div>
+        </tal:iterate>
+    </tal:not_sorted_all>
+
+    <script>
+      try {
+          $('[data-toggle="schulze-prop-popover"]').popover()
+      } catch(e) {}
+
+    </script>
+</tal:main>

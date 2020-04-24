@@ -202,9 +202,9 @@ class SortedSchulzePollPlugin(SchulzeBase):
         This is a non-proportionally ranked method
     """
     name = 'sorted_schulze'
-    title = _("Sorted Schulze")
+    title = _("Repeated Schulze")
     description = _(
-        "moderator_description_sorted_non_proportional",
+        "moderator_description_repeated_non_proportional",
         default = "A regular Schulze poll is repeated until all "
         "candidates have a ranking. The result is non-proportional, "
         "and each stage produces the condorcet winner "
@@ -229,11 +229,12 @@ class SortedSchulzePollPlugin(SchulzeBase):
         """
         schema = SettingsSchema()
         schema.title = _(u"Poll settings")
-        schema.description = _(u"Settings for Sorted Schulze")
+        schema.description = _(u"Settings for Repeated Schulze")
         del schema['winners']
         schema.add(
             colander.SchemaNode(
                 colander.Int(),
+                name="winners",
                 title=_("Restrict number of winners"),
                 description=_("Use 0 to sort all"),
                 default=0,
@@ -285,12 +286,15 @@ class SortedSchulzePollPlugin(SchulzeBase):
         return ballots
 
     def render_result(self, view):
-        response = {}
-        response['context'] = self.context
-        response['total_votes'] = len(self.context) #Should be ok...
-        response['proposals_dict'] = dict([(x.uid, x) for x in self.context.get_proposal_objects()])
-        response['winners'] = self.context.poll_result.get('winners', ())
-        return render('templates/result_sorted_schulze.pt', response, request = view.request)
+        winners = self.context.poll_result.get('winners', ())
+        proposals_dict = dict([(x.uid, x) for x in self.context.get_proposal_objects()])
+        response = {'context': self.context,
+                    'total_votes': len(self.context),
+                    'proposals_dict': proposals_dict,
+                    'winners': winners,
+                    'sorted_all': len(winners) == len(proposals_dict),
+                    }
+        return render('templates/result_repeated_schulze.pt', response, request = view.request)
 
 
 class SchulzeSTVPollPlugin(SchulzeBase):
