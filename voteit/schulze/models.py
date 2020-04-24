@@ -225,7 +225,7 @@ class SortedSchulzePollPlugin(SchulzeBase):
         "moderator_description_repeated_non_proportional",
         default="A regular Schulze poll is repeated until all "
         "candidates have a ranking. The result is non-proportional, "
-        "and each stage produces the condorcet winner "
+        "and each stage produces the Condorcet winner "
         "within the remaining candidates. "
         "Voters rank proposals with stars.",
     )
@@ -239,7 +239,7 @@ class SortedSchulzePollPlugin(SchulzeBase):
         poll_plugin.CondorcetWinner(True),
         poll_plugin.CondorcetLooser(True),
         poll_plugin.CloneProof(True),
-        poll_plugin.Proportional(False, comment=_("Incompatible with condorcet.")),
+        poll_plugin.Proportional(False, comment=_("Incompatible with Condorcet.")),
     )
 
     def get_settings_schema(self):

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.schulze\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-06 14:05+0200\n"
-"PO-Revision-Date: 2018-07-06 14:05+0200\n"
+"POT-Creation-Date: 2020-04-24 11:16+0200\n"
+"PO-Revision-Date: 2020-04-24 11:18+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <support@voteit.se>\n"
 "Language: sv\n"
@@ -12,68 +12,90 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "Generated-By: Babel 0.9.6\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 2.3\n"
 
 #. Default: Rank proposals with stars - more is better. When the result is
 #. calculated, each proposal will be compared to every other based on
 #. preference.
-#: voteit/schulze/models.py:39
+#: voteit/schulze/models.py:41
 msgid "schulze_base_description"
 msgstr ""
 "Ranka förslag med stjärnor - fler är bättre. När resultatet beräknas kommer "
 "varje förslag jämföras med alla andra baserat på preferens."
 
-#: voteit/schulze/models.py:105
+#: voteit/schulze/models.py:116
+msgid "Only one proposal selected, can't start poll."
+msgstr "Bara ett förslag valt, kan inte starta omröstning."
+
+#: voteit/schulze/models.py:124
 msgid "Schulze (Single winner with detailed results)"
 msgstr "Schulze (En vinnare med detaljerat resultat)"
 
 #. Default: Ranked poll suitable for most occations where you want a single
 #. winner. Voters rank proposals with stars.
-#: voteit/schulze/models.py:106
+#: voteit/schulze/models.py:125
 msgid "moderator_description_schulze"
 msgstr ""
 "Rangordningsvotering lämpad för de flesta tillfällen med ett vinnande "
 "förslag. Röstberättigade rankar förslagen med stjärnor."
 
-#: voteit/schulze/models.py:114 voteit/schulze/models.py:201
-#: voteit/schulze/models.py:282 voteit/schulze/models.py:349
+#: voteit/schulze/models.py:145 voteit/schulze/models.py:249
+#: voteit/schulze/models.py:345 voteit/schulze/models.py:414
 msgid "Poll settings"
 msgstr "Omröstningsinställningar"
 
-#: voteit/schulze/models.py:115 voteit/schulze/models.py:283
+#: voteit/schulze/models.py:146 voteit/schulze/models.py:346
 msgid "Settings for Schulze STV"
 msgstr "Inställningar för Schulze STV"
 
-#: voteit/schulze/models.py:187
-msgid "Sorted Schulze"
-msgstr "Sorterad Schulze"
+#: voteit/schulze/models.py:160 voteit/schulze/models.py:302
+#: voteit/schulze/models.py:359 voteit/schulze/models.py:428
+msgid "No votes, cancel the poll instead."
+msgstr "Inga röster, avbryt omröstningen istället."
+
+#: voteit/schulze/models.py:223
+msgid "Repeated Schulze"
+msgstr "Repeterad Schulze"
 
 #. Default: A regular Schulze poll is repeated until all candidates have a
 #. ranking. The result is non-proportional, and each stage produces the
-#. condorcet winner within the remaining candidates. Voters rank proposals with
+#. Condorcet winner within the remaining candidates. Voters rank proposals with
 #. stars.
-#: voteit/schulze/models.py:188
-msgid "moderator_description_sorted_non_proportional"
+#: voteit/schulze/models.py:224
+msgid "moderator_description_repeated_non_proportional"
 msgstr ""
 "En vanlig Schulze-omröstning repeteras tills alla kandidater har en "
-"rankning. Resultatet blir icke-proportionellt, och varje stadie producerar "
+"rankning. Resultatet blir icke-proportionellt, och varje runda ger "
 "Condorcet-vinnaren inom återstående kandidater. Röstberättigade rankar med "
 "stjärnor."
 
-#: voteit/schulze/models.py:202
-msgid "Settings for Sorted Schulze"
-msgstr "Inställningar för sorterad Schulze"
+#: voteit/schulze/models.py:233
+msgid "Board elections or sorting proposals according to preference."
+msgstr "Styrelseval eller att sortera förslag utifrån röstandes preferenser."
 
-#: voteit/schulze/models.py:207
+#: voteit/schulze/models.py:236 voteit/schulze/models.py:237
+#: voteit/schulze/models.py:238
+msgid "In each round"
+msgstr "I varje runda"
+
+#: voteit/schulze/models.py:242
+msgid "Incompatible with Condorcet."
+msgstr "Inkompatibel med Condorcet."
+
+#: voteit/schulze/models.py:250
+msgid "Settings for Repeated Schulze"
+msgstr "Inställningar för repeterad Schulze"
+
+#: voteit/schulze/models.py:256
 msgid "Restrict number of winners"
 msgstr "Begränsa antalet vinnare"
 
-#: voteit/schulze/models.py:208
+#: voteit/schulze/models.py:257
 msgid "Use 0 to sort all"
 msgstr "Använd 0 för att sortera alla"
 
 #. Default: Schulze STV (Multiple winner, proportional
-#: voteit/schulze/models.py:270
+#: voteit/schulze/models.py:329
 msgid "schulze_stv_title"
 msgstr "Schultze STV"
 
@@ -81,7 +103,7 @@ msgstr "Schultze STV"
 #. performance problems. Each new possible winner increases complexity
 #. expontentially. Computations may take a very long time with more than 6
 #. winners!
-#: voteit/schulze/models.py:272
+#: voteit/schulze/models.py:332
 msgid "moderator_description_schulze_stv"
 msgstr ""
 "Omröstningen kan hantera många vinnare, men kan få prestandaproblem. Varje "
@@ -89,7 +111,7 @@ msgstr ""
 "lång tid med 6 eller fler vinnare!"
 
 #. Default: Schulze PR (Sorted result, proportional)
-#: voteit/schulze/models.py:335
+#: voteit/schulze/models.py:398
 msgid "schulze_pr_title"
 msgstr "Schulze PR (bara rankning)"
 
@@ -97,7 +119,7 @@ msgstr "Schulze PR (bara rankning)"
 #. all voters. The result will be proportional. Note: Computational complexity
 #. grows expontentially with each added proposal. Over 5 proposals may be
 #. tricky. Use with caution!
-#: voteit/schulze/models.py:337
+#: voteit/schulze/models.py:399
 msgid "moderator_description_schulze_pr"
 msgstr ""
 "Denna omröstning sorterar förslagen i enlighet med alla röstberättigades "
@@ -105,57 +127,65 @@ msgstr ""
 "exponentiellt med varje tillagt förslag. Över 5 förslag kan ta tid. Använd "
 "med försiktighet!"
 
-#: voteit/schulze/models.py:350
+#: voteit/schulze/models.py:415
 msgid "Settings for Schulze PR"
 msgstr "Inställningar för Schulze PR"
 
-#: voteit/schulze/schemas.py:12
+#: voteit/schulze/schemas.py:13
 msgid "Winners (For 1, use regular Schulze)"
 msgstr "Vinnare (För 1, använd vanlig Schulze)"
 
 #. Default: Note! With more than 5 winners, the result may take an extremely
 #. long time to calculate. Consult VoteIT development team before using this!
-#: voteit/schulze/schemas.py:13
+#: voteit/schulze/schemas.py:14
 msgid "schulze_config_winners_description"
 msgstr ""
 "Obs! Med fler än 5 vinnare kan resultatet ta extremt lång tid att beräkna. "
 "Prata med VoteITs utvecklingsteam innan ni använder den inställningen!"
 
-#: voteit/schulze/schemas.py:21
+#: voteit/schulze/schemas.py:24
 msgid "Maximum stars"
 msgstr "Maximalt antal stjärnor"
 
 #. Default: The maximum numbers of stars regarless of number of proposals
-#: voteit/schulze/schemas.py:22
+#: voteit/schulze/schemas.py:25
 msgid "schulze_config_max_stars_description"
 msgstr "Det maximala antalet stjärnor oavsett antal förslag"
 
-#: voteit/schulze/schemas.py:28
+#: voteit/schulze/schemas.py:33
 msgid "Minumum stars"
 msgstr "Minimalt antal stjärnor"
 
 #. Default: The minimum numbers of stars regarless of number of proposals
-#: voteit/schulze/schemas.py:29
+#: voteit/schulze/schemas.py:34
 msgid "schulze_config_min_stars_description"
 msgstr "Det minimala antalet stjärnor oavsett antal förslag"
 
-#: voteit/schulze/templates/result_sorted_schulze.pt:5
+#: voteit/schulze/templates/result_repeated_schulze.pt:6
 #: voteit/schulze/templates/result_pr.pt:5
 #: voteit/schulze/templates/result_stv.pt:5
-#: voteit/schulze/templates/result_schulze.pt:5
+#: voteit/schulze/templates/result_schulze.pt:6
 msgid "Results of ${title}"
 msgstr "Resultat av ${title}"
 
 #. Default: Schulze polls compare all proposals to each other pairwise.
-#: voteit/schulze/templates/result_sorted_schulze.pt:12
+#: voteit/schulze/templates/result_repeated_schulze.pt:13
 msgid "sorted_schulze_result_explanation"
 msgstr "Schulze-omröstningar jämför alla förslag med varandra parvis."
+
+#: voteit/schulze/templates/result_repeated_schulze.pt:19
+msgid "Selected proposals"
+msgstr "Valda förslag"
+
+#: voteit/schulze/templates/result_repeated_schulze.pt:20
+msgid "Sorted according to the users votes"
+msgstr "Sorterat enligt användarnas röster"
 
 #. Default: Schulze polls compare all proposals to each other. If you click the
 #. "Detailed result" button, you'll see how that specific proposal faired
 #. against others. The number within paranthesis is the absolute number of
 #. votes who preferred that option.
-#: voteit/schulze/templates/result_schulze.pt:12
+#: voteit/schulze/templates/result_schulze.pt:13
 msgid "schulze_result_explanation"
 msgstr ""
 "Schulze-omröstningar jämför alla förslag med varandra. Om du klickar på "
@@ -165,7 +195,7 @@ msgstr ""
 
 #. Default: Result was a tie between ${prop_ids} The winner was picked
 #. randomly.
-#: voteit/schulze/templates/result_schulze.pt:19
+#: voteit/schulze/templates/result_schulze.pt:21
 msgid "schulze_tied_description"
 msgstr "Resultatet blev lika mellan ${prop_ids} Vinnaren lottades fram."
 
@@ -244,9 +274,6 @@ msgstr "Rensa val"
 
 #~ msgid "Click above to see denied proposals and other details"
 #~ msgstr "Klicka ovan för att se avslagna förslag och andra detaljer"
-
-#~ msgid "Show ${count} denied proposals"
-#~ msgstr "Visa ${count} avslagna förslag"
 
 #~ msgid "Possible winners:"
 #~ msgstr "Antal möjliga vinnare:"
