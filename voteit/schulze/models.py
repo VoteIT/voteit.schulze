@@ -132,7 +132,7 @@ class SchulzePollPlugin(SchulzeBase):
     criteria = (
         poll_plugin.MajorityWinner(True),
         poll_plugin.MajorityLooser(True),
-        poll_plugin.MutialMajority(True),
+        poll_plugin.MutualMajority(True),
         poll_plugin.CondorcetWinner(True),
         poll_plugin.CondorcetLooser(True),
         poll_plugin.CloneProof(True),
@@ -235,7 +235,7 @@ class SortedSchulzePollPlugin(SchulzeBase):
     criteria = (
         poll_plugin.MajorityWinner(True, comment=_("In each round")),
         poll_plugin.MajorityLooser(True, comment=_("In each round")),
-        poll_plugin.MutialMajority(True, comment=_("In each round")),
+        poll_plugin.MutualMajority(True, comment=_("In each round")),
         poll_plugin.CondorcetWinner(True),
         poll_plugin.CondorcetLooser(True),
         poll_plugin.CloneProof(True),
