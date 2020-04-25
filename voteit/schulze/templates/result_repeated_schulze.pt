@@ -16,7 +16,7 @@
     </div>
 
     <div class="modal-header">
-        <h4 tal:condition="not sorted_all" i18n:translate="">Selected proposals</h4>
+        <h4 tal:condition="not sorted_all" i18n:translate="">Approved proposals</h4>
         <h4 tal:condition="sorted_all" i18n:translate="">Sorted according to the users votes</h4>
     </div>
     <tal:iterate repeat="prop_uid winners">
@@ -32,7 +32,7 @@
 
     <tal:not_sorted_all condition="not sorted_all">
         <div class="modal-header">
-            <h4>Other proposals</h4>
+            <h4 i18n:translate="">Denied proposals</h4>
         </div>
         <tal:iterate repeat="prop_uid [k for k in proposals_dict if k not in winners]">
             <div class="modal-body" tal:define="prop proposals_dict[prop_uid]">

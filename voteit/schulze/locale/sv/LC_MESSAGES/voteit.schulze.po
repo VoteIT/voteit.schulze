@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.schulze\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-24 11:16+0200\n"
-"PO-Revision-Date: 2020-04-24 11:18+0200\n"
+"POT-Creation-Date: 2020-04-25 15:03+0200\n"
+"PO-Revision-Date: 2020-04-25 15:03+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <support@voteit.se>\n"
 "Language: sv\n"
@@ -65,9 +65,8 @@ msgstr "Repeterad Schulze"
 msgid "moderator_description_repeated_non_proportional"
 msgstr ""
 "En vanlig Schulze-omröstning repeteras tills alla kandidater har en "
-"rankning. Resultatet blir icke-proportionellt, och varje runda ger "
-"Condorcet-vinnaren inom återstående kandidater. Röstberättigade rankar med "
-"stjärnor."
+"rankning. Resultatet blir icke-proportionellt, och varje runda ger Condorcet-"
+"vinnaren inom återstående kandidater. Röstberättigade rankar med stjärnor."
 
 #: voteit/schulze/models.py:233
 msgid "Board elections or sorting proposals according to preference."
@@ -174,12 +173,16 @@ msgid "sorted_schulze_result_explanation"
 msgstr "Schulze-omröstningar jämför alla förslag med varandra parvis."
 
 #: voteit/schulze/templates/result_repeated_schulze.pt:19
-msgid "Selected proposals"
-msgstr "Valda förslag"
+msgid "Approved proposals"
+msgstr "Bifallna förslag"
 
 #: voteit/schulze/templates/result_repeated_schulze.pt:20
 msgid "Sorted according to the users votes"
 msgstr "Sorterat enligt användarnas röster"
+
+#: voteit/schulze/templates/result_repeated_schulze.pt:35
+msgid "Denied proposals"
+msgstr "Avslagna förslag"
 
 #. Default: Schulze polls compare all proposals to each other. If you click the
 #. "Detailed result" button, you'll see how that specific proposal faired

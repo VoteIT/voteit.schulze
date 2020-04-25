@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2020-04-24 11:16+0200\n"
+"POT-Creation-Date: 2020-04-25 15:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -159,11 +159,15 @@ msgid "sorted_schulze_result_explanation"
 msgstr ""
 
 #: ./voteit/schulze/templates/result_repeated_schulze.pt:19
-msgid "Selected proposals"
+msgid "Approved proposals"
 msgstr ""
 
 #: ./voteit/schulze/templates/result_repeated_schulze.pt:20
 msgid "Sorted according to the users votes"
+msgstr ""
+
+#: ./voteit/schulze/templates/result_repeated_schulze.pt:35
+msgid "Denied proposals"
 msgstr ""
 
 #. Default: Schulze polls compare all proposals to each other. If you click the
