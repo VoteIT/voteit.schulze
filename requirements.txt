@@ -1,0 +1,5 @@
+-e git+https://github.com/ArcheProject/Arche.git#egg=arche
+-e git+https://github.com/ArcheProject/arche_usertags.git#egg=arche_usertags
+-e git+https://github.com/VoteIT/voteit.core.git#egg=voteit.core
+-e .[testing]
+six>=1.12
